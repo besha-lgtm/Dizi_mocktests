@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { MockHomeComponent } from './pages/mock-home/mock-home.component';
+import { Instruction } from './pages/instruction/instruction.component';
+import { Header1Component } from './layout/header1/header1.component';
+import { Header2Component } from './layout/header2/header2.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
@@ -13,7 +16,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     LoginComponent,
     RegisterComponent,
     MockHomeComponent,
-
+    Instruction,
+    Header1Component,
+    Header2Component
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [provideBrowserGlobalErrorListeners()],

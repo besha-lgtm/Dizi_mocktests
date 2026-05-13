@@ -1,0 +1,80 @@
+<header class="exam-portal-header">
+  <!-- ROW 1: MAIN LOGO & INFO BAR -->
+  <div class="primary-header">
+    <div class="header-layout">
+      <!-- Left Logo Section -->
+      <div class="brand-section">
+        <div class="logo-badge">
+          <span>{{ logoText }}</span>
+        </div>
+        <div class="logo-details">
+          <span class="brand-subtitle">{{ logoSubtext }}</span>
+          <div class="exam-titles">
+            <h1 class="title-en">{{ examTitle }}</h1>
+            <p class="title-hi">{{ examSubtitle }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Middle Institute Info -->
+      <div class="center-section">
+        <span class="org-institute">{{ organizingInstitute }}</span>
+      </div>
+
+      <!-- Right Action Buttons -->
+      <div class="actions-section">
+        <button class="btn-action btn-instructions" (click)="openInstructions()">
+          <span class="icon">i</span> Instructions
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 2: MOCK EXAM & TIMER BAR -->
+  <div class="exam-status-bar">
+    <div class="bar-layout">
+      <div class="exam-identity">
+        {{ examBarTitle }}
+      </div>
+      <div class="timer-display">
+        Time Left: <span class="time-value">{{ formattedTimeLeft }}</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- MODAL BACKDROP & DIALOG -->
+<div class="modal-backdrop" *ngIf="showModal" (click)="closeInstructions()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h3 class="modal-title">Instructions</h3>
+      <button class="modal-close-btn" (click)="closeInstructions()">&times;</button>
+    </div>
+
+    <!-- Modal Warning Sub-header -->
+    <div class="modal-alert-banner">
+      <span class="warning-icon">⚠️</span>
+      <p class="warning-message">Note that the timer is ticking. Kindly close this window to attend to the questions.</p>
+    </div>
+
+    <!-- Modal Scrollable Content Body -->
+    <div class="modal-body">
+      <div class="instructions-wrapper">
+        <h4 class="body-center-title">INSTRUCTIONS TO CANDIDATES</h4>
+        
+        <div class="instruction-section" *ngFor="let section of instructionSections">
+          <h5 class="section-heading">{{ section.title }}</h5>
+          <ol class="section-list">
+            <li *ngFor="let item of section.items; let i = index" [innerHTML]="item"></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <button class="btn-close-modal" (click)="closeInstructions()">Close</button>
+    </div>
+  </div>
+</div>

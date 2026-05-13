@@ -1,0 +1,125 @@
+<div class="instruction-page-wrapper">
+    <h1 class="instruction-title">{{ instructionData.pageTitle }}</h1>
+
+    <!-- Main Content Section -->
+    <div class="instruction-container">
+        <!-- Single Card with Two Columns (Instructions + Profile) -->
+        <div class="instruction-content">
+            <div class="instruction-card">
+                <!-- Left Column - Instructions -->
+                <div class="card-instructions">
+                    <!-- INSTRUCTION SECTIONS (Dynamic) -->
+                    <div *ngFor="let section of instructionData.sections" class="instruction-section-content">
+                        <h2 class="section-heading">{{ section.title }}</h2>
+                        
+                        <!-- Numbered List -->
+                        <ol *ngIf="section.type === 'numbered'" class="instruction-list">
+                            <li
+                                *ngFor="let item of section.items; let i = index"
+                                class="instruction-item"
+                                [class.has-palette-table]="shouldShowPaletteTable(section, i)"
+                            >
+                                <span class="item-text" [innerHTML]="item"></span>
+                                <!-- Palette Table after point 3 in General Instructions -->
+                                <div *ngIf="shouldShowPaletteTable(section, i)" class="palette-table-wrapper">
+                                    <div class="palette-table">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-symbol">Symbol</th>
+                                                    <th class="col-meaning">Meaning</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let palette of instructionData.paletteItems; let j = index" [ngClass]="paletteStatusTypes[j]?.class">
+                                                    <td class="col-symbol">
+                                                        <div [ngClass]="['palette-symbol', paletteStatusTypes[j]?.class]">
+                                                            {{ palette.symbol }}
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-meaning" [innerHTML]="palette.meaning"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Palette Preview - Aligned Right -->
+                                    <div class="palette-preview-all">
+                                        <div class="palette-preview-header">Palette Preview</div>
+                                        <div class="palette-preview-content">
+                                            <div class="palette-preview-strip">
+                                                <div [ngClass]="['palette-item', paletteStatusTypes[2]?.class]">3</div>
+                                                <div [ngClass]="['palette-item', paletteStatusTypes[1]?.class]">4</div>
+                                                <span class="palette-preview-text">Not Visited: 0</span>
+                                                <div [ngClass]="['palette-item', paletteStatusTypes[1]?.class]">2</div>
+                                                <div [ngClass]="['palette-item', paletteStatusTypes[4]?.class]">5</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ol>
+
+                        <!-- Lettered List -->
+                        <div *ngIf="section.type === 'lettered'" class="instruction-list-alpha">
+                            <div *ngFor="let item of section.items; let i = index" class="instruction-item">
+                                <span class="item-label">{{ getLetterFromIndex(i) }}.</span>
+                                <span class="item-text" [innerHTML]="item"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Profile Section with Divider -->
+                <div class="card-profile-divider">
+                    <div class="card-profile-section">
+                        <div class="instruction-user-profile">
+                            <div class="profile-avatar"></div>
+                        </div>
+                        <p class="profile-label">John Smith</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar (Empty) -->
+        <aside class="instruction-sidebar">
+        </aside>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="instruction-footer">
+        <div class="language-selector">
+            <label for="language">Choose language:</label>
+            <select 
+                id="language" 
+                class="language-select"
+                [(ngModel)]="selectedLanguage"
+                (change)="onLanguageChange($event)"
+            >
+                <option *ngFor="let lang of instructionData.languageOptions" 
+                    [value]="lang.value"
+                    [disabled]="lang.disabled">
+                    {{ lang.label }}
+                </option>
+            </select>
+        </div>
+
+        <div class="instruction-checkbox">
+            <input
+                type="checkbox"
+                id="instructions-checkbox"
+                class="checkbox-input"
+                [checked]="hasAcceptedInstructions"
+                (change)="onInstructionCheck($event)"
+                [attr.aria-invalid]="hasTouchedInstructions && !hasAcceptedInstructions"
+                aria-describedby="instructions-error"
+            >
+            <label for="instructions-checkbox" class="checkbox-label">
+                {{ instructionData.disclaimerText }}
+            </label>
+            <button class="ready-button" [disabled]="!hasAcceptedInstructions">
+                {{ instructionData.readyButtonText }}
+            </button>
+        </div>
+    </footer>
+</div>

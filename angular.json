@@ -60,7 +60,10 @@
                 "input": "src/assets"
               }
             ],
-            "styles": ["src/styles.css"]
+            "styles": [
+              "src/styles.css",
+              "src/assets/style.css"
+          ]
           },
           "configurations": {
             "production": {
