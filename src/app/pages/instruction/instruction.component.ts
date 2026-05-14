@@ -31,6 +31,12 @@ export class Instruction {
   hasTouchedInstructions = false;
   selectedLanguage = 'english';
 
+  // Profile data
+  profileName = 'Name';
+  
+  // Button/Label text
+  readyButtonLabel = 'I am ready to begin';
+
   // Dynamic instruction data - Easy to update from backend
   instructionData: InstructionData = {
     pageTitle: 'INSTRUCTIONS TO CANDIDATES',

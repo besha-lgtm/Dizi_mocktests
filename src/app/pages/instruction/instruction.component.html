@@ -75,7 +75,7 @@
                         <div class="instruction-user-profile">
                             <div class="profile-avatar"></div>
                         </div>
-                        <p class="profile-label">John Smith</p>
+                        <p class="profile-label">{{ profileName }}</p>
                     </div>
                 </div>
             </div>
@@ -118,7 +118,7 @@
                 {{ instructionData.disclaimerText }}
             </label>
             <button class="ready-button" [disabled]="!hasAcceptedInstructions">
-                {{ instructionData.readyButtonText }}
+                {{ readyButtonLabel }}
             </button>
         </div>
     </footer>
