@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 interface InstructionSection {
   title: string;
@@ -15,8 +16,7 @@ export class Header2Component implements OnInit, OnDestroy {
   @Input() logoText: string = 'JEE';
   @Input() logoSubtext: string = 'MAINS';
   @Input() examTitle: string = 'Joint Entrance Examination (MAINS) 2026';
-  @Input() examSubtitle: string = 'संयुक्त प्रवेश परीक्षा (मुख्य) २०२६';
-  @Input() organizingInstitute: string = 'Indian Institute of Technology Roorkee';
+  @Input() organizingInstitute: string = 'Dizi Edutech';
   @Input() examBarTitle: string = 'JEE MAINS 2026 Paper 1 Mock Exam';
 
   // Dynamic timer settings (Changing this minutes value automatically recalibrates the live timer and instructions)
@@ -27,9 +27,9 @@ export class Header2Component implements OnInit, OnDestroy {
   get totalTimeMinutes(): number {
     return this._totalTimeMinutes;
   }
-  private _totalTimeMinutes: number = 180; // Default 180 mins (3 Hours)
+  private _totalTimeMinutes: number = 1; // Default 180 mins (3 Hours)
 
-  timeLeftSeconds: number = 180 * 60;
+  timeLeftSeconds: number = 2 * 60;
   private timerInterval: any;
 
   // Modal controls
@@ -57,7 +57,7 @@ export class Header2Component implements OnInit, OnDestroy {
     }
   ];
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef, private router: Router) { }
 
   ngOnInit(): void {
     this.startTimer();
@@ -77,6 +77,8 @@ export class Header2Component implements OnInit, OnDestroy {
       } else {
         this.clearTimer();
         this.cdr.detectChanges();
+        
+        this.router.navigate(['/mock-submit']);
       }
     }, 1000);
   }

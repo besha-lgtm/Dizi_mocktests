@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 interface PaletteItem {
   symbol: string | number;
@@ -27,6 +27,8 @@ interface InstructionData {
   styleUrl: './instruction.component.css',
 })
 export class Instruction {
+  @Output() ready = new EventEmitter<void>();
+
   hasAcceptedInstructions = false;
   hasTouchedInstructions = false;
   selectedLanguage = 'english';
@@ -134,5 +136,11 @@ export class Instruction {
    */
   getLetterFromIndex(index: number): string {
     return String.fromCharCode(97 + index);
+  }
+
+  onReadyToBegin(): void {
+    if (this.hasAcceptedInstructions) {
+      this.ready.emit();
+    }
   }
 }

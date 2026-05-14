@@ -12,6 +12,8 @@ import { Header2Component } from './layout/header2/header2.component';
 import { MockQuestion } from './pages/mock-question/mock-question.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MockSubmit } from './pages/mock-submit/mock-submit.component';
+import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { FeedbackComponent } from './pages/feedback/feedback.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +25,8 @@ import { MockSubmit } from './pages/mock-submit/mock-submit.component';
     Header2Component,
     MockQuestion,
     MockSubmit,
+    MainLayoutComponent,
+    FeedbackComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [provideBrowserGlobalErrorListeners()],

@@ -1,0 +1,42 @@
+<div class="feedback-page-wrapper">
+    <div class="feedback-container">
+        <div class="feedback-card">
+            <div class="feedback-header">
+                <h3 class="feedback-title-modal">STUDENT FEEDBACK</h3>
+            </div>
+
+            <div class="feedback-alert-banner">
+                <span class="warning-icon">📝</span>
+                <p class="warning-message">Your feedback is important to us. Please ensure all questions are answered before submitting.</p>
+            </div>
+
+            <div class="feedback-content">
+                <table class="feedback-table">
+                    <thead>
+                        <tr>
+                            <th class="question-col"></th>
+                            <th *ngFor="let option of options" class="option-col">{{ option }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let question of questions; let i = index">
+                            <td class="question-text">{{ question }}</td>
+                            <td *ngFor="let option of options" class="radio-cell">
+                                <label class="radio-container">
+                                    <input type="radio" [name]="'question-' + i" [value]="option" [(ngModel)]="selections[i]">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="feedback-footer">
+                <button class="submit-btn" (click)="onSubmit()" [disabled]="!allQuestionsAnswered">
+                    Submit Feedback
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

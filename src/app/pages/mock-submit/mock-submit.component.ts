@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 interface SubmitData {
   title: string;
   message: string;
@@ -26,7 +26,7 @@ export class MockSubmit implements OnInit, OnDestroy {
     description: 'Submission Details'
   };
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private router: Router) {}
 
   ngOnInit(): void {
     this.startTimer();
@@ -46,15 +46,16 @@ export class MockSubmit implements OnInit, OnDestroy {
     this.clearTimer();
 
     this.timerId = setInterval(() => {
-      if (this.remainingSeconds <= 1) {
-        this.remainingSeconds = 0;
-        this.clearTimer();
+      if (this.remainingSeconds <= 0) {
+        this.remainingSeconds--;
         this.cdr.detectChanges();
         return;
+      }else {
+        this.clearTimer();
+        this.cdr.detectChanges();
+        // Redirect to feedback page when time is up
+        this.router.navigate(['/feedback']);
       }
-
-      this.remainingSeconds--;
-      this.cdr.detectChanges();
     }, 1000);
   }
 

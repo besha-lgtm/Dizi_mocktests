@@ -117,7 +117,7 @@
             <label for="instructions-checkbox" class="checkbox-label">
                 {{ instructionData.disclaimerText }}
             </label>
-            <button class="ready-button" [disabled]="!hasAcceptedInstructions">
+            <button class="ready-button" [disabled]="!hasAcceptedInstructions" (click)="onReadyToBegin()">
                 {{ readyButtonLabel }}
             </button>
         </div>
