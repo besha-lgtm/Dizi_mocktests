@@ -1,0 +1,197 @@
+<div class="mock-test-container">
+    <!-- Top Navigation Tabs -->
+    <div class="tabs-container">
+        <div class="tabs-wrapper">
+            <button
+                *ngFor="let section of sections"
+                type="button"
+                class="tab-button"
+                [class.active]="section.id === activeSection"
+                (click)="handleSectionChange(section.id)">
+                <span class="tab-label">{{ section.label }}</span>
+                <span class="tab-badge">{{ section.id === activeSection ? currentQuestion.id : 'i' }}</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content-wrapper">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <div class="question-controls">
+                <!-- Question Type Header -->
+                <div class="question-type-header">
+                    <span class="question-type-label">Question Type: {{ currentQuestion.type }}</span>
+                    <span class="marking-info">+3 for correct | Negative: 1</span>
+                </div>
+
+                <!-- Language Selector -->
+                <div class="language-selector">
+                    <label for="language-dropdown">View In:</label>
+                    <select id="language-dropdown" class="language-dropdown" [(ngModel)]="selectedLanguage">
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="Tamil">Tamil</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="question-scroll-area">
+                <!-- Question Number -->
+                <h2 class="question-number">Question No. <span id="question-count">{{ currentQuestion.id }}</span></h2>
+
+                <!-- Instruction Box -->
+                <div class="instruction-box">
+                    <div class="instruction-header">
+                        <h3>SECTION 1 (Maximum Marks: 12)</h3>
+                    </div>
+                    <p class="instruction-text">This section contains FOUR (04) questions. Each question has FOUR options
+                        (A), (B), (C) and (D). ONLY ONE of these four options is the correct answer.</p>
+
+                    <div class="marking-scheme">
+                        <div class="marking-item">
+                            <span class="marking-label"><strong>Full Marks</strong></span>
+                            <span class="marking-value">: +3 if ONLY the correct option is chosen</span>
+                        </div>
+                        <div class="marking-item">
+                            <span class="marking-label"><strong>Zero Marks</strong></span>
+                            <span class="marking-value">: 0 if none of the options is chosen (unanswered)</span>
+                        </div>
+                        <div class="marking-item">
+                            <span class="marking-label"><strong>Negative Marks</strong></span>
+                            <span class="marking-value">: -1 in all other cases</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question Content -->
+                <div class="question-content">
+                    <p class="question-text" id="question-text">{{ currentQuestion.question }}</p>
+
+                    <div class="math-box" *ngIf="currentQuestion.mathContent">
+                        <p *ngFor="let line of getMathLines(currentQuestion.mathContent)">{{ line }}</p>
+                    </div>
+                </div>
+
+                <!-- Options -->
+                <div class="options-container" id="options-container">
+                    <div class="option" *ngFor="let option of currentQuestion.options">
+                        <input
+                            type="radio"
+                            [id]="'option-' + option.value"
+                            name="answer"
+                            [value]="option.value"
+                            class="option-radio"
+                            [checked]="currentQuestion.selectedOption === option.value"
+                            (change)="handleOptionSelect(option.value)">
+                        <label [for]="'option-' + option.value" class="option-label">
+                            <span class="option-letter">{{ option.value }}</span>
+                            <span class="option-text">{{ option.text }}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button type="button" class="btn btn-review" id="mark-review-btn" (click)="handleMarkReview()">Mark for Review & Next</button>
+                <button type="button" class="btn btn-secondary" id="clear-response-btn" (click)="handleClearResponse()">Clear Response</button>
+                <button type="button" class="btn btn-primary" id="save-next-btn" (click)="handleSaveNext()">Save & Next ▶</button>
+                <button type="button" class="btn btn-success" id="submit-btn" (click)="handleSubmit()">Submit</button>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-sidebar">
+            <!-- Candidate Profile -->
+            <div class="candidate-card">
+                <div class="candidate-avatar">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                    </svg>
+                </div>
+                <h3 class="candidate-name">{{ candidate.name }}</h3>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-container">
+                <div class="stat-card stat-answered">
+                    <div class="stat-badge">{{ answeredCount }}</div>
+                    <div class="stat-label">Answered</div>
+                </div>
+                <div class="stat-card stat-not-answered">
+                    <div class="stat-badge">{{ notAnsweredCount }}</div>
+                    <div class="stat-label">Not Answered</div>
+                </div>
+                <div class="stat-card stat-not-visited">
+                    <div class="stat-badge">{{ notVisitedCount }}</div>
+                    <div class="stat-label">Not Visited</div>
+                </div>
+                <div class="stat-card stat-marked">
+                    <div class="stat-badge">{{ markedForReviewCount }}</div>
+                    <div class="stat-label">Marked for Review</div>
+                </div>
+                <div class="stat-card stat-ans-marked">
+                    <div class="stat-badge">{{ answeredAndMarkedCount }}</div>
+                    <div class="stat-label">Ans & Marked</div>
+                </div>
+            </div>
+
+            <!-- Question Navigator -->
+            <div class="question-navigator">
+                <h4 class="navigator-title">{{ currentSection.label }} — Choose a Question</h4>
+                <div class="question-grid" id="question-grid">
+                    <button
+                        *ngFor="let question of currentSection.questions; let i = index"
+                        type="button"
+                        class="question-btn"
+                        [ngClass]="getQuestionButtonClass(question, i)"
+                        (click)="handleQuestionNavigation(i)">
+                        {{ question.id }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="submit-modal-backdrop" *ngIf="isSubmitModalOpen">
+        <section class="submit-modal" role="dialog" aria-modal="true" aria-labelledby="submit-modal-title">
+            <div class="submit-modal-header">
+                <h2 id="submit-modal-title">Confirm Submission</h2>
+                <button type="button" class="submit-modal-close" aria-label="Close submit dialog" (click)="closeSubmitModal()">×</button>
+            </div>
+
+            <div class="submit-modal-body">
+                <p class="submit-modal-message">
+                    Please review your progress before submitting. Once submitted, you cannot change your answers.
+                </p>
+
+                <div class="submit-summary-grid">
+                    <div class="submit-summary-card summary-answered">
+                        <strong>{{ answeredCount }}</strong>
+                        <span>Answered</span>
+                    </div>
+                    <div class="submit-summary-card summary-not-answered">
+                        <strong>{{ notAnsweredCount }}</strong>
+                        <span>Not Answered</span>
+                    </div>
+                    <div class="submit-summary-card summary-not-visited">
+                        <strong>{{ notVisitedCount }}</strong>
+                        <span>Not Visited</span>
+                    </div>
+                </div>
+
+                <p class="submit-modal-warning">
+                    <span aria-hidden="true">⚠</span>
+                    Answered &amp; Marked for Review questions will also be evaluated.
+                </p>
+            </div>
+
+            <div class="submit-modal-actions">
+                <button type="button" class="submit-cancel-btn" (click)="closeSubmitModal()">Cancel</button>
+                <button type="button" class="submit-confirm-btn" (click)="confirmSubmit()">Submit Examination</button>
+            </div>
+        </section>
+    </div>
+</div>
