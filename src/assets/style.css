@@ -2039,6 +2039,7 @@ body {
 .stat-ans-marked .stat-badge {
     background-color: var(--color-purple);
     clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    color: rgb(68, 255, 47);
 }
 
 /* Question Navigator */
@@ -2075,7 +2076,7 @@ body {
     border: none;
     border-radius: var(--radius-md);
     font-weight: 700;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: var(--font-heading);
@@ -2404,15 +2405,21 @@ body {
     background-color: #16a34a;
 }
 
-.question-btn.marked-review,
-.question-btn.answered-marked-review {
+.question-btn.marked-review
+{
     background-color: #7c3aed;
+}
+.question-btn.answered-marked-review
+{
+    background-color: #7c3aed;
+    color: rgb(68, 255, 47);
 }
 
 .question-btn.current {
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.22);
     outline: 2px solid rgba(59, 130, 246, 0.8);
     outline-offset: 2px;
+
 }
 
 .question-btn.current.not-visited {
@@ -2568,7 +2575,7 @@ body {
     }
 
     .question-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(10, 2fr);
     }
 
     .stats-container {
@@ -3181,10 +3188,7 @@ body {
 
 
 
-
-
-
-
+/*Feedback Page wrapper */
 
 .feedback-page-wrapper {
     background-color: #f0f4f8;
@@ -3279,7 +3283,7 @@ body {
     font-size: 13.5px;
     text-align: left;
     padding-left: 20px !important;
-    /* width: 40%; */
+    width: 40%;
 }
 
 .radio-cell {
@@ -3355,18 +3359,53 @@ body {
     opacity: 0.7;
 }
 
+@media (max-width: 992px) {
+    .feedback-card {
+        max-width: 95%;
+    }
+}
+
 @media (max-width: 768px) {
+    .feedback-page-wrapper {
+        padding: 1rem;
+    }
+
+    .feedback-content {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .feedback-table {
+        min-width: 700px; /* Forces horizontal scroll */
+    }
+
     .feedback-table th {
-        font-size: 10px;
-        padding: 0.75rem 0.25rem;
+        font-size: 11px;
+        padding: 0.75rem 0.5rem;
     }
     
     .question-text {
-        font-size: 12px;
-        padding-left: 10px !important;
+        font-size: 13px;
+        padding-left: 12px !important;
+        width: 250px;
     }
     
     .feedback-card {
         max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .feedback-page-wrapper {
+        padding: 0.5rem;
+    }
+    
+    .feedback-table {
+        min-width: 600px;
+    }
+    
+    .question-text {
+        font-size: 12px;
+        width: 200px;
     }
 }

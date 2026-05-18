@@ -30,10 +30,12 @@ export class MockSubmit implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.startTimer();
+    this.preventRefresh();
   }
 
   ngOnDestroy(): void {
     this.clearTimer();
+    this.removeRefreshPrevention();
   }
 
   get timerDisplay(): string {
@@ -42,17 +44,43 @@ export class MockSubmit implements OnInit, OnDestroy {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
 
+  // CHANGE: Added method to prevent page refresh and back navigation
+  private preventRefresh(): void {
+    // Prevent browser refresh (F5, Ctrl+R, Cmd+R)
+    window.addEventListener('beforeunload', this.handleBeforeUnload);
+    
+    // Prevent back button navigation
+    history.pushState(null, '', location.href);
+    window.addEventListener('popstate', this.handlePopState);
+  }
+
+  // CHANGE: Added method to remove refresh prevention listeners on component destroy
+  private removeRefreshPrevention(): void {
+    window.removeEventListener('beforeunload', this.handleBeforeUnload);
+    window.removeEventListener('popstate', this.handlePopState);
+  }
+
+  // CHANGE: Handle beforeunload event to show warning on refresh
+  private handleBeforeUnload = (event: BeforeUnloadEvent): void => {
+    event.preventDefault();
+    event.returnValue = '';
+    return;
+  };
+
+  // CHANGE: Handle popstate event to prevent back button navigation
+  private handlePopState = (): void => {
+    history.pushState(null, '', location.href);
+  };
+
   private startTimer(): void {
     this.clearTimer();
 
     this.timerId = setInterval(() => {
-      if (this.remainingSeconds <= 0) {
-        this.remainingSeconds--;
-        this.cdr.detectChanges();
-        return;
-      }else {
+      this.remainingSeconds--;
+      this.cdr.detectChanges();
+
+      if (this.remainingSeconds < 0) {
         this.clearTimer();
-        this.cdr.detectChanges();
         // Redirect to feedback page when time is up
         this.router.navigate(['/feedback']);
       }

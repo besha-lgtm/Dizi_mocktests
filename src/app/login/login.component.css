@@ -407,11 +407,13 @@ label {
     font-size: 14px;
 }
 
-.social-icon-img {
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-    object-fit: contain;
+.social-btn-inline i {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
 }
 
 .google-btn-inline {

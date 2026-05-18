@@ -99,9 +99,9 @@ export class LoginComponent implements OnInit {
       keepSigned: this.user.keepSigned
     });
 
-    // Navigate to home page after successful login
+    // Navigate to exam home page after successful login
     setTimeout(() => {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/exam-home']);
       this.user = { email: '', password: '', keepSigned: false };
       this.formSuccess = '';
     }, 1500);

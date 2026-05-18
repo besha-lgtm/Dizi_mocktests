@@ -66,8 +66,8 @@
 }
 
 .title-en {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   margin: 0;
   line-height: 1.2;
 }
@@ -87,9 +87,10 @@
 }
 
 .org-institute {
-  font-size: 14px;
-  font-weight: 500;
-  opacity: 0.9;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  opacity: 1;
 }
 
 /* Right Actions */
@@ -337,25 +338,38 @@
 
 /* --- RESPONSIVENESS --- */
 @media (max-width: 900px) {
-  .center-section {
-    display: none; /* Hide the middle institute bar on tablets to preserve space */
+  .title-en {
+    font-size: 16px;
+  }
+  .org-institute {
+    font-size: 16px;
   }
 }
 
 @media (max-width: 768px) {
   .header-layout {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 12px;
   }
   
   .brand-section {
     width: 100%;
+    justify-content: center;
+  }
+
+  .center-section {
+    width: 100%;
+    text-align: center;
+  }
+
+  .org-institute {
+    font-size: 15px;
   }
   
   .actions-section {
     width: 100%;
-    justify-content: flex-end;
+    justify-content: center;
   }
   
   .modal-container {
