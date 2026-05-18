@@ -3279,7 +3279,7 @@ body {
     font-size: 13.5px;
     text-align: left;
     padding-left: 20px !important;
-    width: 40%;
+    /* width: 40%; */
 }
 
 .radio-cell {
