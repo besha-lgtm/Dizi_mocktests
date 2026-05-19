@@ -94,12 +94,12 @@ export class MockHomeComponent {
 
   navigateToMockTests(): void {
     // Navigate to mock tests page
-    this.router.navigate(['/mock-tests']);
+    this.router.navigate(['/login']);
   }
 
   navigateToDiziChallenge(): void {
     // Navigate to challenges page
-    this.router.navigate(['/challenges']);
+    this.router.navigate(['']);
   }
 
   takeMockTest(testId: number): void {

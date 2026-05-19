@@ -13,7 +13,7 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/mock-home', pathMatch: 'full' },
   { path: 'mock-home', component: MockHomeComponent },
   { path: 'exam-home', component: MainLayoutComponent },
   { path: 'instruction', component: Instruction },

@@ -1990,10 +1990,8 @@ body {
 
 .stat-card {
     display: flex;
-    flex-direction: column;
     align-items: center;
     gap: var(--spacing-sm);
-    padding: var(--spacing-md);
     border-radius: var(--radius-md);
     text-align: center;
 }
