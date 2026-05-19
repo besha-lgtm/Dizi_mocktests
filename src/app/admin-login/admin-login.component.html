@@ -1,0 +1,122 @@
+<div class="login-container">
+    <div class="form-card-wrapper">
+        <div class="login-header">
+            <h1>Admin Sign In</h1>
+            <p class="subtitle">Enter admin ID and password to access dashboard</p>
+        </div>
+
+        <!-- Display form-level messages -->
+        <div *ngIf="formError" class="form-error-message">
+            {{ formError }}
+        </div>
+
+        <div *ngIf="formSuccess" class="form-success-message">
+            {{ formSuccess }}
+        </div>
+
+        <!-- Admin Login Form -->
+        <form #adminLoginForm="ngForm" (ngSubmit)="onSubmit()" class="login-form">
+
+            <!-- Admin ID Field -->
+            <div class="form-group">
+                <label for="adminId">ADMIN ID</label>
+
+                <div class="input-group"
+                    [class.input-error]="adminId.invalid && (adminId.dirty || adminId.touched)">
+
+                    <input
+                        type="text"
+                        id="adminId"
+                        name="adminId"
+                        [(ngModel)]="admin.adminId"
+                        placeholder="Enter Admin ID"
+                        required
+                        minlength="4"
+                        #adminId="ngModel">
+                </div>
+
+                <span class="error-message"
+                    *ngIf="adminId.invalid && (adminId.dirty || adminId.touched)">
+
+                    <span *ngIf="adminId.errors?.['required']">
+                        Admin ID is required
+                    </span>
+
+                    <span *ngIf="adminId.errors?.['minlength']">
+                        Admin ID must be at least 4 characters
+                    </span>
+                </span>
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <label for="password">PASSWORD</label>
+
+                <div class="input-group"
+                    [class.input-error]="password.invalid && (password.dirty || password.touched)">
+
+                    <input
+                        [type]="showPassword ? 'text' : 'password'"
+                        id="password"
+                        name="password"
+                        [(ngModel)]="admin.password"
+                        placeholder="Enter Password"
+                        required
+                        minlength="8"
+                        #password="ngModel">
+
+                    <span class="toggle-password"
+                        (click)="togglePasswordVisibility()"
+                        role="button"
+                        tabindex="0">
+
+                        <i [class]="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+                    </span>
+                </div>
+
+                <span class="error-message"
+                    *ngIf="password.invalid && (password.dirty || password.touched)">
+
+                    <span *ngIf="password.errors?.['required']">
+                        Password is required
+                    </span>
+
+                    <span *ngIf="password.errors?.['minlength']">
+                        Password must be at least 8 characters
+                    </span>
+                </span>
+            </div>
+
+            <!-- Remember Checkbox -->
+            <div class="form-footer">
+                <div class="remember-checkbox">
+                    <input
+                        type="checkbox"
+                        id="keepSigned"
+                        name="keepSigned"
+                        [(ngModel)]="admin.keepSigned">
+
+                    <label for="keepSigned">
+                        Keep me signed in
+                    </label>
+                </div>
+
+                <a href="#forgot"
+                    class="forgot-link"
+                    (click)="goToForgotPassword($event)">
+                    Forgot password?
+                </a>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+                type="submit"
+                class="submit-btn"
+                [disabled]="adminLoginForm.invalid">
+
+                Admin Login →
+            </button>
+
+        </form>
+    </div>
+</div>

@@ -10,6 +10,9 @@ import { MockQuestion } from './pages/mock-question/mock-question.component';
 import { MockSubmit } from './pages/mock-submit/mock-submit.component';
 import { FeedbackComponent } from './pages/feedback/feedback.component';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
+
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -22,6 +25,8 @@ const routes: Routes = [
   { path: 'mock-question', component: MockQuestion },
   { path: 'mock-submit', component: MockSubmit },
   { path: 'feedback', component: FeedbackComponent },
+  { path: 'admin-login', component: AdminLoginComponent },
+  { path: 'admin-dashboard', component: AdminDashboardComponent },
 ];
 
 @NgModule({

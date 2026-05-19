@@ -1,0 +1,326 @@
+<div class="mock-page-wrapper">
+
+    <!-- HERO SECTION -->
+    <section class="mock-hero">
+
+        <div class="mock-hero-content">
+
+            <div class="mock-badge">
+                🛠 Admin Panel — Manage Question Banks
+            </div>
+
+            <h1>
+                Manage <span class="mock-highlight-cyan">Mock Test </span>
+                <span class="mock-highlight-cyan">Question Uploads</span>
+            </h1>
+
+            <p>
+                Upload questions manually like Google Forms or bulk upload
+                using Excel files for Maths, Physics, and Chemistry sections.
+            </p>
+
+            <div class="mock-btn-group">
+
+                <button class="mock-btn-primary"
+                    (click)="selectSubject('maths')">
+                    Maths
+                </button>
+
+                <button class="mock-btn-primary"
+                    (click)="selectSubject('physics')">
+                    Physics
+                </button>
+
+                <button class="mock-btn-primary"
+                    (click)="selectSubject('chemistry')">
+                    Chemistry
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- SUBJECT FORM SECTION -->
+    <section class="mock-metrics" *ngIf="selectedSubject">
+
+        <div class="admin-form-container">
+
+            <h2 class="subject-title">
+                {{ selectedSubject | titlecase }} Question Upload
+            </h2>
+
+            <!-- TABS -->
+            <div class="tab-buttons">
+
+                <button
+                    [class.active-tab]="activeTab === 'manual'"
+                    (click)="activeTab = 'manual'">
+
+                    Upload Question
+                </button>
+
+                <button
+                    [class.active-tab]="activeTab === 'bulk'"
+                    (click)="activeTab = 'bulk'">
+
+                    Bulk Excel Upload
+                </button>
+
+            </div>
+
+            <!-- MANUAL QUESTION FORM -->
+           <form
+    *ngIf="activeTab === 'manual'"
+    class="manual-form"
+    #questionForm="ngForm"
+    (ngSubmit)="submitQuestions(questionForm)">
+
+    <div
+        class="question-card"
+        *ngFor="let q of questions; let i = index">
+
+        <div class="question-header">
+
+            <h3>Question {{ i + 1 }}</h3>
+
+            <button
+                *ngIf="questions.length > 1"
+                class="delete-btn"
+                (click)="removeQuestion(i)">
+
+                Remove
+            </button>
+
+        </div>
+
+        <!-- QUESTION -->
+        <div class="form-group">
+
+            <label>Question</label>
+
+            <textarea
+        [(ngModel)]="q.questionText"
+        #questionText="ngModel"
+        name="questionText{{i}}"
+        required
+        [class.field-error]="questionText.invalid && questionText.touched"
+        placeholder="Enter Question">
+    </textarea>
+     <div class="validation-error"
+        *ngIf="questionText.invalid && questionText.touched">
+
+        Question is required
+
+    </div>
+
+        </div>
+
+        <!-- OPTION A -->
+        <div class="form-group">
+
+            <label>Option A</label>
+
+            <input
+    type="text"
+    [(ngModel)]="q.optionA"
+    #optionA="ngModel"
+    name="optionA{{i}}"
+    required
+    [class.field-error]="optionA.invalid && optionA.touched">
+
+<div class="validation-error"
+    *ngIf="optionA.invalid && optionA.touched">
+
+    Option A is required
+
+</div>
+
+        </div>
+
+        <!-- OPTION B -->
+        <div class="form-group">
+
+            <label>Option B</label>
+
+            <input
+    type="text"
+    [(ngModel)]="q.optionB"
+    #optionB="ngModel"
+    name="optionB{{i}}"
+    required
+    [class.field-error]="optionB.invalid && optionB.touched">
+
+<div class="validation-error"
+    *ngIf="optionB.invalid && optionB.touched">
+
+    Option B is required
+
+</div>
+
+        </div>
+
+        <!-- OPTION C -->
+        <div class="form-group">
+
+            <label>Option C</label>
+
+            <input
+    type="text"
+    [(ngModel)]="q.optionC"
+    #optionC="ngModel"
+    name="optionC{{i}}"
+    required
+    [class.field-error]="optionC.invalid && optionC.touched">
+
+<div class="validation-error"
+    *ngIf="optionC.invalid && optionC.touched">
+
+    Option C is required
+
+</div>
+
+        </div>
+
+        <!-- OPTION D -->
+        <div class="form-group">
+
+            <label>Option D</label>
+
+            <input
+    type="text"
+    [(ngModel)]="q.optionD"
+    #optionD="ngModel"
+    name="optionD{{i}}"
+    required
+    [class.field-error]="optionD.invalid && optionD.touched">
+
+<div class="validation-error"
+    *ngIf="optionD.invalid && optionD.touched">
+
+    Option D is required
+
+</div>
+
+        </div>
+
+        <!-- CORRECT ANSWER -->
+        <div class="form-group">
+
+            <label>Correct Answer</label>
+
+            <select
+    [(ngModel)]="q.correctAnswer"
+    #correctAnswer="ngModel"
+    name="correctAnswer{{i}}"
+    required
+    [class.field-error]="correctAnswer.invalid && correctAnswer.touched">
+
+    <option value="">Select</option>
+    <option value="A">Option A</option>
+    <option value="B">Option B</option>
+    <option value="C">Option C</option>
+    <option value="D">Option D</option>
+
+</select>
+
+<div class="validation-error"
+    *ngIf="correctAnswer.invalid && correctAnswer.touched">
+
+    Correct answer is required
+
+</div>
+
+        </div>
+
+    </div>
+
+    <!-- ADD QUESTION BUTTON -->
+
+    <button
+         type="button"
+    class="add-question-btn"
+    (click)="addQuestion()">
+
+        + Add Question
+
+    </button>
+
+    <!-- SUBMIT -->
+
+    <button
+    type="submit"
+    class="mock-btn-primary">
+
+    Upload All Questions
+
+</button>
+
+</form>
+
+            <!-- BULK UPLOAD -->
+            <div *ngIf="activeTab === 'bulk'" class="bulk-upload">
+
+    <h3>Upload Excel File</h3>
+
+    <p>
+        Excel should contain:
+        Question | OptionA | OptionB | OptionC | OptionD | CorrectAnswer
+    </p>
+
+    <!-- CUSTOM FILE UPLOAD -->
+    <label class="custom-upload-box">
+
+        <input
+            type="file"
+            accept=".xlsx,.xls"
+            (change)="onFileSelected($event)"
+            hidden>
+
+        <div class="upload-content">
+
+            <div class="upload-icon">
+                📁
+            </div>
+
+            <h4>Choose Excel File</h4>
+
+            <span>
+                Drag & Drop or Click to Upload
+            </span>
+
+        </div>
+
+    </label>
+
+    <!-- FILE NAME -->
+    <div class="selected-file" *ngIf="selectedFileName">
+
+        Selected File:
+        <span>{{ selectedFileName }}</span>
+
+    </div>
+    <div
+    class="upload-success-message"
+    *ngIf="excelUploadSuccess">
+
+    {{ excelUploadSuccess }}
+
+</div>
+
+   <button
+    class="mock-btn-primary upload-btn"
+    (click)="uploadExcelFile()">
+
+    Upload Excel
+
+</button>
+
+</div>
+
+        </div>
+
+    </section>
+
+</div>

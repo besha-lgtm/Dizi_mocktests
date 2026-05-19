@@ -99,7 +99,7 @@ export class MockHomeComponent {
 
   navigateToDiziChallenge(): void {
     // Navigate to challenges page
-    this.router.navigate(['']);
+    this.router.navigate(['/admin-login']);
   }
 
   takeMockTest(testId: number): void {

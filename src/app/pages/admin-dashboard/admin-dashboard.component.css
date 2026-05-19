@@ -1,0 +1,893 @@
+/* Mock Home Component Styles */
+
+/* ===== ROOT STYLES ===== */
+.mock-page-wrapper {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding-top: 70px;
+    padding-bottom: 60px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* ===== HERO SECTION ===== */
+.mock-hero {
+    background: linear-gradient(135deg, #1e3a5f 0%, #162d4f 100%);
+    width: 100%;
+    margin: 0 auto 3rem;
+    padding: 4rem 2rem;
+    display: grid;
+    /* grid-template-columns: 1fr 1fr; */
+    gap: 3rem;
+    align-items: start;
+    border-radius: 24px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.mock-hero-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.mock-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(14, 165, 233, 0.15);
+    border: 1.5px solid rgba(14, 165, 233, 0.4);
+    color: #0ea5e9;
+    padding: 10px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    width: fit-content;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.1);
+}
+
+.mock-hero h1 {
+    font-family: 'Bricolage Grotesque', 'DM Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    margin-top: 0;
+}
+
+.mock-hero p {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1.7;
+    color: #cbd5e1;
+    margin-bottom: 2.5rem;
+}
+
+.mock-highlight-cyan {
+    color: #0ea5e9;
+    font-weight: 700;
+}
+
+/* ===== BUTTONS ===== */
+.mock-btn-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.mock-btn-primary {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #0ea5e9;
+    color: #ffffff;
+    border: none;
+    padding: 15px 36px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+    letter-spacing: 0.3px;
+}
+
+.mock-btn-primary:hover {
+    background: #0284c7;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
+}
+
+.mock-btn-primary:active {
+    transform: translateY(-1px);
+}
+
+.mock-btn-secondary {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid rgba(226, 232, 240, 0.5);
+    padding: 13px 34px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+}
+
+.mock-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+    transform: translateY(-3px);
+}
+
+.mock-btn-secondary:active {
+    transform: translateY(-1px);
+}
+
+/* ===== STATS GRID ===== */
+.mock-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.mock-stat-card {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 1.75rem;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.mock-stat-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-4px);
+    border-color: rgba(14, 165, 233, 0.4);
+}
+
+.mock-stat-number {
+    font-family: 'Bricolage Grotesque', 'DM Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 2.75rem;
+    font-weight: 900;
+    color: #0ea5e9;
+    line-height: 1;
+    margin-bottom: 0.75rem;
+}
+
+.mock-stat-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+}
+
+/* ===== METRICS SECTION ===== */
+.mock-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    margin: 4rem 0;
+    /* padding: 3rem 2rem; */
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(14, 165, 233, 0.03) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(14, 165, 233, 0.15);
+}
+
+.mock-metric-card {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(14, 165, 233, 0.25);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.mock-metric-card:hover {
+    background: rgba(14, 165, 233, 0.12);
+    transform: translateY(-6px);
+    border-color: rgba(14, 165, 233, 0.6);
+    box-shadow: 0 8px 32px rgba(14, 165, 233, 0.2);
+}
+
+.mock-metric-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.mock-metric-value {
+    font-family: 'Bricolage Grotesque', 'DM Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #0ea5e9;
+    margin-bottom: 0.5rem;
+}
+
+.mock-metric-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1rem;
+    color: #cbd5e1;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+/* ===== CTA SECTION ===== */
+.mock-cta {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+    border-radius: 24px;
+    padding: 5rem 2rem;
+    margin: 4rem 0 2rem 0;
+    text-align: center;
+    box-shadow: 0 15px 50px rgba(14, 165, 233, 0.3);
+}
+
+.mock-cta-content h2 {
+    font-family: 'Bricolage Grotesque', 'DM Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    margin-top: 0;
+    letter-spacing: -0.02em;
+}
+
+.mock-cta-content p {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.98);
+    margin-bottom: 2.5rem;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+    font-weight: 400;
+}
+
+.mock-cta-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #ffffff;
+    color: #0ea5e9;
+    border: none;
+    padding: 15px 45px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    letter-spacing: 0.3px;
+}
+
+.mock-cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    background: #f1f5f9;
+}
+
+.mock-cta-btn:active {
+    transform: translateY(-1px);
+}
+
+/* ===== RESPONSIVE DESIGN - TABLET (1024px and below) ===== */
+@media (max-width: 1024px) {
+    .mock-page-wrapper {
+        padding-top: 60px;
+        padding-bottom: 50px;
+    }
+
+    .mock-hero {
+        grid-template-columns: 1fr;
+        padding: 3rem 1.5rem;
+        margin: 0 auto 2.5rem;
+        gap: 2rem;
+    }
+
+    .mock-hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .mock-hero p {
+        font-size: 1rem;
+    }
+
+    .mock-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+}
+
+/* ===== RESPONSIVE DESIGN - TABLET (768px and below) ===== */
+@media (max-width: 768px) {
+    .mock-page-wrapper {
+        padding-top: 50px;
+        padding-bottom: 40px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .mock-hero {
+        padding: 2.5rem 1.5rem;
+        margin: 0 auto 2rem;
+        border-radius: 16px;
+    }
+
+    .mock-hero-content {
+        max-width: 100%;
+    }
+
+    .mock-hero h1 {
+        font-size: 2rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .mock-hero p {
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+    }
+
+    .mock-badge {
+        font-size: 0.8rem;
+        padding: 8px 16px;
+        margin-bottom: 1.5rem;
+    }
+
+    .mock-btn-group {
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .mock-btn-primary,
+    .mock-btn-secondary {
+        width: 100%;
+        padding: 13px 28px;
+    }
+
+    .mock-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-top: 2rem;
+        max-width: 100%;
+    }
+
+    .mock-stat-card {
+        padding: 1.5rem;
+    }
+
+    .mock-stat-number {
+        font-size: 2rem;
+    }
+
+    .mock-stat-label {
+        font-size: 0.85rem;
+    }
+
+    .mock-metrics {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        padding: 2rem 1.5rem;
+        margin: 3rem 0;
+    }
+
+    .mock-metric-card {
+        padding: 2rem 1.25rem;
+    }
+
+    .mock-metric-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .mock-metric-value {
+        font-size: 2rem;
+    }
+
+    .mock-metric-label {
+        font-size: 0.9rem;
+    }
+
+    .mock-cta {
+        padding: 3.5rem 1.5rem;
+        margin: 3rem 0 1rem 0;
+        border-radius: 16px;
+    }
+
+    .mock-cta-content h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .mock-cta-content p {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .mock-cta-btn {
+        padding: 13px 35px;
+    }
+}
+
+/* ===== RESPONSIVE DESIGN - MOBILE (480px and below) ===== */
+@media (max-width: 480px) {
+    .mock-page-wrapper {
+        padding-top: 40px;
+        padding-bottom: 30px;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .mock-hero {
+        padding: 2rem 1rem;
+        margin: 0 auto 1.5rem;
+        border-radius: 12px;
+    }
+
+    .mock-hero h1 {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+        line-height: 1.25;
+    }
+
+    .mock-hero p {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .mock-badge {
+        font-size: 0.75rem;
+        padding: 6px 14px;
+        margin-bottom: 1.25rem;
+    }
+
+    .mock-btn-group {
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+    }
+
+    .mock-btn-primary,
+    .mock-btn-secondary {
+        padding: 12px 24px;
+        font-size: 0.9rem;
+    }
+
+    .mock-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .mock-stat-card {
+        padding: 1.25rem;
+    }
+
+    .mock-stat-number {
+        font-size: 1.75rem;
+    }
+
+    .mock-stat-label {
+        font-size: 0.8rem;
+    }
+
+    .mock-metrics {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        padding: 1.5rem 1rem;
+        margin: 2rem 0;
+    }
+
+    .mock-metric-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .mock-metric-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .mock-metric-value {
+        font-size: 1.5rem;
+    }
+
+    .mock-metric-label {
+        font-size: 0.85rem;
+    }
+
+    .mock-cta {
+        padding: 2.5rem 1rem;
+        margin: 2rem 0 1rem 0;
+        border-radius: 12px;
+    }
+
+    .mock-cta-content h2 {
+        font-size: 1.4rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .mock-cta-content p {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .mock-cta-btn {
+        padding: 11px 28px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ===== RESPONSIVE DESIGN - SMALL MOBILE (360px and below) ===== */
+@media (max-width: 360px) {
+    .mock-hero h1 {
+        font-size: 1.4rem;
+    }
+
+    .mock-hero p {
+        font-size: 0.85rem;
+    }
+
+    .mock-btn-primary,
+    .mock-btn-secondary {
+        font-size: 0.85rem;
+        padding: 10px 20px;
+    }
+
+    .mock-stat-number {
+        font-size: 1.5rem;
+    }
+
+    .mock-metric-value {
+        font-size: 1.3rem;
+    }
+
+    .mock-cta-content h2 {
+        font-size: 1.2rem;
+    }
+
+    .mock-cta-btn {
+        padding: 10px 24px;
+        font-size: 0.85rem;
+    }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+    .mock-hero,
+    .mock-stat-card,
+    .mock-metric-card,
+    .mock-btn-primary,
+    .mock-btn-secondary,
+    .mock-cta,
+    .mock-cta-btn {
+        transition: none;
+    }
+
+    .mock-btn-primary:hover,
+    .mock-btn-secondary:hover,
+    .mock-stat-card:hover,
+    .mock-metric-card:hover,
+    .mock-cta-btn:hover {
+        transform: none;
+    }
+}
+
+/* ===== HIGH CONTRAST MODE ===== */
+@media (prefers-contrast: more) {
+    .mock-hero {
+        border: 2px solid rgba(14, 165, 233, 0.5);
+    }
+
+    .mock-btn-primary,
+    .mock-btn-secondary {
+        border-width: 2px;
+    }
+
+    .mock-stat-card {
+        border-width: 2px;
+    }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+    .mock-btn-primary,
+    .mock-btn-secondary,
+    .mock-cta-btn {
+        border: 1px solid #000;
+    }
+
+    .mock-hero {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+
+    .mock-cta {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+
+    .mock-metric-card {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+}
+
+/* ===== ADMIN DASHBOARD STYLES ===== */
+
+.admin-form-container {
+    width: 100%;
+    padding: 2rem;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #0f3164 0%, #1e3a5f 100%);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(14, 165, 233, 0.2);
+}
+
+
+.subject-title {
+    font-size: 2.3rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 2rem;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 0.5px;
+}
+.tab-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.tab-buttons button {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
+    color: #cbd5e1;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.tab-buttons button:hover {
+    background: rgba(14, 165, 233, 0.15);
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.active-tab {
+    background: #2797cb !important;
+    color: #ffffff !important;
+    box-shadow: 0 5px 20px rgba(14, 165, 233, 0.35);
+}
+
+.manual-form,
+.bulk-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: 0.3px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 15px 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(14, 165, 233, 0.25);
+    background: rgba(255,255,255,0.06);
+    color: #e8dada;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    box-sizing: border-box;
+}
+.form-group select option {
+    background: #1e3a5f;
+    color: #ffffff;
+    padding: 10px;
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #94a3b8;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #0ea5e9;
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+}
+.form-group textarea {
+    min-height: 140px;
+    resize: vertical;
+    line-height: 1.6;
+}
+.form-group select {
+    cursor: pointer;
+}
+
+
+.bulk-upload h3 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.bulk-upload p {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+input[type="file"] {
+    color: #ffffff;
+    background: rgba(255,255,255,0.05);
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px dashed rgba(14, 165, 233, 0.4);
+}
+.question-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(14,165,233,0.2);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.question-header h3 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.delete-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.add-question-btn {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 14px;
+    border: 2px dashed #0ea5e9;
+    background: transparent;
+    color: #0ea5e9;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.add-question-btn:hover {
+    background: rgba(14,165,233,0.1);
+}
+.field-error {
+    border: 1.5px solid #ef4444 !important;
+    background: rgba(239, 68, 68, 0.08) !important;
+}
+
+.validation-error {
+    color: #ff5c5c;
+    font-size: 0.85rem;
+    margin-top: 6px;
+    font-weight: 500;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+/*file css  */
+.custom-upload-box {
+    width: 100%;
+    height: 70%;
+    border: 2px dashed rgba(14,165,233,0.45);
+    border-radius: 22px;
+    background: rgba(255,255,255,0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+    overflow: hidden;
+}
+
+.custom-upload-box:hover {
+    border-color: #0ea5e9;
+    background: rgba(14,165,233,0.08);
+    transform: translateY(-2px);
+}
+
+.upload-content {
+    text-align: center;
+    padding: 2rem;
+}
+
+.upload-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.upload-content h4 {
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.upload-content span {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.selected-file {
+    margin-top: 1rem;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.selected-file span {
+    color: #0ea5e9;
+}
+.upload-success-message {
+    margin-top: 1rem;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    color: #4ade80;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    animation: fadeIn 0.3s ease;
+}
