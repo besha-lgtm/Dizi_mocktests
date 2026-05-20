@@ -54,6 +54,8 @@ body {
     /* overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch; */
+    position: relative;
+    top:70px;
 }
 
 /* ===== TITLE ===== */
@@ -130,7 +132,7 @@ body {
 }
 
 .card-profile-divider {
-    background-color: rgba(177, 174, 174, 0.7);
+    background-color: rgba(238, 234, 234, 0.7);
     border: 1px solid rgba(226, 232, 240, 0.3);
     padding: 1.5rem;
     display: flex;
@@ -1554,6 +1556,10 @@ body {
     overflow-x: auto;
     padding-bottom: var(--spacing-sm);
     max-width: 100%;
+    position: fixed;
+    top:113px;
+
+
 }
 
 .tabs-wrapper::-webkit-scrollbar {
@@ -1621,7 +1627,7 @@ body {
 .content-wrapper {
     display: grid;
     grid-template-columns: 1fr 320px;
-    gap: var(--spacing-lg);
+    gap: 30px;
     padding: var(--spacing-lg);
     flex: 1;
     max-width: 1600px;
@@ -2304,7 +2310,7 @@ body {
 }
 
 .content-wrapper {
-    height: calc(100vh - 92px);
+    height: 10px;
     overflow: hidden;
     align-items: stretch;
 }
@@ -2799,6 +2805,7 @@ body {
     justify-content: center;
     background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
     padding: 2rem;
+    
 }
 
 /* ===== SUBMIT CONTAINER ===== */

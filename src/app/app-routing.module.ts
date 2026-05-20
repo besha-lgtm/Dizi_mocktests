@@ -12,6 +12,7 @@ import { FeedbackComponent } from './pages/feedback/feedback.component';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
+import { SubjectUploadComponent } from './pages/subject-upload/subject-upload.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'feedback', component: FeedbackComponent },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'admin-dashboard', component: AdminDashboardComponent },
+  {path: 'subject-upload/:subject', component: SubjectUploadComponent},
 ];
 
 @NgModule({

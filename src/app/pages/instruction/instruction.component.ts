@@ -34,7 +34,7 @@ export class Instruction {
   selectedLanguage = 'english';
 
   // Profile data
-  profileName = 'Name';
+  profileName = 'John Smith';
   
   // Button/Label text
   readyButtonLabel = 'I am ready to begin';

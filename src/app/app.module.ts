@@ -16,6 +16,7 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 import { FeedbackComponent } from './pages/feedback/feedback.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
+import { SubjectUploadComponent } from './pages/subject-upload/subject-upload.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +32,7 @@ import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard
     FeedbackComponent,
     AdminLoginComponent,
     AdminDashboardComponent,
+    SubjectUploadComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [provideBrowserGlobalErrorListeners()],
