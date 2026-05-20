@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-subject-upload',
@@ -164,4 +165,42 @@ export class SubjectUploadComponent implements OnInit {
   }
 
 }
+
+// DOWNLOAD EXCEL TEMPLATE
+downloadExcelTemplate(): void {
+  // Create template data
+  const templateData = [
+    ['Question', 'OptionA', 'OptionB', 'OptionC', 'OptionD', 'CorrectAnswer'],
+    ['Sample Question 1?', 'Option A', 'Option B', 'Option C', 'Option D', 'A'],
+    ['Sample Question 2?', 'Option A', 'Option B', 'Option C', 'Option D', 'B'],
+    ['Sample Question 3?', 'Option A', 'Option B', 'Option C', 'Option D', 'C'],
+  ];
+
+  // Create a new workbook
+  const workbook = XLSX.utils.book_new();
+
+  // Create worksheet from data
+  const worksheet = XLSX.utils.aoa_to_sheet(templateData);
+
+  // Set column widths
+  const columnWidths = [
+    { wch: 30 },  // Question column
+    { wch: 20 },  // OptionA column
+    { wch: 20 },  // OptionB column
+    { wch: 20 },  // OptionC column
+    { wch: 20 },  // OptionD column
+    { wch: 15 }   // CorrectAnswer column
+  ];
+  worksheet['!cols'] = columnWidths;
+
+  // Add worksheet to workbook
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Questions');
+
+  // Generate XLSX file name with subject
+  const fileName = `excel_template_${this.subject}_questions.xlsx`;
+
+  // Write the file
+  XLSX.writeFile(workbook, fileName);
+}
+
 }

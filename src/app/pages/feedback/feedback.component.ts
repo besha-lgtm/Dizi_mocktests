@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-feedback',
@@ -25,13 +27,18 @@ export class FeedbackComponent {
 
   // Store selections: question index -> selected option
   selections: { [key: number]: string } = {};
+  showPopup = false;
+
+  constructor(private router: Router) {}
 
   get allQuestionsAnswered(): boolean {
     return Object.keys(this.selections).length === this.questions.length;
   }
 
   onSubmit() {
-    console.log('Feedback submitted:', this.selections);
-    alert('Thank you for your feedback! The exam is now complete.');
+    this.showPopup = true;
+    setTimeout(() => {
+      this.router.navigate(['/mock-home']);
+    }, 5000);
   }
 }

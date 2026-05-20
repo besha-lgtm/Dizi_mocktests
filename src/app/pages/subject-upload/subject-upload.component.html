@@ -1,3 +1,4 @@
+<app-header1></app-header1>
 <div class="mock-page-wrapper">
     <!-- SUBJECT FORM SECTION -->
     <section class="mock-metrics">
@@ -257,7 +258,16 @@
             <!-- BULK UPLOAD -->
             <div *ngIf="activeTab === 'bulk'" class="bulk-upload">
 
-    <h3>Upload Excel File</h3>
+    <div class="bulk-upload-header">
+        <h3>Upload Excel File</h3>
+        <button 
+            class="download-template-btn" 
+            (click)="downloadExcelTemplate()"
+            type="button"
+            title="Download Excel Template">
+            <i class="fas fa-download"></i>
+        </button>
+    </div>
 
     <p>
         Excel should contain:
