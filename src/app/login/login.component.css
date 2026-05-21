@@ -28,8 +28,10 @@ body {
     align-items: center;
     padding: 40px 20px;
     position: relative;
+    padding-top: 110px;
     overflow: hidden;
     min-height: 100vh;
+    z-index: -1;
 }
 
 .login-container::before {

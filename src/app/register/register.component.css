@@ -29,6 +29,8 @@ body {
     padding: 40px 20px;
     position: relative;
     overflow-y: auto;
+    z-index: -1;
+    padding-top: 110px;
 }
 
 .register-container::before {
