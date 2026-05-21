@@ -567,3 +567,52 @@ label {
         font-size: 9px;
     }
 }
+/* LOGIN CONTAINER */
+.login-container {
+    position: relative;
+}
+
+/* TOP ACTION BAR */
+.top-action-bar {
+    width: 100%;
+
+    display: flex;
+    justify-content: flex-end;
+
+    margin-bottom: 14px;
+
+    padding: 0 10px;
+}
+
+/* BACK BUTTON */
+.back-btn-top {
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 20px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #0d47a1;
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+/* HOVER */
+.back-btn-top:hover {
+
+    background: #1565c0;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 18px rgba(13, 71, 161, 0.25);
+}

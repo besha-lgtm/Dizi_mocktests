@@ -131,7 +131,26 @@ export class MockListComponent implements OnInit {
 
   /** Swap in the correct question bank and topic list for the active subject */
   private loadSubjectData(): void {
-    this.allQuestions = (this.questionBank[this.subject] ?? []).slice(); // copy so deletes stay isolated
+    // this.allQuestions = (this.questionBank[this.subject] ?? []).slice(); // copy so deletes stay isolated
+    /* DEFAULT QUESTIONS */
+this.allQuestions =
+  (this.questionBank[this.subject] ?? []).slice();
+
+/* LOCAL STORAGE QUESTIONS */
+const storedQuestions = JSON.parse(
+  localStorage.getItem('questions') || '[]'
+);
+
+/* FILTER SUBJECT QUESTIONS */
+const subjectQuestions = storedQuestions.filter(
+  (q: any) => q.subject === this.subject
+);
+
+/* MERGE BOTH */
+this.allQuestions = [
+  ...subjectQuestions,
+  ...this.allQuestions
+];
     this.topics = this.topicMap[this.subject] ?? ['All Topics'];
 
     // Reset filters on every subject switch
@@ -252,9 +271,18 @@ export class MockListComponent implements OnInit {
   }
 
   // Placeholder - will be redirected later
-  editQuestion(id: string): void {
-    // TODO: redirect to another component
-  }
+  editQuestion(question: any): void {
+
+  this.router.navigate(
+    ['/subject-upload', this.subject],
+    {
+      state: {
+        editData: question
+      }
+    }
+  );
+
+}
 
   goBackToSubjects(): void {
     this.router.navigate(['/admin-dashboard']);

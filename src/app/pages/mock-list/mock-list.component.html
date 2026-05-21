@@ -170,7 +170,7 @@
             <td class="ml-td ml-td--actions">
               <!-- Edit placeholder — redirected later -->
               <button class="ml-action-btn ml-action-btn--edit"
-                      (click)="editQuestion(q.id); $event.stopPropagation()">
+                      (click)="editQuestion(q); $event.stopPropagation()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
                      fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -216,7 +216,7 @@
         </div>
         <div class="ml-qcard-actions">
           <button class="ml-action-btn ml-action-btn--edit"
-                  (click)="editQuestion(q.id); $event.stopPropagation()">
+                  (click)="editQuestion(q); $event.stopPropagation()">
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
                  fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>

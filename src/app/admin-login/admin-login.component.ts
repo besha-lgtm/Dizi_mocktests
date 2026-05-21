@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { Location } from '@angular/common';
 interface Admin {
   adminId: string;
   password: string;
@@ -26,7 +26,10 @@ export class AdminLoginComponent {
   formError: string = '';
   formSuccess: string = '';
 
-  constructor(private router: Router) {}
+  constructor(
+  private router: Router,
+  private location: Location
+) {}
 
   // Toggle Password Visibility
   togglePasswordVisibility(): void {
@@ -99,6 +102,11 @@ onSubmit(): void {
     this.formSuccess = '';
 
   }, 1000);
+
+}
+goBack(): void {
+
+  this.location.back();
 
 }
 }

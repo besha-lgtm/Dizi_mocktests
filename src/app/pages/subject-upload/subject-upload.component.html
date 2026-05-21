@@ -1,9 +1,43 @@
 <app-header1></app-header1>
+
+
+    
 <div class="mock-page-wrapper">
+    
     <!-- SUBJECT FORM SECTION -->
     <section class="mock-metrics">
-
+        
+        
+        
         <div class="admin-form-container">
+            <div class="top-back-wrapper">
+
+    <button
+        class="ml-back-btn"
+        (click)="goBackToSubjects()">
+
+        <svg
+            class="ml-back-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2.5">
+
+            <polyline points="15 18 9 12 15 6"/>
+
+        </svg>
+
+        Back to Subjects
+
+    </button>
+
+</div>
+     
+           
+
 
             <h2 class="subject-title">
 
@@ -80,7 +114,29 @@
     </div>
 
 </div>
+<!-- TOPIC -->
+<div class="form-group">
 
+    <label>Topic</label>
+
+    <input
+        type="text"
+        [(ngModel)]="q.topic"
+        #topic="ngModel"
+        name="topic{{i}}"
+        required
+        placeholder="Enter Topic Name"
+        [class.field-error]="topic.invalid && topic.touched">
+
+    <div
+        class="validation-error"
+        *ngIf="topic.invalid && topic.touched">
+
+        Topic is required
+
+    </div>
+
+</div>
 <!-- QUESTION IMAGE -->
 <div class="form-group">
 
@@ -249,7 +305,7 @@
     type="submit"
     class="mock-btn-primary">
 
-    Submit Question
+    {{ isEditMode ? 'Update Question' : 'Submit Question' }}
 
 </button>
 
@@ -265,14 +321,16 @@
             (click)="downloadExcelTemplate()"
             type="button"
             title="Download Excel Template">
-            <i class="fas fa-download"></i>
+            <i class="fas fa-download"> </i>
+            <span>Download Template</span>
         </button>
+        
     </div>
 
-    <p>
+    <!-- <p>
         Excel should contain:
         Question | OptionA | OptionB | OptionC | OptionD | CorrectAnswer
-    </p>
+    </p> -->
 
     <!-- CUSTOM FILE UPLOAD -->
     <label class="custom-upload-box">

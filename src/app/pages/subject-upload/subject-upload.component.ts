@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import * as XLSX from 'xlsx';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-subject-upload',
@@ -22,9 +24,11 @@ export class SubjectUploadComponent implements OnInit {
   excelUploadError: string = '';
 
   activeTab: string = 'manual';
+  isEditMode: boolean = false;
 
   questions: any[] = [
     {
+      topic: '',
       questionText: '',
       questionImage: '',
       optionA: '',
@@ -36,8 +40,10 @@ export class SubjectUploadComponent implements OnInit {
   ];
 
   constructor(
-    private route: ActivatedRoute
-  ) {}
+  private route: ActivatedRoute,
+  private router: Router,
+  private location: Location
+) {}
 
   ngOnInit(): void {
 
@@ -46,6 +52,35 @@ export class SubjectUploadComponent implements OnInit {
       this.subject = params['subject'];
 
     });
+    const editData = history.state.editData;
+
+  if (editData) {
+
+    this.isEditMode = true;
+
+    this.questions = [
+
+      {
+        topic: editData.topic || '',
+
+        questionText: editData.questionText || '',
+
+        questionImage: editData.questionImage || '',
+
+        optionA: editData.optionA || '',
+
+        optionB: editData.optionB || '',
+
+        optionC: editData.optionC || '',
+
+        optionD: editData.optionD || '',
+
+        correctAnswer: editData.correctAnswer || ''
+      }
+
+    ];
+
+  }
 
   }
 
@@ -70,38 +105,88 @@ export class SubjectUploadComponent implements OnInit {
 
   submitQuestions(form: NgForm): void {
 
-    if (form.invalid) {
+  if (form.invalid) {
 
-      Object.keys(form.controls).forEach(key => {
-        form.controls[key].markAsTouched();
-      });
+    Object.keys(form.controls).forEach(key => {
 
-      return;
-    }
+      form.controls[key].markAsTouched();
 
-    console.log(
-      this.subject + ' Questions',
-      this.questions
-    );
+    });
 
-    alert(
-      this.subject + ' Questions Uploaded Successfully'
-    );
+    return;
+  }
 
-    this.questions = [
-      {
-        questionText: '',
-        optionA: '',
-        optionB: '',
-        optionC: '',
-        optionD: '',
-        correctAnswer: ''
+  // GET EXISTING QUESTIONS
+  let savedQuestions = JSON.parse(
+    localStorage.getItem('questions') || '[]'
+  );
+
+  if (this.isEditMode) {
+
+    // UPDATE EXISTING QUESTION
+    savedQuestions = savedQuestions.map((q: any) => {
+
+      if (q.id === history.state.editData.id) {
+
+        return {
+          ...q,
+          ...this.questions[0]
+        };
+
       }
-    ];
 
-    form.resetForm();
+      return q;
+
+    });
+
+    alert('Question Updated Successfully');
+
+  } else {
+
+    // ADD NEW QUESTION
+    const newQuestion = {
+
+      id: Date.now(),
+
+      subject: this.subject,
+
+      ...this.questions[0]
+
+    };
+
+    savedQuestions.push(newQuestion);
+
+    alert('Question Added Successfully');
 
   }
+
+  // SAVE TO LOCAL STORAGE
+  localStorage.setItem(
+    'questions',
+    JSON.stringify(savedQuestions)
+  );
+
+  console.log(savedQuestions);
+
+  // RESET FORM
+  this.questions = [
+    {
+      topic: '',
+      questionText: '',
+      questionImage: '',
+      optionA: '',
+      optionB: '',
+      optionC: '',
+      optionD: '',
+      correctAnswer: ''
+    }
+  ];
+
+  form.resetForm();
+
+  // GO BACK TO TABLE
+  this.location.back();
+}
 
   onFileSelected(event: any): void {
 
@@ -201,6 +286,14 @@ downloadExcelTemplate(): void {
 
   // Write the file
   XLSX.writeFile(workbook, fileName);
+}
+ goBackToSubjects(): void {
+
+    this.router.navigate([
+        '/mock-list',
+        this.subject.toLowerCase()
+    ]);
+
 }
 
 }
