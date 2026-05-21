@@ -101,7 +101,7 @@ export class LoginComponent implements OnInit {
 
     // Navigate to exam home page after successful login
     setTimeout(() => {
-      this.router.navigate(['/exam-home']);
+      this.router.navigate(['/select-mocktest']);
       this.user = { email: '', password: '', keepSigned: false };
       this.formSuccess = '';
     }, 1500);
