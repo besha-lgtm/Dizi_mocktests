@@ -1,0 +1,89 @@
+<div
+  class="admin-sidebar"
+  [class.collapsed]="isCollapsed">
+
+  <!-- TOP -->
+  <div>
+
+    <!-- HEADER -->
+    <div class="sidebar-top">
+
+      <!-- BRAND BLOCK -->
+      <div class="sidebar-brand">
+
+        <!-- COLLAPSE BUTTON AS ICON -->
+        <button
+          class="collapse-btn"
+          (click)="toggleSidebar()">
+
+          <i
+            class="fa-solid"
+            [ngClass]="isCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'">
+          </i>
+
+        </button>
+
+        <!-- BRAND TEXT -->
+        <div class="sidebar-brand-text" *ngIf="!isCollapsed">
+          <span class="brand-name">Dizi EduTech</span>
+          <span class="brand-sub">Admin Panel</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- MENU -->
+    <div class="sidebar-menu">
+
+      <!-- DASHBOARD -->
+      <a
+        routerLink="/admin-dashboard"
+        routerLinkActive="active-link"
+        class="sidebar-link">
+        <i class="fa-solid fa-table-columns"></i>
+        <span *ngIf="!isCollapsed">Dashboard</span>
+      </a>
+
+      <!-- MANAGE BOARD -->
+      <a
+        routerLink="/admin-manageboard"
+        routerLinkActive="active-link"
+        class="sidebar-link">
+        <i class="fa-solid fa-users-gear"></i>
+        <span *ngIf="!isCollapsed">Manage Board</span>
+      </a>
+
+      <!-- MOCK TESTS -->
+      <a
+        routerLink="/mock-list/All"
+        routerLinkActive="active-link"
+        class="sidebar-link">
+        <i class="fa-solid fa-clipboard-list"></i>
+        <span *ngIf="!isCollapsed">Mock List</span>
+      </a>
+
+      <!-- SUBJECT UPLOAD -->
+      <a
+        routerLink="/subject-upload/subject"
+        routerLinkActive="active-link"
+        class="sidebar-link">
+        <i class="fa-solid fa-book-open"></i>
+        <span *ngIf="!isCollapsed">Subject Upload</span>
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="sidebar-footer">
+
+    <button class="logout-btn" routerLink="/admin-login">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span *ngIf="!isCollapsed">Logout</span>
+    </button>
+
+  </div>
+
+</div>

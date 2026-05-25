@@ -27,9 +27,9 @@ export class Header2Component implements OnInit, OnDestroy {
   get totalTimeMinutes(): number {
     return this._totalTimeMinutes;
   }
-  private _totalTimeMinutes: number = 1; // Default 180 mins (3 Hours)
+  private _totalTimeMinutes: number = 10; // Default 180 mins (3 Hours)
 
-  timeLeftSeconds: number = 2 * 60;
+  timeLeftSeconds: number = 25 * 60;
   private timerInterval: any;
 
   // Modal controls

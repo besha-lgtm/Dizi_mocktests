@@ -1,4 +1,4 @@
-import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
+﻿import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -19,6 +19,8 @@ import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard
 import { SubjectUploadComponent } from './pages/subject-upload/subject-upload.component';
 import { MockListComponent } from './pages/mock-list/mock-list.component';
 import { SelectMocktestComponent } from './pages/select-mocktest/select-mocktest.component';
+import { AdminManageboardComponent } from './pages/admin-manageboard/admin-manageboard.component';
+import { AdminSidebarComponent } from './layout/admin-sidebar/admin-sidebar.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,6 +39,8 @@ import { SelectMocktestComponent } from './pages/select-mocktest/select-mocktest
     SubjectUploadComponent,
     MockListComponent,
     SelectMocktestComponent,
+    AdminManageboardComponent,
+    AdminSidebarComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [provideBrowserGlobalErrorListeners()],

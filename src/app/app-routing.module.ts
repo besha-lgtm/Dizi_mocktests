@@ -15,6 +15,7 @@ import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard
 import { SubjectUploadComponent } from './pages/subject-upload/subject-upload.component';
 import { MockListComponent } from './pages/mock-list/mock-list.component';
 import { SelectMocktestComponent } from './pages/select-mocktest/select-mocktest.component';
+import { AdminManageboardComponent } from './pages/admin-manageboard/admin-manageboard.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -31,7 +32,8 @@ const routes: Routes = [
   { path: 'admin-login', component: AdminLoginComponent },
   { path: 'admin-dashboard', component: AdminDashboardComponent },
   {path: 'subject-upload/:subject', component: SubjectUploadComponent},
-  { path: 'mock-list/:subject', component: MockListComponent }
+  { path: 'mock-list/:subject', component: MockListComponent },
+  {path: 'admin-manageboard', component: AdminManageboardComponent }
 ];
 
 @NgModule({
