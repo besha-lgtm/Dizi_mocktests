@@ -3,7 +3,7 @@
 <div class="ml-page-wrapper" >
     <div class="top-back-wrapper" >
 
-    <button
+    <!-- <button
         class="ml-back-btn"
         (click)="goBackToSubjects()">
 
@@ -23,7 +23,7 @@
 
         Back to Home
 
-    </button>
+    </button> -->
 
 </div>
 
@@ -96,195 +96,5 @@
 
   </div>
 
-  <!-- TABLE -->
-  <div class="ml-table-panel">
-
-    <!-- SEARCH -->
-    <div class="ml-filter-bar">
-
-      <div class="ml-search-box">
-
-        <i class="fa-solid fa-magnifying-glass"></i>
-
-        <input
-          type="text"
-          placeholder="Search students..."
-          [(ngModel)]="searchText"
-          (input)="filterStudents()">
-
-      </div>
-
-    </div>
-
-    <!-- TABLE -->
-    <div class="ml-table-scroll">
-
-      <table class="ml-table">
-
-        <thead class="ml-table-head">
-          <tr>
-            <th class="ml-th">ID</th>
-            <th class="ml-th">Name</th>
-            <th class="ml-th">Course</th>
-            <th class="ml-th">Attempts</th>
-            <th class="ml-th">Status</th>
-            <th class="ml-th">Actions</th>
-          </tr>
-        </thead>
-
-        <tbody>
-
-          <tr class="ml-tr" *ngFor="let student of paginatedStudents">
-
-            <td class="ml-td">{{ student.id }}</td>
-
-            <td class="ml-td">{{ student.name }}</td>
-
-            <td class="ml-td">{{ student.course }}</td>
-
-            <td class="ml-td">{{ student.attempts }}</td>
-
-            <td class="ml-td">
-
-              <span
-                class="ml-status"
-                [ngClass]="student.status === 'Active'
-                ? 'active'
-                : 'inactive'">
-
-                {{ student.status }}
-
-              </span>
-
-            </td>
-
-            <td class="ml-td">
-
-              <button
-                class="ml-action-btn edit-btn"
-                (click)="editStudent(student)">
-
-                <i class="fa-solid fa-pen"></i>
-                Edit
-
-              </button>
-
-              <button
-                class="ml-action-btn delete-btn"
-                (click)="deleteStudent(student.id)">
-
-                <i class="fa-solid fa-trash"></i>
-                Delete
-
-              </button>
-
-            </td>
-
-          </tr>
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-    <!-- PAGINATOR -->
-    <div class="ml-pagination">
-
-      <button
-        class="page-btn"
-        (click)="prevPage()"
-        [disabled]="currentPage === 1">
-
-        <i class="fa-solid fa-chevron-left"></i>
-
-      </button>
-
-      <button
-        class="page-btn"
-        *ngFor="let page of totalPagesArray"
-        [class.active-page]="currentPage === page"
-        (click)="goToPage(page)">
-
-        {{ page }}
-
-      </button>
-
-      <button
-        class="page-btn"
-        (click)="nextPage()"
-        [disabled]="currentPage === totalPages">
-
-        <i class="fa-solid fa-chevron-right"></i>
-
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-<!-- MODAL -->
-<div class="modal-overlay" *ngIf="showModal">
-
-  <div class="student-modal">
-
-    <div class="modal-header">
-
-      <h2>
-        {{ editMode ? 'Edit Student' : 'Add Student' }}
-      </h2>
-
-      <button class="close-btn" (click)="closeModal()">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-    </div>
-
-    <div class="modal-body">
-
-      <input
-        type="text"
-        placeholder="Student ID"
-        [(ngModel)]="studentForm.id">
-
-      <input
-        type="text"
-        placeholder="Student Name"
-        [(ngModel)]="studentForm.name">
-
-      <input
-        type="text"
-        placeholder="Course"
-        [(ngModel)]="studentForm.course">
-
-      <input
-        type="number"
-        placeholder="Attempts"
-        [(ngModel)]="studentForm.attempts">
-
-      <select [(ngModel)]="studentForm.status">
-
-        <option value="Active">Active</option>
-        <option value="Inactive">Inactive</option>
-
-      </select>
-
-    </div>
-
-    <div class="modal-footer">
-
-      <button
-        class="save-btn"
-        (click)="saveStudent()">
-
-        {{ editMode ? 'Update Student' : 'Save Student' }}
-
-      </button>
-
-    </div>
-
-  </div>
 
 </div>

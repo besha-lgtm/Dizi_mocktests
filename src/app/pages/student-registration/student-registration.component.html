@@ -1,0 +1,330 @@
+<app-header1></app-header1>
+<app-admin-sidebar></app-admin-sidebar>
+
+<div class="sr-page-wrapper">
+  
+  <!-- TOP BACK NAV & BREADCRUMB -->
+  <div class="sr-top-bar">
+    <nav class="sr-breadcrumb" aria-label="breadcrumb">
+      <span class="sr-breadcrumb-link" (click)="goBackToDashboard()">Dashboard</span>
+      <span class="sr-breadcrumb-sep">›</span>
+      <span class="sr-breadcrumb-active">Student Registration</span>
+    </nav>
+  </div>
+
+  <!-- MAIN HEADER BLOCK -->
+  <div class="sr-page-header">
+    <div class="sr-page-header-text">
+      <h1 class="sr-page-title">Student Registration Management</h1>
+      <p class="sr-page-subtitle">
+        Register, manage, and monitor candidate access credentials. Matches layout of administration board.
+      </p>
+    </div>
+
+    <button class="sr-add-btn" (click)="openAddModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+           fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="sr-plus-icon">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Add New Registration
+    </button>
+  </div>
+
+  <!-- QUICK STATS TILES -->
+  <div class="sr-stats-grid">
+    <div class="sr-stat-card">
+      <div class="sr-stat-icon sr-stat-icon--students">
+        <!-- <i class="fa-solid fa-user-graduate"></i> -->
+      </div>
+      <div class="sr-stat-body">
+        <p class="sr-stat-label">Total Candidates</p>
+        <p class="sr-stat-value">{{ students.length }}</p>
+      </div>
+    </div>
+
+    <div class="sr-stat-card">
+      <div class="sr-stat-icon sr-stat-icon--sections">
+        <!-- <i class="fa-solid fa-cubes"></i> -->
+      </div>
+      <div class="sr-stat-body">
+        <p class="sr-stat-label">Sections Assigned</p>
+        <p class="sr-stat-value">{{ sections.length }}</p>
+      </div>
+    </div>
+
+    <div class="sr-stat-card">
+      <div class="sr-stat-icon sr-stat-icon--batches">
+        <!-- <i class="fa-solid fa-graduation-cap"></i> -->
+      </div>
+      <div class="sr-stat-body">
+        <p class="sr-stat-label">Active Batches</p>
+        <p class="sr-stat-value">{{ batches.length }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE PANEL CARD -->
+  <div class="sr-table-panel">
+    
+    <!-- FILTER BAR -->
+    <div class="sr-filter-bar">
+      <!-- Search Box -->
+      <div class="sr-search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" 
+               [(ngModel)]="searchText" 
+               (ngModelChange)="applyFilters()" 
+               placeholder="Search by name, mail or unique ID...">
+      </div>
+
+      <!-- Filters Dropdowns -->
+      <div class="sr-filters-group">
+        <!-- Section Filter -->
+        <div class="sr-filter-select-wrapper">
+          <label class="sr-select-label">Section:</label>
+          <select [(ngModel)]="selectedSectionFilter" (change)="applyFilters()" class="sr-filter-select">
+            <option value="All">All Sections</option>
+            <option *ngFor="let sec of sections" [value]="sec">{{ sec }}</option>
+          </select>
+        </div>
+
+        <!-- Batch Filter -->
+        <div class="sr-filter-select-wrapper">
+          <label class="sr-select-label">Batch:</label>
+          <select [(ngModel)]="selectedBatchFilter" (change)="applyFilters()" class="sr-filter-select">
+            <option value="All">All Batches</option>
+            <option *ngFor="let b of batches" [value]="b">{{ b }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATA TABLE -->
+    <div class="sr-table-scroll">
+      <table class="sr-table">
+        <thead class="sr-table-head">
+          <tr>
+            <th class="sr-th">UNIQUE ID</th>
+            <th class="sr-th">FULL NAME</th>
+            <th class="sr-th">EMAIL ADDRESS</th>
+            <th class="sr-th">SECTION</th>
+            <th class="sr-th">ASSIGNED BATCH</th>
+            <th class="sr-th sr-th--center">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="sr-tr" *ngFor="let student of paginatedStudents">
+            <td class="sr-td sr-td--id">{{ student.uniqueId }}</td>
+            <td class="sr-td sr-td--name">{{ student.name }}</td>
+            <td class="sr-td sr-td--mail">{{ student.mail }}</td>
+            <td class="sr-td">
+              <span class="sr-badge sr-badge--section" [ngClass]="'sr-badge-sec--' + student.section.replace(' ', '')">
+                {{ student.section }}
+              </span>
+            </td>
+            <td class="sr-td">
+              <span class="sr-badge sr-badge--batch" [ngClass]="'sr-badge-batch--' + student.batch.replace(' ', '')">
+                {{ student.batch }}
+              </span>
+            </td>
+            <td class="sr-td sr-td--actions">
+              <button class="sr-action-btn sr-action-btn--edit" (click)="openEditModal(student)">
+                <i class="fa-solid fa-pen"></i> Edit
+              </button>
+              <button class="sr-action-btn sr-action-btn--delete" (click)="deleteStudent(student.uniqueId)">
+                <i class="fa-solid fa-trash-can"></i> Delete
+              </button>
+            </td>
+          </tr>
+
+          <!-- EMPTY STATE -->
+          <tr *ngIf="paginatedStudents.length === 0">
+            <td colspan="6" class="sr-empty-row">
+              <div class="sr-empty-container">
+                <div class="sr-empty-icon"><i class="fa-solid fa-users-slash"></i></div>
+                <h3 class="sr-empty-title">No Candidate Registrations Found</h3>
+                <p class="sr-empty-text">No student registrations match your current search query or filter options.</p>
+                <button class="sr-btn-link" (click)="searchText = ''; selectedSectionFilter = 'All'; selectedBatchFilter = 'All'; applyFilters()">
+                  Clear Filters
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PAGINATION FOOTER -->
+    <div class="sr-pagination" *ngIf="filteredStudents.length > 0">
+      <span class="sr-pagination-info">{{ getShowingText() }}</span>
+
+      <div class="sr-pagination-controls">
+        <button class="sr-page-btn sr-page-btn--nav" 
+                [disabled]="currentPage === 1" 
+                (click)="prevPage()">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <ng-container *ngFor="let pg of pageNumbers">
+          <button class="sr-page-btn" 
+                  *ngIf="pg !== '...'"
+                  [class.sr-page-btn--active]="currentPage === pg" 
+                  (click)="goToPage(pg)">
+            {{ pg }}
+          </button>
+          <span class="sr-page-ellipsis" *ngIf="pg === '...'">…</span>
+        </ng-container>
+
+        <button class="sr-page-btn sr-page-btn--nav" 
+                [disabled]="currentPage === totalPages" 
+                (click)="nextPage()">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- REGISTRATION POPUP MODAL (FORM) -->
+<div class="sr-modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="sr-modal-card" (click)="$event.stopPropagation()">
+    
+    <!-- Modal Header -->
+    <div class="sr-modal-header">
+      <div class="sr-modal-header-text">
+        <span class="sr-modal-badge">{{ editMode ? '🛠️ EDIT PROFILE' : '✨ NEW REGISTRATION' }}</span>
+        <h2 class="sr-modal-title">{{ editMode ? 'Edit Candidate Details' : 'Register New Candidate' }}</h2>
+      </div>
+      <button class="sr-modal-close-btn" (click)="closeModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Modal Body (Form) -->
+    <form (submit)="$event.preventDefault(); saveStudent()" class="sr-modal-form">
+      <div class="sr-modal-body">
+        
+        <!-- Row: Unique ID (Read-only/auto-generated) -->
+        <div class="sr-form-group">
+          <label class="sr-form-label">UNIQUE IDENTIFIER (APP ID)</label>
+          <div class="sr-input-wrapper sr-input-wrapper--disabled">
+            <i class="fa-solid fa-id-card sr-input-icon"></i>
+            <input type="text" 
+                   name="uniqueId" 
+                   [(ngModel)]="studentForm.uniqueId" 
+                   disabled
+                   class="sr-form-input sr-form-input--disabled">
+          </div>
+          <small class="sr-input-help">Auto-generated unique app key.</small>
+        </div>
+
+        <!-- Row: Full Name -->
+        <div class="sr-form-group">
+          <label class="sr-form-label">FULL NAME <span class="sr-required">*</span></label>
+          <div class="sr-input-wrapper">
+            <i class="fa-solid fa-user sr-input-icon"></i>
+            <input type="text" 
+                   name="name" 
+                   [(ngModel)]="studentForm.name" 
+                   required
+                   placeholder="e.g. Rahul Sharma" 
+                   class="sr-form-input">
+          </div>
+        </div>
+
+        <!-- Row: Mail Address -->
+        <div class="sr-form-group">
+          <label class="sr-form-label">EMAIL ADDRESS <span class="sr-required">*</span></label>
+          <div class="sr-input-wrapper">
+            <i class="fa-solid fa-envelope sr-input-icon"></i>
+            <input type="email" 
+                   name="mail" 
+                   [(ngModel)]="studentForm.mail" 
+                   required
+                   placeholder="e.g. rahul.sharma@domain.com" 
+                   class="sr-form-input">
+          </div>
+        </div>
+
+        <!-- Row: Password with Visibility Toggle -->
+        <div class="sr-form-group">
+          <label class="sr-form-label">SECURITY PASSWORD <span class="sr-required">*</span></label>
+          <div class="sr-input-wrapper">
+            <i class="fa-solid fa-lock sr-input-icon"></i>
+            <input [type]="showPassword ? 'text' : 'password'" 
+                   name="password" 
+                   [(ngModel)]="studentForm.password" 
+                   required
+                   placeholder="Enter access password" 
+                   class="sr-form-input sr-form-input--password">
+            <button type="button" class="sr-password-toggle" (click)="togglePasswordVisibility()">
+              <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Row: Section and Batch (Grid Side-by-side) -->
+        <div class="sr-form-row">
+          <!-- Section Select -->
+          <div class="sr-form-group sr-form-group--half">
+            <label class="sr-form-label">SECTION <span class="sr-required">*</span></label>
+            <div class="sr-input-wrapper">
+              <i class="fa-solid fa-cubes sr-input-icon"></i>
+              <select name="section" [(ngModel)]="studentForm.section" required class="sr-form-select">
+                <option *ngFor="let sec of sections" [value]="sec">{{ sec }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Batch Select -->
+          <div class="sr-form-group sr-form-group--half">
+            <label class="sr-form-label">ASSIGNED BATCH <span class="sr-required">*</span></label>
+            <div class="sr-input-wrapper">
+              <i class="fa-solid fa-graduation-cap sr-input-icon"></i>
+              <select name="batch" [(ngModel)]="studentForm.batch" required class="sr-form-select">
+                <option *ngFor="let b of batches" [value]="b">{{ b }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer Buttons -->
+      <div class="sr-modal-footer">
+        <button type="button" class="sr-btn sr-btn--cancel" (click)="closeModal()">
+          Cancel
+        </button>
+        <button type="submit" class="sr-btn sr-btn--save">
+          <i class="fa-solid fa-circle-check"></i>
+          {{ editMode ? 'Update Profile' : 'Complete Registration' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+<!-- FLOATING TOAST NOTIFICATION CONTAINER -->
+<div class="sr-toast-container">
+  <div class="sr-toast-alert" 
+       *ngFor="let toast of toasts" 
+       [ngClass]="'sr-toast--' + toast.type"
+       (click)="removeToast(toast.id)">
+    <div class="sr-toast-icon">
+      <i class="fa-solid" 
+         [ngClass]="{
+           'fa-circle-check': toast.type === 'success',
+           'fa-circle-info': toast.type === 'info',
+           'fa-circle-exclamation': toast.type === 'danger'
+         }"></i>
+    </div>
+    <div class="sr-toast-message">{{ toast.message }}</div>
+    <button class="sr-toast-close">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+</div>

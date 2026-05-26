@@ -23,12 +23,6 @@
 
         </button>
 
-        <!-- BRAND TEXT -->
-        <div class="sidebar-brand-text" *ngIf="!isCollapsed">
-          <span class="brand-name">Dizi EduTech</span>
-          <span class="brand-sub">Admin Panel</span>
-        </div>
-
       </div>
 
     </div>
@@ -52,6 +46,15 @@
         class="sidebar-link">
         <i class="fa-solid fa-users-gear"></i>
         <span *ngIf="!isCollapsed">Manage Board</span>
+      </a>
+
+      <!-- STUDENT REGISTRATION -->
+      <a
+        routerLink="/student-registration"
+        routerLinkActive="active-link"
+        class="sidebar-link">
+        <i class="fa-solid fa-user-plus"></i>
+        <span *ngIf="!isCollapsed">Student Registration</span>
       </a>
 
       <!-- MOCK TESTS -->
