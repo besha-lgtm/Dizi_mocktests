@@ -627,3 +627,52 @@
     }
 }
 
+/* PREMIUM METRIC ICONS */
+
+.mock-metric-icon{
+    width:70px;
+    height:70px;
+    margin:0 auto 1.2rem;
+    border-radius:20px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:28px;
+
+    position:relative;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.15);
+
+    transition:0.3s ease;
+}
+
+.mock-metric-card:hover .mock-metric-icon{
+    transform:translateY(-4px) scale(1.05);
+}
+
+/* BLUE */
+.mock-metric-icon--blue{
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:#fff;
+}
+
+/* CYAN */
+.mock-metric-icon--cyan{
+    background:linear-gradient(135deg,#06b6d4,#0891b2);
+    color:#fff;
+}
+
+/* GREEN */
+.mock-metric-icon--green{
+    background:linear-gradient(135deg,#10b981,#059669);
+    color:#fff;
+}
+
+/* GOLD */
+.mock-metric-icon--gold{
+    background:linear-gradient(135deg,#f59e0b,#d97706);
+    color:#fff;
+}

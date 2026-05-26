@@ -8,8 +8,8 @@ import { Component, Input } from '@angular/core';
 })
 export class Header1Component {
   @Input() logoText: string = 'JEE';
-  @Input() logoSubtext: string = 'MAINS';
-  @Input() examTitle: string = 'JOINT ENTRANCE EXAMINATION (MAINS) 2026';
+  // @Input() logoSubtext: string = 'MAINS';
+  @Input() examTitle: string = 'JOINT ENTRANCE EXAMINATION';
   @Input() organizingInstitute: string = 'Dizi Edutech';
   @Input() roleTitle: string = 'Organizing Institute';
 }

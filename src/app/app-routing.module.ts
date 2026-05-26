@@ -17,6 +17,7 @@ import { MockListComponent } from './pages/mock-list/mock-list.component';
 import { SelectMocktestComponent } from './pages/select-mocktest/select-mocktest.component';
 import { AdminManageboardComponent } from './pages/admin-manageboard/admin-manageboard.component';
 import { StudentRegistrationComponent } from './pages/student-registration/student-registration.component';
+import { ScoreManagementComponent } from './pages/score-management/score-management.component';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -35,7 +36,8 @@ const routes: Routes = [
   {path: 'subject-upload/:subject', component: SubjectUploadComponent},
   { path: 'mock-list/:subject', component: MockListComponent },
   {path: 'admin-manageboard', component: AdminManageboardComponent },
-  { path: 'student-registration', component: StudentRegistrationComponent }
+  { path: 'student-registration', component: StudentRegistrationComponent },
+  { path: 'score-management', component: ScoreManagementComponent }
 ];
 
 @NgModule({
