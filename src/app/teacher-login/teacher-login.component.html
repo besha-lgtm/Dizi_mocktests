@@ -1,0 +1,102 @@
+<app-header1></app-header1>
+<div class="login-container">
+        <div class="form-card-wrapper">
+            <div class="login-header">
+                <h1>Teacher Sign In</h1>
+                <p class="subtitle">Enter your email and password to access your teacher account</p>
+            </div>
+
+            <!-- Display form-level error messages -->
+            <div *ngIf="formError" class="form-error-message">
+                {{ formError }}
+            </div>
+            <div *ngIf="formSuccess" class="form-success-message">
+                {{ formSuccess }}
+            </div>
+
+            <!-- Login Form Card -->
+            <form #loginForm="ngForm" (ngSubmit)="onSubmit()" class="login-form">
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="email">EMAIL ADDRESS</label>
+                    <div class="input-group" [class.input-error]="email.invalid && (email.dirty || email.touched)">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            [(ngModel)]="user.email"
+                            placeholder="you@example.com"
+                            required
+                            email
+                            #email="ngModel">
+                    </div>
+                    <span class="error-message" *ngIf="email.invalid && (email.dirty || email.touched)">
+                        <span *ngIf="email.errors?.['required']">Email is required</span>
+                        <span *ngIf="email.errors?.['email']">Invalid email format</span>
+                    </span>
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="password">PASSWORD</label>
+                    <div class="input-group" [class.input-error]="password.invalid && (password.dirty || password.touched)">
+                        <input 
+                            [type]="showPassword ? 'text' : 'password'" 
+                            id="password" 
+                            name="password" 
+                            [(ngModel)]="user.password"
+                            placeholder="Min 8 characters"
+                            required
+                            minlength="8"
+                            #password="ngModel">
+                        <span class="toggle-password" (click)="togglePasswordVisibility()" role="button" tabindex="0">
+                            <i [class]="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+                        </span>
+                    </div>
+                    <span class="error-message" *ngIf="password.invalid && (password.dirty || password.touched)">
+                        <span *ngIf="password.errors?.['required']">Password is required</span>
+                        <span *ngIf="password.errors?.['minlength']">Password </span>
+                    </span>
+                </div>
+
+                <!-- Form Footer: Remember Me + Forgot Password -->
+                <div class="form-footer">
+                    <div class="remember-checkbox">
+                        <input 
+                            type="checkbox" 
+                            id="keepSigned" 
+                            name="keepSigned" 
+                            [(ngModel)]="user.keepSigned">
+                        <label for="keepSigned">Keep me signed in</label>
+                    </div>
+                    <a href="#forgot" class="forgot-link" (click)="goToForgotPassword($event)">Forgot password?</a>
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="submit-btn"
+                    [disabled]="loginForm.invalid">Sign In →</button>
+
+                <!-- Social Login Divider -->
+                <div class="social-divider">
+                    <span>Or continue with</span>
+                </div>
+
+                <!-- Social Login Buttons Inside Form Card -->
+                <div class="social-login-inline">
+                    <button class="social-btn-inline google-btn-inline" type="button" title="Sign in with Google">
+                        <i class="fab fa-google"></i>
+                        continue with Google
+                    </button>
+                    <button class="social-btn-inline linkedin-btn-inline" type="button" title="Sign in with LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                        continue with LinkedIn
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sign Up Link  -->
+        <p class="signin-link">Don't have a teacher account? <a href="#signup" (click)="goToSignUp($event)">Sign up instead</a></p>
+    </div>

@@ -18,9 +18,14 @@ import { SelectMocktestComponent } from './pages/select-mocktest/select-mocktest
 import { AdminManageboardComponent } from './pages/admin-manageboard/admin-manageboard.component';
 import { StudentRegistrationComponent } from './pages/student-registration/student-registration.component';
 import { ScoreManagementComponent } from './pages/score-management/score-management.component';
+import { TeacherLoginComponent } from './teacher-login/teacher-login.component';
+import { TeacherRegisterComponent } from './teacher-register/teacher-register.component';
+
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'teacher-login', component: TeacherLoginComponent },
+  { path: 'teacher-register', component: TeacherRegisterComponent },
   { path: '', redirectTo: '/mock-home', pathMatch: 'full' },
   { path: 'mock-home', component: MockHomeComponent },
   { path: 'exam-home', component: MainLayoutComponent },

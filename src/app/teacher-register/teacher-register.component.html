@@ -1,0 +1,178 @@
+ <app-header1></app-header1>
+ <div class="register-container">
+        <div class="form-card-wrapper">
+            <div class="register-header">
+                <h1>Create Teacher Account</h1>
+                <p class="subtitle">Fill in the details below to join the DIZIEdutech Challenge Hub as a Teacher</p>
+            </div>
+
+            <!-- Display form-level error messages -->
+            <div *ngIf="formError" class="form-error-message">
+                {{ formError }}
+            </div>
+            <div *ngIf="formSuccess" class="form-success-message">
+                {{ formSuccess }}
+            </div>
+
+            <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)" class="register-form">
+            <!-- First Name & Last Name -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">FIRST NAME</label>
+                    <div class="input-group" [class.input-error]="firstName.invalid && (firstName.dirty || firstName.touched)">
+                        <input 
+                            type="text" 
+                            id="firstName" 
+                            name="firstName" 
+                            [(ngModel)]="user.firstName"
+                            placeholder="Ex.FName"
+                            required
+                            minlength="2"
+                            maxlength="50"
+                            #firstName="ngModel">
+                    </div>
+                    <span class="error-message" *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
+                        <span *ngIf="firstName.errors?.['required']">First name is required</span>
+                        <span *ngIf="firstName.errors?.['minlength']">Minimum 2 characters</span>
+                        <span *ngIf="firstName.errors?.['maxlength']">Maximum 50 characters</span>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">LAST NAME</label>
+                    <div class="input-group" [class.input-error]="lastName.invalid && (lastName.dirty || lastName.touched)">
+                        <input 
+                            type="text" 
+                            id="lastName" 
+                            name="lastName" 
+                            [(ngModel)]="user.lastName"
+                            placeholder="Ex.LName"
+                            required
+                            minlength="2"
+                            maxlength="50"
+                            #lastName="ngModel">
+                    </div>
+                    <span class="error-message" *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+                        <span *ngIf="lastName.errors?.['required']">Last name is required</span>
+                        <span *ngIf="lastName.errors?.['minlength']">Minimum 2 characters</span>
+                        <span *ngIf="lastName.errors?.['maxlength']">Maximum 50 characters</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-group">
+                <label for="email">COLLEGE / WORK EMAIL</label>
+                <div class="input-group" [class.input-error]="email.invalid && (email.dirty || email.touched)">
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        [(ngModel)]="user.email"
+                        placeholder="you@gmail.com"
+                        required
+                        email
+                        #email="ngModel">
+                </div>
+                <span class="error-message" *ngIf="email.invalid && (email.dirty || email.touched)">
+                    <span *ngIf="email.errors?.['required']">Email is required</span>
+                    <span *ngIf="email.errors?.['email']">Invalid email format</span>
+                </span>
+            </div>
+
+            <!-- Institution Field -->
+            <div class="form-group">
+                <label for="institution">INSTITUTION / COMPANY</label>
+                <div class="input-group" [class.input-error]="institution.invalid && (institution.dirty || institution.touched)">
+                    <input 
+                        type="text" 
+                        id="institution" 
+                        name="institution" 
+                        [(ngModel)]="user.institution"
+                        placeholder="Institute, City"
+                        required
+                        minlength="3"
+                        maxlength="100"
+                        #institution="ngModel">
+                </div>
+                <span class="error-message" *ngIf="institution.invalid && (institution.dirty || institution.touched)">
+                    <span *ngIf="institution.errors?.['required']">Institution is required</span>
+                    <span *ngIf="institution.errors?.['minlength']">Minimum 3 characters</span>
+                    <span *ngIf="institution.errors?.['maxlength']">Maximum 100 characters</span>
+                </span>
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <label for="password">CREATE PASSWORD</label>
+                <div class="input-group" [class.input-error]="password.invalid && (password.dirty || password.touched)">
+                    <input 
+                        [type]="showPassword ? 'text' : 'password'" 
+                        id="password" 
+                        name="password" 
+                        [(ngModel)]="user.password"
+                        placeholder="Min 8 characters"
+                        required
+                        minlength="8"
+                        maxlength="128"
+                        #password="ngModel">
+                    <span class="toggle-password" (click)="togglePasswordVisibility()" role="button" tabindex="0">
+                        <i [class]="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+                    </span>
+                </div>
+                <span class="error-message" *ngIf="password.invalid && (password.dirty || password.touched)">
+                    <span *ngIf="password.errors?.['required']">Password is required</span>
+                    <span *ngIf="password.errors?.['minlength']">Password must be at least 8 characters</span>
+                </span>
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div class="form-group">
+                <label for="confirmPassword">CONFIRM PASSWORD</label>
+                <div class="input-group" [class.input-error]="(confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)) || (user.password !== user.confirmPassword && confirmPassword.touched)">
+                    <input 
+                        [type]="showConfirmPassword ? 'text' : 'password'" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        [(ngModel)]="user.confirmPassword"
+                        placeholder="Re-enter your password"
+                        required
+                        #confirmPassword="ngModel">
+                    <span class="toggle-password" (click)="toggleConfirmPasswordVisibility()" role="button" tabindex="0">
+                        <i [class]="showConfirmPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+                    </span>
+                </div>
+                <span class="error-message" *ngIf="(confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)) || (user.password !== user.confirmPassword && confirmPassword.touched)">
+                    <span *ngIf="confirmPassword.errors?.['required']">Please confirm your password</span>
+                    <span *ngIf="user.password !== user.confirmPassword && confirmPassword.touched">Passwords do not match</span>
+                </span>
+            </div>
+
+            <!-- Terms & Conditions -->
+            <div class="terms-checkbox">
+                <input 
+                    type="checkbox" 
+                    id="terms" 
+                    name="terms" 
+                    [(ngModel)]="user.terms"
+                    required
+                    #terms="ngModel">
+                <label for="terms">I agree to the <a href="#terms" (click)="$event.preventDefault()">Terms of Service</a> and <a href="#privacy" (click)="$event.preventDefault()">Privacy Policy</a> of DIZIEdutech Challenge Hub</label>
+            </div>
+            <span class="error-message" *ngIf="terms.invalid && terms.touched">
+                You must agree to the terms
+            </span>
+
+            <!-- Submit Button -->
+            <button 
+                type="submit" 
+                class="register-btn"
+                [disabled]="registerForm.invalid">
+                Create Account →
+            </button>
+            </form>
+        </div>
+
+        <!-- Sign In Link - Outside the card -->
+        <p class="signin-link">Already have a teacher account? <a href="#signin" (click)="goToSignIn($event)">Sign in instead</a></p>
+    </div>

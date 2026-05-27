@@ -102,6 +102,10 @@ export class MockHomeComponent {
     this.router.navigate(['/admin-login']);
   }
 
+  navigateToTeacherLogin():void{
+    this.router.navigate(['/teacher-login']);
+  }
+
   takeMockTest(testId: number): void {
     // Navigate to take the specific mock test
     this.router.navigate(['/mock-test', testId]);
