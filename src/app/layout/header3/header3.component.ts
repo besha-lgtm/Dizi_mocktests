@@ -7,17 +7,17 @@ interface InstructionSection {
 }
 
 @Component({
-  selector: 'app-header2',
+  selector: 'app-header3',
   standalone: false,
-  templateUrl: './header2.component.html',
-  styleUrl: './header2.component.css',
+  templateUrl: './header3.component.html',
+  styleUrl: './header3.component.css',
 })
-export class Header2Component implements OnInit, OnDestroy {
+export class Header3Component implements OnInit, OnDestroy {
   @Input() logoText: string = 'JEE';
   @Input() logoSubtext: string = 'MAINS';
   @Input() examTitle: string = 'Joint Entrance Examination';
   @Input() organizingInstitute: string = 'Dizi Edutech';
-  @Input() examBarTitle: string = 'JEE MAINS 2026 Paper 1 Mock Exam';
+  @Input() examBarTitle: string = 'JEE Advanced 2026 Paper 1 Mock Exam';
 
   // Dynamic timer settings (Changing this minutes value automatically recalibrates the live timer and instructions)
   @Input() set totalTimeMinutes(minutes: number) {

@@ -1,4 +1,4 @@
-import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
+﻿import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -25,6 +25,10 @@ import { StudentRegistrationComponent } from './pages/student-registration/stude
 import { ScoreManagementComponent } from './pages/score-management/score-management.component';
 import { TeacherLoginComponent } from './teacher-login/teacher-login.component';
 import { TeacherRegisterComponent } from './teacher-register/teacher-register.component';
+import { ExamSelectionComponent } from './pages/exam-selection/exam-selection.component';
+import { JeeAdvancedMocktestComponent } from './pages/jee-advanced-mocktest/jee-advanced-mocktest.component';
+import { Header3Component } from './layout/header3/header3.component';
+import { AdvancedInstructionsComponent } from './pages/advanced-instructions/advanced-instructions.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +41,7 @@ import { TeacherRegisterComponent } from './teacher-register/teacher-register.co
     Instruction,
     Header1Component,
     Header2Component,
+    Header3Component,
     MockQuestion,
     MockSubmit,
     MainLayoutComponent,
@@ -50,6 +55,10 @@ import { TeacherRegisterComponent } from './teacher-register/teacher-register.co
     AdminSidebarComponent,
     StudentRegistrationComponent,
     ScoreManagementComponent,
+    ExamSelectionComponent,
+    JeeAdvancedMocktestComponent,
+    Header3Component,
+    AdvancedInstructionsComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [provideBrowserGlobalErrorListeners()],

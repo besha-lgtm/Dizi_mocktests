@@ -1,0 +1,93 @@
+<app-header1></app-header1>
+
+<div class="exam-page-wrapper">
+
+    <!-- BACK BUTTON -->
+    <div class="exam-top-back-wrapper">
+
+        <button
+            class="exam-back-btn"
+            (click)="goBackToHome()">
+
+            <svg
+                class="exam-back-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2.5">
+
+                <polyline points="15 18 9 12 15 6"/>
+
+            </svg>
+
+            Back to Home
+
+        </button>
+
+    </div>
+
+    <!-- HERO -->
+    <section class="exam-hero">
+
+        <div class="exam-hero-content">
+
+            <div class="exam-badge">
+
+                <div class="exam-badge-icon">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+
+                Choose Examination Type
+
+            </div>
+
+            <h1>
+
+                Select Your
+
+                <span class="exam-highlight-cyan">
+                    JEE Examination
+                </span>
+
+            </h1>
+
+            <p>
+
+                Choose between JEE Main and JEE Advanced
+                to continue your mock test preparation journey.
+
+            </p>
+
+            <!-- BUTTONS -->
+            <div class="exam-btn-group">
+
+                <button
+                    class="exam-btn-primary"
+                    routerLink="/select-mocktest">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    JEE Mains
+
+                </button>
+
+                <button
+                    class="exam-btn-primary"
+                    routerLink="/jee-advanced">
+
+                    <i class="fa-solid fa-trophy"></i>
+
+                    JEE Advanced
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>

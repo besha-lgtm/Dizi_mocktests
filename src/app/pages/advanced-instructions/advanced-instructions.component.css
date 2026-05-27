@@ -1,0 +1,764 @@
+/* =========================================
+   ROOT VARIABLES
+========================================= */
+
+:host {
+
+    --navy-dark: #0f1e3d;
+
+    --navy-medium: #1e3a5f;
+
+    --navy-light: #162d4f;
+
+    --cyan-primary: #0ea5e9;
+
+    --cyan-light: rgba(14, 165, 233, 0.15);
+
+    --red-accent: #dc2626;
+
+    --green-accent: #16a34a;
+
+    --purple-accent: #7c3aed;
+
+    --text-white: #ffffff;
+
+    --text-light: #cbd5e1;
+
+    --bg-light: #f8fafc;
+
+    --border-light: rgba(226, 232, 240, 0.3);
+
+}
+
+/* =========================================
+   PAGE WRAPPER
+========================================= */
+
+.adv-instruction-page-wrapper {
+
+    background-color: var(--bg-light);
+
+    min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 2rem;
+
+    padding-bottom: 180px;
+
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    position: relative;
+
+    top: 70px;
+}
+
+/* =========================================
+   TITLE
+========================================= */
+
+.adv-instruction-title {
+
+    font-size: 1.9rem;
+
+    font-weight: 800;
+
+    color: var(--navy-dark);
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 2rem;
+
+    text-align: center;
+
+    text-transform: uppercase;
+}
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+.adv-instruction-container {
+
+    display: grid;
+
+    grid-template-columns: 1fr;
+
+    gap: 2rem;
+
+    flex: 1;
+}
+
+/* =========================================
+   CARD
+========================================= */
+
+.adv-instruction-card {
+
+    background: white;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    display: grid;
+
+    grid-template-columns: 1fr 280px;
+
+    box-shadow:
+    0 10px 35px rgba(15,23,42,0.08);
+
+    border: 1px solid var(--border-light);  
+
+    max-height: calc(100vh - 260px);
+
+    overflow-y: auto;
+}
+
+/* SCROLLBAR */
+
+.adv-instruction-card::-webkit-scrollbar {
+
+    width: 8px;
+}
+
+.adv-instruction-card::-webkit-scrollbar-thumb {
+
+    background: var(--cyan-primary);
+
+    border-radius: 20px;
+}
+
+/* =========================================
+   LEFT CONTENT
+========================================= */
+
+.adv-card-instructions {
+
+    padding: 2rem;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2.5rem;
+}
+
+/* =========================================
+   PROFILE SIDE
+========================================= */
+
+.adv-profile-side {
+
+    background:
+    linear-gradient(
+        180deg,
+        #f8fbff,
+        #eef6fb
+    );
+
+    border-left:
+    1px solid var(--border-light);
+
+    padding: 2rem 1.5rem;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 1rem;
+}
+
+/* =========================================
+   PROFILE AVATAR
+========================================= */
+
+.adv-user-profile {
+
+    width: 88px;
+
+    height: 88px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    border: 2px solid #dbeafe;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    box-shadow:
+    0 6px 18px rgba(14,165,233,0.12);
+}
+
+.adv-profile-avatar {
+
+    width: 44px;
+
+    height: 44px;
+
+    position: relative;
+}
+
+.adv-profile-avatar::before {
+
+    content: '';
+
+    position: absolute;
+
+    width: 18px;
+
+    height: 18px;
+
+    border-radius: 50%;
+
+    background: #64748b;
+
+    top: 0;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+}
+
+.adv-profile-avatar::after {
+
+    content: '';
+
+    position: absolute;
+
+    width: 34px;
+
+    height: 18px;
+
+    border-radius: 18px 18px 6px 6px;
+
+    background: #64748b;
+
+    bottom: 0;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+}
+
+.adv-profile-label {
+
+    font-size: 1rem;
+
+    font-weight: 700;
+
+    color: var(--navy-medium);
+
+    text-align: center;
+}
+
+/* =========================================
+   SECTION
+========================================= */
+
+.adv-section {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1.4rem;
+}
+
+.adv-section:not(:last-child){
+
+    border-bottom:
+    1px solid rgba(226,232,240,0.5);
+
+    padding-bottom: 1.8rem;
+}
+
+/* =========================================
+   HEADINGS
+========================================= */
+
+.adv-section-heading {
+
+    font-size: 1.1rem;
+
+    font-weight: 800;
+
+    color: var(--navy-medium);
+
+    border-left: 4px solid var(--cyan-primary);
+
+    padding-left: 1rem;
+
+    text-transform: uppercase;
+}
+
+/* =========================================
+   LIST
+========================================= */
+
+.adv-list {
+
+    list-style: none;
+
+    padding: 0;
+
+    margin: 0;
+
+    counter-reset: adv-counter;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1.2rem;
+}
+
+.adv-list-item {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 1rem;
+
+    line-height: 1.7;
+
+    color: #334155;
+
+    font-size: 0.95rem;
+
+    counter-increment: adv-counter;
+}
+
+.adv-list-item::before {
+
+    content: counter(adv-counter);
+
+    width: 26px;
+
+    height: 26px;
+
+    border-radius: 50%;
+
+    background: var(--navy-medium);
+
+    color: white;
+
+    font-size: 0.8rem;
+
+    font-weight: 700;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+/* =========================================
+   LETTERED LIST
+========================================= */
+
+.adv-alpha-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1.2rem;
+}
+
+.adv-alpha-item {
+
+    display: flex;
+
+    gap: 1rem;
+
+    align-items: flex-start;
+
+    color: #334155;
+
+    line-height: 1.7;
+
+    font-size: 0.95rem;
+}
+
+.adv-alpha-label {
+
+    width: 26px;
+
+    height: 26px;
+
+    border-radius: 50%;
+
+    background: var(--cyan-primary);
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 0.8rem;
+
+    font-weight: 700;
+
+    flex-shrink: 0;
+}
+
+/* =========================================
+   PALETTE TABLE
+========================================= */
+
+.adv-palette-table {
+
+    margin-top: 1.2rem;
+
+    overflow-x: auto;
+}
+
+.adv-palette-table table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.adv-palette-table th {
+
+    background: #e0f2fe;
+
+    padding: 0.8rem;
+
+    text-align: left;
+
+    font-size: 0.82rem;
+
+    color: var(--navy-dark);
+
+    border: 1px solid var(--border-light);
+}
+
+.adv-palette-table td {
+
+    padding: 0.9rem;
+
+    border: 1px solid var(--border-light);
+
+    font-size: 0.88rem;
+}
+
+/* =========================================
+   SYMBOLS
+========================================= */
+
+.adv-symbol {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: white;
+
+    font-weight: 700;
+
+    margin: auto;
+
+    font-size: 0.85rem;
+}
+
+.adv-unvisited {
+
+    background: #9ca3af;
+
+    border-radius: 6px;
+}
+
+.adv-not-answered {
+
+    background: var(--red-accent);
+
+    clip-path:
+    polygon(
+        30% 0%,
+        70% 0%,
+        100% 30%,
+        100% 70%,
+        70% 100%,
+        30% 100%,
+        0% 70%,
+        0% 30%
+    );
+}
+
+.adv-answered {
+
+    background: var(--green-accent);
+
+    clip-path:
+    polygon(
+        30% 0%,
+        70% 0%,
+        100% 30%,
+        100% 70%,
+        70% 100%,
+        30% 100%,
+        0% 70%,
+        0% 30%
+    );
+}
+
+.adv-review {
+
+    background: var(--purple-accent);
+
+    clip-path:
+    polygon(
+        30% 0%,
+        70% 0%,
+        100% 30%,
+        100% 70%,
+        70% 100%,
+        30% 100%,
+        0% 70%,
+        0% 30%
+    );
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.adv-footer {
+
+    position: fixed;
+
+    bottom: 0;
+
+    left: 0;
+
+    right: 0;
+
+    background: white;
+
+    border-top: 2px solid var(--cyan-primary);
+
+    padding: 1rem 2rem;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 1.5rem;
+
+    z-index: 1000;
+
+    box-shadow:
+    0 -4px 14px rgba(15,23,42,0.06);
+}
+
+/* =========================================
+   LANGUAGE
+========================================= */
+
+.adv-language {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.8rem;
+}
+
+.adv-language label {
+
+    font-weight: 700;
+
+    color: var(--navy-dark);
+
+    font-size: 0.9rem;
+}
+
+.adv-language select {
+
+    padding: 0.55rem 0.9rem;
+
+    border-radius: 8px;
+
+    border: 1px solid #bae6fd;
+
+    font-weight: 600;
+
+    outline: none;
+}
+
+/* =========================================
+   CHECKBOX
+========================================= */
+
+.adv-checkbox-section {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.8rem;
+
+    flex: 1;
+}
+
+.adv-checkbox {
+
+    width: 18px;
+
+    height: 18px;
+
+    accent-color: var(--cyan-primary);
+
+    flex-shrink: 0;
+}
+
+.adv-checkbox-label {
+
+    font-size: 0.76rem;
+
+    color: #334155;
+
+    line-height: 1.5;
+}
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.adv-ready-btn {
+
+    border: none;
+
+    background:
+    linear-gradient(
+        135deg,
+        #0ea5e9,
+        #0284c7
+    );
+
+    color: white;
+
+    padding: 0.9rem 1.6rem;
+
+    border-radius: 10px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+
+    box-shadow:
+    0 8px 18px rgba(14,165,233,0.25);
+}
+
+.adv-ready-btn:hover {
+
+    transform: translateY(-2px);
+}
+
+.adv-ready-btn:disabled {
+
+    background: #94a3b8;
+
+    box-shadow: none;
+
+    cursor: not-allowed;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:992px){
+
+    .adv-instruction-card{
+
+        grid-template-columns:1fr;
+    }
+
+    .adv-profile-side{
+
+        border-left:none;
+
+        border-top:
+        1px solid var(--border-light);
+    }
+
+    .adv-footer{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    .adv-checkbox-section{
+
+        width:100%;
+    }
+}
+
+@media(max-width:768px){
+
+    .adv-instruction-page-wrapper{
+
+        padding:1rem;
+
+        padding-bottom:240px;
+    }
+
+    .adv-instruction-title{
+
+        font-size:1.3rem;
+    }
+
+    .adv-card-instructions{
+
+        padding:1.2rem;
+    }
+
+    .adv-section-heading{
+
+        font-size:1rem;
+    }
+
+    .adv-list-item,
+    .adv-alpha-item{
+
+        font-size:0.88rem;
+    }
+
+    .adv-footer{
+
+        padding:1rem;
+    }
+}

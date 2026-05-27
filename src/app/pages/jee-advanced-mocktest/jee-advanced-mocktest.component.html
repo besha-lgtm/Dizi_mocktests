@@ -1,0 +1,109 @@
+<app-header1></app-header1>
+<div class="adv-page-wrapper">
+
+  <!-- PAGE HEADER -->
+  <div class="adv-page-header">
+
+    <div>
+
+      <h1 class="adv-page-title">
+        Select JEE Advanced Mock Test
+      </h1>
+
+      <p class="adv-page-subtitle">
+        Attempt high difficulty mock examinations designed
+        for real JEE Advanced preparation.
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- MOCK TEST GRID -->
+  <div class="adv-cards-grid">
+
+    <div
+      *ngFor="let test of mockTests"
+      class="adv-card"
+      [class.adv-card--live]="test.status === 'live'"
+      [class.adv-card--coming]="test.status === 'coming-soon'">
+
+      <!-- TOP -->
+      <div class="adv-card-top">
+
+        <span
+          class="adv-status-badge"
+          [class.adv-status-badge--live]="test.status === 'live'"
+          [class.adv-status-badge--coming]="test.status === 'coming-soon'">
+
+          <span
+            *ngIf="test.status === 'live'"
+            class="adv-live-dot">
+          </span>
+
+          {{ test.status === 'live'
+          ? 'Live Now'
+          : 'Coming Soon' }}
+
+        </span>
+
+        <div class="adv-question-info">
+
+          <i class="fa-solid fa-file-lines"></i>
+
+          <span>
+            {{ test.questions }} Questions
+          </span>
+
+        </div>
+
+      </div>
+
+      <!-- BODY -->
+      <div class="adv-card-body">
+
+        <h2 class="adv-card-title">
+          {{ test.title }}
+        </h2>
+
+        <p class="adv-card-description">
+          {{ test.description }}
+        </p>
+
+      </div>
+
+      <hr class="adv-divider">
+
+      <!-- FOOTER -->
+      <div class="adv-card-footer">
+
+        <div
+          *ngIf="test.status === 'live'"
+          class="adv-availability">
+
+          <i class="fa-solid fa-clock"></i>
+
+          Available
+
+        </div>
+
+        <button
+          class="adv-action-btn"
+          [class.adv-action-btn--active]="test.status === 'live'"
+          [class.adv-action-btn--disabled]="test.status === 'coming-soon'"
+          [disabled]="test.status === 'coming-soon'"
+          (click)="startTest(test)">
+
+          {{ test.status === 'live'
+          ? 'Start Advanced Test'
+          : 'Coming Soon' }}
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

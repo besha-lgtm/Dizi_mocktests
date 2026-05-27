@@ -20,6 +20,10 @@ import { StudentRegistrationComponent } from './pages/student-registration/stude
 import { ScoreManagementComponent } from './pages/score-management/score-management.component';
 import { TeacherLoginComponent } from './teacher-login/teacher-login.component';
 import { TeacherRegisterComponent } from './teacher-register/teacher-register.component';
+import { ExamSelectionComponent } from './pages/exam-selection/exam-selection.component';
+import { JeeAdvancedMocktestComponent } from './pages/jee-advanced-mocktest/jee-advanced-mocktest.component';
+import { Header3Component } from './layout/header3/header3.component';
+import { AdvancedInstructionsComponent } from './pages/advanced-instructions/advanced-instructions.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -33,6 +37,7 @@ const routes: Routes = [
   { path: 'instruction', component: Instruction },
   { path: 'header1', component: Header1Component },
   { path: 'header2', component: Header2Component },
+  { path: 'header3', component: Header3Component },
   { path: 'mock-question', component: MockQuestion },
   { path: 'mock-submit', component: MockSubmit },
   { path: 'feedback', component: FeedbackComponent },
@@ -42,7 +47,10 @@ const routes: Routes = [
   { path: 'mock-list/:subject', component: MockListComponent },
   {path: 'admin-manageboard', component: AdminManageboardComponent },
   { path: 'student-registration', component: StudentRegistrationComponent },
-  { path: 'score-management', component: ScoreManagementComponent }
+  { path: 'score-management', component: ScoreManagementComponent },
+  { path: 'exam-selection', component: ExamSelectionComponent },
+  { path: 'jee-advanced', component: JeeAdvancedMocktestComponent },
+  { path: 'advanced-instructions', component: AdvancedInstructionsComponent }
 ];
 
 @NgModule({

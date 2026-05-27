@@ -21,10 +21,10 @@ export class LoginComponent implements OnInit {
   
   // CHANGE: Added user data model
   user: User = {
-    email: '',
-    password: '',
-    keepSigned: false
-  };
+  email: 'student@gmail.com',
+  password: 'student1234',
+  keepSigned: true
+};
 
   // CHANGE: Added password visibility toggle
   showPassword: boolean = false;
@@ -101,7 +101,7 @@ export class LoginComponent implements OnInit {
 
     // Navigate to exam home page after successful login
     setTimeout(() => {
-      this.router.navigate(['/select-mocktest']);
+      this.router.navigate(['/exam-selection']);
       this.user = { email: '', password: '', keepSigned: false };
       this.formSuccess = '';
     }, 1500);
