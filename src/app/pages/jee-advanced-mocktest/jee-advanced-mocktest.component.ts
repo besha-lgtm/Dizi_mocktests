@@ -75,7 +75,7 @@ export class JeeAdvancedMocktestComponent {
 
     if(test.status === 'live'){
 
-      this.router.navigate(['/advanced-instructions']);
+      this.router.navigate(['/advanced-home']);
 
     }
 

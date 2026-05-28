@@ -1,0 +1,17 @@
+<!-- STATE 1: Before Exam Starts (Header 1 + Instructions) -->
+<ng-container *ngIf="!isExamStarted">
+  <app-header1></app-header1>
+  <app-instruction (ready)="startExam()"></app-instruction>
+</ng-container>
+
+<!-- STATE 2: After Exam Starts (Header 2 + Future Component) -->
+<ng-container *ngIf="isExamStarted">
+  <app-header3></app-header3>
+  <app-mock-question></app-mock-question>
+  <!-- 
+    USER INSTRUCTION: 
+    This is the space for the another component that you will develop later.
+    To render your new component, simply replace the placeholder below 
+    with your new component's selector (e.g., <app-new-exam-page></app-new-exam-page>).
+  -->
+</ng-container>
