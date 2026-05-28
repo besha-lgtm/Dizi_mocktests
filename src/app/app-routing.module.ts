@@ -25,6 +25,7 @@ import { JeeAdvancedMocktestComponent } from './pages/jee-advanced-mocktest/jee-
 import { Header3Component } from './layout/header3/header3.component';
 import { AdvancedInstructionsComponent } from './pages/advanced-instructions/advanced-instructions.component';
 import { MainLayoutComponent2 } from './layout/main-layout2/main-layout2.component';
+import { JeeAdvancedQuestionsComponent } from './pages/jee-advanced-questions/jee-advanced-questions.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -52,7 +53,8 @@ const routes: Routes = [
   { path: 'exam-selection', component: ExamSelectionComponent },
   { path: 'jee-advanced', component: JeeAdvancedMocktestComponent },
   { path: 'advanced-instructions', component: AdvancedInstructionsComponent },
-  { path: 'advanced-home', component: MainLayoutComponent2}
+  { path: 'advanced-home', component: MainLayoutComponent2},
+  { path: 'jee-advanced-questions', component: JeeAdvancedQuestionsComponent }
 ];
 
 @NgModule({

@@ -30,6 +30,7 @@ import { JeeAdvancedMocktestComponent } from './pages/jee-advanced-mocktest/jee-
 import { Header3Component } from './layout/header3/header3.component';
 import { AdvancedInstructionsComponent } from './pages/advanced-instructions/advanced-instructions.component';
 import { MainLayoutComponent2 } from './layout/main-layout2/main-layout2.component';
+import { JeeAdvancedQuestionsComponent } from './pages/jee-advanced-questions/jee-advanced-questions.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { MainLayoutComponent2 } from './layout/main-layout2/main-layout2.compone
     Header3Component,
     AdvancedInstructionsComponent,
     MainLayoutComponent2,
+    JeeAdvancedQuestionsComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [provideBrowserGlobalErrorListeners()],

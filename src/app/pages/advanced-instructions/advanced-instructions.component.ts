@@ -274,14 +274,12 @@ export class AdvancedInstructionsComponent {
 
   onReadyToBegin(): void {
 
-    if(this.hasAcceptedInstructions){
+  if(this.hasAcceptedInstructions){
 
-      this.router.navigate([
-        '/jee-advanced-question'
-      ]);
-
-    }
+    this.ready.emit();
 
   }
+
+}
 
 }

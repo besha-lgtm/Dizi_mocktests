@@ -1,13 +1,14 @@
 <!-- STATE 1: Before Exam Starts (Header 1 + Instructions) -->
 <ng-container *ngIf="!isExamStarted">
   <app-header1></app-header1>
-  <app-instruction (ready)="startExam()"></app-instruction>
+  <app-advanced-instructions (ready)="startExam()"></app-advanced-instructions>
+  <!-- <app-instruction (ready)="startExam()"></app-instruction> -->
 </ng-container>
 
 <!-- STATE 2: After Exam Starts (Header 2 + Future Component) -->
 <ng-container *ngIf="isExamStarted">
   <app-header3></app-header3>
-  <app-mock-question></app-mock-question>
+  <app-jee-advanced-questions></app-jee-advanced-questions>
   <!-- 
     USER INSTRUCTION: 
     This is the space for the another component that you will develop later.
