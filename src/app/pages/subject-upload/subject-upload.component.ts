@@ -25,6 +25,7 @@ export class SubjectUploadComponent implements OnInit {
 
   activeTab: string = 'manual';
   isEditMode: boolean = false;
+  examType = '';
 
   questions: any[] = [
     {
@@ -52,6 +53,10 @@ export class SubjectUploadComponent implements OnInit {
       this.subject = params['subject'];
 
     });
+     this.route.queryParams.subscribe(params => {
+    this.examType = params['examType'] || '';
+  });
+
     const editData = history.state.editData;
 
   if (editData) {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { Location } from '@angular/common';
 // CHANGE: Added User interface to define login data structure
 interface User {
   email: string;
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   formSuccess: string = '';
 
   // CHANGE: Added FormBuilder and Router dependency injection
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router, private location: Location) {}
 
   // CHANGE: Added ngOnInit lifecycle hook to initialize the form with validators
   ngOnInit() {
@@ -106,4 +106,7 @@ export class LoginComponent implements OnInit {
       this.formSuccess = '';
     }, 1500);
   }
+  goBack(): void {
+  this.router.navigate(['/']);
+}
 }

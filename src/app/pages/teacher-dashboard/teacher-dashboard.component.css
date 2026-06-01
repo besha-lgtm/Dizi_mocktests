@@ -1,0 +1,151 @@
+.teacher-page-wrapper{
+
+    max-width:1300px;
+
+    margin:auto;
+
+    padding:60px 20px;
+
+    padding-top:110px;
+}
+
+/* HERO */
+
+.teacher-hero{
+
+    background: linear-gradient(135deg, #1d3452 0%, #162d4f 100%);
+
+    padding:3rem 2rem;
+
+    border-radius:24px;
+
+    box-shadow:0 10px 40px rgba(0,0,0,0.2);
+}
+
+.teacher-badge{
+
+    display:inline-block;
+
+    background:rgba(59,130,246,0.12);
+
+    border:1px solid rgba(59,130,246,0.3);
+
+    color:#60a5fa;
+
+    padding:10px 18px;
+
+    border-radius:50px;
+
+    margin-bottom:24px;
+
+    font-weight:700;
+}
+
+.teacher-hero h1{
+
+    font-size:3rem;
+
+    color:white;
+
+    font-weight:800;
+
+    margin-bottom:5px;
+}
+
+.teacher-highlight{
+
+    color:#38bdf8;
+}
+
+.teacher-hero p{
+
+    color:#cbd5e1;
+
+    font-size:18px;
+
+    margin-bottom:22px;
+}
+
+/* BUTTONS */
+
+.teacher-btn-group{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:20px;
+
+    flex-wrap:wrap;
+}
+
+.teacher-btn-primary{
+
+    width:190px;
+
+    height:56px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #3b82f6
+    );
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s ease;
+
+    box-shadow:0 8px 20px rgba(37,99,235,.35);
+}
+
+.teacher-btn-primary:hover{
+
+    transform:translateY(-4px);
+}
+
+
+.teacher-back-btn{
+
+    background:none;
+
+    border:none;
+
+    color:#0284c7;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    top:0px;
+}
+
+@media(max-width:992px){
+
+    .teacher-manage-content{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    .teacher-manage-left h2{
+
+        font-size:34px;
+    }
+}

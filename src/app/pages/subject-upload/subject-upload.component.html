@@ -41,8 +41,12 @@
 
             <h2 class="subject-title">
 
-    {{ subject | titlecase }}
-    Question Upload
+  {{ subject | titlecase }}
+
+  Question Upload
+  <span *ngIf="examType">
+    ({{ examType }})
+  </span>
 
 </h2>
 

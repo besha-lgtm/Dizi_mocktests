@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { Location } from '@angular/common';
 interface User {
   email: string;
   password: string;
@@ -25,7 +25,10 @@ export class TeacherLoginComponent implements OnInit {
   formError: string = '';
   formSuccess: string = '';
 
-  constructor(private router: Router) {}
+  constructor(
+  private router: Router,
+  private location: Location
+) {}
 
   ngOnInit() {
     // Initialization logic if needed
@@ -97,11 +100,14 @@ export class TeacherLoginComponent implements OnInit {
       keepSigned: this.user.keepSigned
     });
 
-    // Navigate to admin dashboard after successful login
+    // Navigate to teacher dashboard after successful login
     setTimeout(() => {
-      this.router.navigate(['/admin-dashboard']);
+      this.router.navigate(['/teacher-dashboard']);
       this.user = { email: '', password: '', keepSigned: false };
       this.formSuccess = '';
     }, 1500);
   }
+  goBack(): void {
+  this.router.navigate(['/']);
+}
 }

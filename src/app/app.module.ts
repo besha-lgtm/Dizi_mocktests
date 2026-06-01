@@ -31,6 +31,8 @@ import { Header3Component } from './layout/header3/header3.component';
 import { AdvancedInstructionsComponent } from './pages/advanced-instructions/advanced-instructions.component';
 import { MainLayoutComponent2 } from './layout/main-layout2/main-layout2.component';
 import { JeeAdvancedQuestionsComponent } from './pages/jee-advanced-questions/jee-advanced-questions.component';
+import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard.component';
+import { TeacherSidebarComponent } from './layout/teacher-sidebar/teacher-sidebar.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,8 @@ import { JeeAdvancedQuestionsComponent } from './pages/jee-advanced-questions/je
     AdvancedInstructionsComponent,
     MainLayoutComponent2,
     JeeAdvancedQuestionsComponent,
+    TeacherDashboardComponent,
+    TeacherSidebarComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [provideBrowserGlobalErrorListeners()],

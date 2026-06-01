@@ -1,5 +1,5 @@
 <app-header1></app-header1>
-<app-admin-sidebar></app-admin-sidebar>
+<app-teacher-sidebar></app-teacher-sidebar>
 <div class="ml-page-wrapper" (click)="closeDropdowns()">
 
   <div class="ml-top-nav">
@@ -25,15 +25,53 @@
         Curate and organize educational content for the core {{ subject | lowercase }} curriculum.
       </p>
     </div>
+    <div class="ml-add-dropdown">
 
-    <!-- Placeholder — will be wired to another component later -->
-    <button class="ml-add-btn" (click)="addNewQuestion(); $event.stopPropagation()">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-           fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-      </svg>
-      Add New Question
-    </button>
+  <button
+    class="ml-add-btn"
+    (click)="showExamDropdown = !showExamDropdown; $event.stopPropagation()">
+
+    <svg xmlns="http://www.w3.org/2000/svg"
+         width="16"
+         height="16"
+         fill="none"
+         viewBox="0 0 24 24"
+         stroke="currentColor"
+         stroke-width="2.5">
+
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+
+    </svg>
+
+    Add New Question
+
+  </button>
+
+  <div
+    class="ml-dropdown-menu"
+    *ngIf="showExamDropdown"
+    (click)="$event.stopPropagation()">
+
+    <div
+      class="ml-dropdown-item"
+      (click)="addNewQuestion('JEE Mains')">
+
+      JEE Mains
+
+    </div>
+
+    <div
+      class="ml-dropdown-item"
+      (click)="addNewQuestion('JEE Advanced')">
+
+      JEE Advanced
+
+    </div>
+
+  </div>
+
+</div>
   </div>
 
   <div class="ml-stats-grid">
@@ -141,6 +179,50 @@
           </div>
         </div>
       </div>
+      <!-- EXAM TYPE DROPDOWN -->
+<div class="ml-dropdown" [class.ml-dropdown--open]="examDropdownOpen">
+
+  <button
+    class="ml-dropdown-trigger"
+    (click)="toggleExamDropdown()"
+    type="button">
+
+    <span class="ml-dropdown-label">
+      {{ selectedExamType }}
+    </span>
+
+    <svg
+      class="ml-chevron"
+      xmlns="http://www.w3.org/2000/svg"
+      width="13"
+      height="13"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2.5">
+
+      <polyline points="6 9 12 15 18 9"/>
+
+    </svg>
+
+  </button>
+
+  <div
+    class="ml-dropdown-menu"
+    *ngIf="examDropdownOpen">
+
+    <div
+      class="ml-dropdown-item"
+      *ngFor="let exam of examTypes"
+      (click)="selectExamType(exam)">
+
+      {{ exam }}
+
+    </div>
+
+  </div>
+
+</div>
 
     </div><!-- /ml-filter-bar -->
 
@@ -152,6 +234,7 @@
             <th class="ml-th">ID</th>
             <th class="ml-th">TOPIC</th>
             <th class="ml-th ml-th--wide">QUESTION TEXT</th>
+            <th class="ml-th">EXAM TYPE</th>
             <th class="ml-th">DIFFICULTY</th>
             <th class="ml-th">LAST MODIFIED</th>
             <th class="ml-th ml-th--center">ACTIONS</th>
@@ -164,6 +247,9 @@
               <span class="ml-topic-badge" [ngClass]="getTopicClass(q.topic)">{{ q.topic }}</span>
             </td>
             <td class="ml-td ml-td--question">{{ q.questionText }}</td>
+            <td class="ml-td">
+              <span class="ml-topic-badge">{{ q.examType }} </span>
+            </td>
             <td class="ml-td">
               <span class="ml-diff-badge" [ngClass]="getDifficultyClass(q.difficulty)">{{ q.difficulty }}</span>
             </td>

@@ -1,0 +1,106 @@
+<app-header1></app-header1>
+
+<div class="teacher-page-wrapper">
+
+    <!-- BACK BUTTON -->
+
+    <div class="top-back-wrapper">
+
+        <button
+            class="teacher-back-btn"
+            (click)="goBackToHome()">
+
+            <svg
+                class="teacher-back-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2.5">
+
+                <polyline points="15 18 9 12 15 6"/>
+
+            </svg>
+
+            Back To Home
+
+        </button>
+
+    </div>
+
+    <!-- HERO SECTION -->
+
+    <section class="teacher-hero">
+
+        <div class="teacher-hero-content">
+
+            <div class="teacher-badge">
+
+                👨‍🏫 Teacher Dashboard
+
+            </div>
+
+            <h1>
+
+                Manage
+
+                <span class="teacher-highlight">
+
+                    Classes
+
+                </span>
+
+                &
+
+                <span class="teacher-highlight">
+
+                    Mock Tests
+
+                </span>
+
+            </h1>
+
+            <p>
+
+                Create mock tests, upload questions,
+                monitor student performance and generate reports.
+
+            </p>
+
+            <div class="teacher-btn-group">
+
+                <button
+                    class="teacher-btn-primary"
+                    routerLink="/mock-list/Mathematics">
+
+                    Mathematics
+
+                </button>
+
+                <button
+                    class="teacher-btn-primary"
+                    routerLink="/mock-list/Physics">
+
+                    Physics
+
+                </button>
+
+                <button
+                    class="teacher-btn-primary"
+                    routerLink="/mock-list/Chemistry">
+
+                    Chemistry
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    
+
+</div>

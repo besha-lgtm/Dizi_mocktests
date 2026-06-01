@@ -1,0 +1,113 @@
+<div class="tm-page-wrapper">
+
+  <div
+  class="teacher-sidebar"
+  [class.collapsed]="isCollapsed">
+
+  <div>
+
+    <div class="sidebar-top">
+
+      <div class="sidebar-brand">
+
+        <button
+          class="collapse-btn"
+          (click)="toggleSidebar()">
+
+          <i
+            class="fa-solid"
+            [ngClass]="isCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'">
+          </i>
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="sidebar-menu">
+
+      <!-- DASHBOARD -->
+
+      <a
+        routerLink="/teacher-dashboard"
+        routerLinkActive="active-link"
+        class="sidebar-link">
+
+        <i class="fa-solid fa-house"></i>
+
+        <span *ngIf="!isCollapsed">
+          Dashboard
+        </span>
+
+      </a>
+
+      <!-- STUDENTS -->
+<!-- 
+      <a
+        routerLink="/teacher-manageboard"
+        routerLinkActive="active-link"
+        class="sidebar-link">
+
+        <i class="fa-solid fa-user-graduate"></i>
+
+        <span *ngIf="!isCollapsed">
+          Students
+        </span>
+
+      </a> -->
+
+      <!-- MOCK TEST -->
+
+      <a
+        routerLink="/mock-list/All"
+        routerLinkActive="active-link"
+        class="sidebar-link">
+
+        <i class="fa-solid fa-clipboard-list"></i>
+
+        <span *ngIf="!isCollapsed">
+          Mock Tests
+        </span>
+
+      </a>
+
+      <!-- QUESTIONS -->
+
+      <a
+        routerLink="/subject-upload/subject"
+        routerLinkActive="active-link"
+        class="sidebar-link">
+
+        <i class="fa-solid fa-file-circle-plus"></i>
+
+        <span *ngIf="!isCollapsed">
+          Question Upload
+        </span>
+
+      </a>
+
+
+    </div>
+
+  </div>
+
+  <div class="sidebar-footer">
+
+    <button
+      class="logout-btn"
+      routerLink="/teacher-login">
+
+      <i class="fa-solid fa-right-from-bracket"></i>
+
+      <span *ngIf="!isCollapsed">
+        Logout
+      </span>
+
+    </button>
+
+  </div>
+
+</div>
+
+</div>

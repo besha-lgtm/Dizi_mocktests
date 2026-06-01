@@ -105,8 +105,6 @@ onSubmit(): void {
 
 }
 goBack(): void {
-
-  this.location.back();
-
+  this.router.navigate(['/mock-home']);
 }
 }
