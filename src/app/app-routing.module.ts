@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
 import { MockHomeComponent } from './pages/mock-home/mock-home.component';
 import { Instruction } from './pages/instruction/instruction.component';
 import { Header1Component } from './layout/header1/header1.component';
@@ -20,7 +19,6 @@ import { StudentRegistrationComponent } from './pages/student-registration/stude
 import { TeacherRegistrationComponent } from './pages/teacher-registration/teacher-registration.component';
 import { ScoreManagementComponent } from './pages/score-management/score-management.component';
 import { TeacherLoginComponent } from './teacher-login/teacher-login.component';
-import { TeacherRegisterComponent } from './teacher-register/teacher-register.component';
 import { ExamSelectionComponent } from './pages/exam-selection/exam-selection.component';
 import { JeeAdvancedMocktestComponent } from './pages/jee-advanced-mocktest/jee-advanced-mocktest.component';
 import { Header3Component } from './layout/header3/header3.component';
@@ -32,9 +30,7 @@ import { TeacherSidebarComponent } from './layout/teacher-sidebar/teacher-sideba
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
   { path: 'teacher-login', component: TeacherLoginComponent },
-  { path: 'teacher-register', component: TeacherRegisterComponent },
   { path: '', redirectTo: '/mock-home', pathMatch: 'full' },
   { path: 'mock-home', component: MockHomeComponent },
   { path: 'exam-home', component: MainLayoutComponent },

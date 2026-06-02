@@ -3,13 +3,13 @@
 <div class="ml-page-wrapper" (click)="closeDropdowns()">
 
   <div class="ml-top-nav">
-    <button class="ml-back-btn" (click)="goBackToSubjects(); $event.stopPropagation()">
+    <!-- <button class="ml-back-btn" (click)="goBackToSubjects(); $event.stopPropagation()">
       <svg class="ml-back-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
         <polyline points="15 18 9 12 15 6"/>
       </svg>
       Back to Subjects
-    </button>
+    </button> -->
 
     <nav class="ml-breadcrumb" aria-label="breadcrumb">
       <span class="ml-breadcrumb-link" (click)="goBackToSubjects(); $event.stopPropagation()">Subjects</span>
@@ -21,9 +21,9 @@
   <div class="ml-page-header">
     <div class="ml-page-header-text">
       <h1 class="ml-page-title">{{ subject }}: Topic &amp; Question Management</h1>
-      <p class="ml-page-subtitle">
+      <!-- <p class="ml-page-subtitle">
         Curate and organize educational content for the core {{ subject | lowercase }} curriculum.
-      </p>
+      </p> -->
     </div>
     <div class="ml-add-dropdown">
 

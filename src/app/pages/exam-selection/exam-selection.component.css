@@ -4,7 +4,7 @@
     max-width:1300px;
     margin:auto;
     padding:40px 20px;
-    padding-top:140px;
+    padding-top:120px;
 }
 
 /* HERO */
@@ -199,7 +199,7 @@
   align-items: center;
   gap: 3px;
   margin-top: auto;
-  margin-bottom: 0;
+  margin-bottom: 20px;
   background: none;
   border: none;
   padding: 0;

@@ -2,7 +2,7 @@
     max-width: 1300px;
     margin: auto;
     padding: 60px 20px;
-    padding-top: 140px;
+    padding-top: 110px;
 }
 
 .mock-hero {
@@ -116,7 +116,7 @@
 
 .admin-manage-section {
 
-    margin-top: 32px;
+    margin-top: 10px;
 
    background: linear-gradient(135deg, #1e3a5f 0%, #162d4f 100%);
     border-radius: 28px;
