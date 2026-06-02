@@ -1,4 +1,4 @@
-﻿import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -22,6 +22,7 @@ import { SelectMocktestComponent } from './pages/select-mocktest/select-mocktest
 import { AdminManageboardComponent } from './pages/admin-manageboard/admin-manageboard.component';
 import { AdminSidebarComponent } from './layout/admin-sidebar/admin-sidebar.component';
 import { StudentRegistrationComponent } from './pages/student-registration/student-registration.component';
+import { TeacherRegistrationComponent } from './pages/teacher-registration/teacher-registration.component';
 import { ScoreManagementComponent } from './pages/score-management/score-management.component';
 import { TeacherLoginComponent } from './teacher-login/teacher-login.component';
 import { TeacherRegisterComponent } from './teacher-register/teacher-register.component';
@@ -58,6 +59,7 @@ import { TeacherSidebarComponent } from './layout/teacher-sidebar/teacher-sideba
     AdminManageboardComponent,
     AdminSidebarComponent,
     StudentRegistrationComponent,
+    TeacherRegistrationComponent,
     ScoreManagementComponent,
     ExamSelectionComponent,
     JeeAdvancedMocktestComponent,

@@ -8,16 +8,16 @@
     <nav class="sr-breadcrumb" aria-label="breadcrumb">
       <span class="sr-breadcrumb-link" (click)="goBackToDashboard()">Dashboard</span>
       <span class="sr-breadcrumb-sep">›</span>
-      <span class="sr-breadcrumb-active">Student Registration</span>
+      <span class="sr-breadcrumb-active">Teacher Registration</span>
     </nav>
   </div>
 
   <!-- MAIN HEADER BLOCK -->
   <div class="sr-page-header">
     <div class="sr-page-header-text">
-      <h1 class="sr-page-title">Student Registration Management</h1>
+      <h1 class="sr-page-title">Teacher Registration Management</h1>
       <p class="sr-page-subtitle">
-        Register, manage, and monitor candidate access credentials. Matches layout of administration board.
+        Register, manage, and monitor faculty members and their subject credentials.
       </p>
     </div>
 
@@ -26,7 +26,7 @@
            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" class="sr-plus-icon">
         <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
       </svg>
-      Add New Registration
+      Add New Teacher
     </button>
   </div>
 
@@ -34,33 +34,24 @@
   <div class="sr-stats-grid">
     <div class="sr-stat-card">
       <div class="sr-stat-icon sr-stat-icon--students">
-        <i class="fa-solid fa-user-graduate"></i> 
+        <i class="fa-solid fa-chalkboard-user"></i> 
       </div>
       <div class="sr-stat-body">
-        <p class="sr-stat-label">Total Candidates</p>
-        <p class="sr-stat-value">{{ students.length }}</p>
+        <p class="sr-stat-label">Total Faculty</p>
+        <p class="sr-stat-value">{{ teachers.length }}</p>
       </div>
     </div>
 
     <div class="sr-stat-card">
       <div class="sr-stat-icon sr-stat-icon--sections">
-       <i class="fa-solid fa-cubes"></i>
+        <i class="fa-solid fa-book-bookmark"></i>
       </div>
       <div class="sr-stat-body">
-        <p class="sr-stat-label">Sections Assigned</p>
-        <p class="sr-stat-value">{{ sections.length }}</p>
+        <p class="sr-stat-label">Subjects Taught</p>
+        <p class="sr-stat-value">{{ subjects.length }}</p>
       </div>
     </div>
 
-    <div class="sr-stat-card">
-      <div class="sr-stat-icon sr-stat-icon--batches">
-     <i class="fa-solid fa-graduation-cap"></i>
-      </div>
-      <div class="sr-stat-body">
-        <p class="sr-stat-label">Active Batches</p>
-        <p class="sr-stat-value">{{ batches.length }}</p>
-      </div>
-    </div>
   </div>
 
   <!-- TABLE PANEL CARD -->
@@ -74,28 +65,20 @@
         <input type="text" 
                [(ngModel)]="searchText" 
                (ngModelChange)="applyFilters()" 
-               placeholder="Search by name, mail or unique ID...">
+               placeholder="Search by name or email address...">
       </div>
 
       <!-- Filters Dropdowns -->
       <div class="sr-filters-group">
-        <!-- Section Filter -->
+        <!-- Subject Filter -->
         <div class="sr-filter-select-wrapper">
-          <label class="sr-select-label">Section:</label>
-          <select [(ngModel)]="selectedSectionFilter" (change)="applyFilters()" class="sr-filter-select">
-            <option value="All">All Sections</option>
-            <option *ngFor="let sec of sections" [value]="sec">{{ sec }}</option>
+          <label class="sr-select-label">Subject:</label>
+          <select [(ngModel)]="selectedSubjectFilter" (change)="applyFilters()" class="sr-filter-select">
+            <option value="All">All Subjects</option>
+            <option *ngFor="let sub of subjects" [value]="sub">{{ sub }}</option>
           </select>
         </div>
 
-        <!-- Batch Filter -->
-        <div class="sr-filter-select-wrapper">
-          <label class="sr-select-label">Batch:</label>
-          <select [(ngModel)]="selectedBatchFilter" (change)="applyFilters()" class="sr-filter-select">
-            <option value="All">All Batches</option>
-            <option *ngFor="let b of batches" [value]="b">{{ b }}</option>
-          </select>
-        </div>
       </div>
     </div>
 
@@ -104,47 +87,39 @@
       <table class="sr-table">
         <thead class="sr-table-head">
           <tr>
-            <th class="sr-th">UNIQUE ID</th>
             <th class="sr-th">FULL NAME</th>
             <th class="sr-th">EMAIL ADDRESS</th>
-            <th class="sr-th">SECTION</th>
-            <th class="sr-th">ASSIGNED BATCH</th>
+            <th class="sr-th">ASSIGNED SUBJECT</th>
             <th class="sr-th sr-th--center">ACTIONS</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="sr-tr" *ngFor="let student of paginatedStudents">
-            <td class="sr-td sr-td--id">{{ student.uniqueId }}</td>
-            <td class="sr-td sr-td--name">{{ student.name }}</td>
-            <td class="sr-td sr-td--mail">{{ student.mail }}</td>
+          <tr class="sr-tr" *ngFor="let teacher of paginatedTeachers">
+            <td class="sr-td sr-td--name">{{ teacher.name }}</td>
+            <td class="sr-td sr-td--mail">{{ teacher.mail }}</td>
             <td class="sr-td">
-              <span class="sr-badge sr-badge--section" [ngClass]="'sr-badge-sec--' + student.section.replace(' ', '')">
-                {{ student.section }}
-              </span>
-            </td>
-            <td class="sr-td">
-              <span class="sr-badge sr-badge--batch" [ngClass]="'sr-badge-batch--' + student.batch.replace(' ', '')">
-                {{ student.batch }}
+              <span class="sr-badge sr-badge--section" [ngClass]="'sr-badge-sec--' + teacher.subject">
+                {{ teacher.subject }}
               </span>
             </td>
             <td class="sr-td sr-td--actions">
-              <button class="sr-action-btn sr-action-btn--edit" (click)="openEditModal(student)">
+              <button class="sr-action-btn sr-action-btn--edit" (click)="openEditModal(teacher)">
                 <i class="fa-solid fa-pen"></i> Edit
               </button>
-              <button class="sr-action-btn sr-action-btn--delete" (click)="deleteStudent(student.uniqueId)">
+              <button class="sr-action-btn sr-action-btn--delete" (click)="deleteTeacher(teacher.mail)">
                 <i class="fa-solid fa-trash-can"></i> Delete
               </button>
             </td>
           </tr>
 
           <!-- EMPTY STATE -->
-          <tr *ngIf="paginatedStudents.length === 0">
-            <td colspan="6" class="sr-empty-row">
+          <tr class="sr-tr" *ngIf="paginatedTeachers.length === 0">
+            <td colspan="4" class="sr-empty-row">
               <div class="sr-empty-container">
                 <div class="sr-empty-icon"><i class="fa-solid fa-users-slash"></i></div>
-                <h3 class="sr-empty-title">No Candidate Registrations Found</h3>
-                <p class="sr-empty-text">No student registrations match your current search query or filter options.</p>
-                <button class="sr-btn-link" (click)="searchText = ''; selectedSectionFilter = 'All'; selectedBatchFilter = 'All'; applyFilters()">
+                <h3 class="sr-empty-title">No Teacher Registrations Found</h3>
+                <p class="sr-empty-text">No faculty members match your current search query or filter options.</p>
+                <button class="sr-btn-link" (click)="searchText = ''; selectedSubjectFilter = 'All'; applyFilters()">
                   Clear Filters
                 </button>
               </div>
@@ -155,7 +130,7 @@
     </div>
 
     <!-- PAGINATION FOOTER -->
-    <div class="sr-pagination" *ngIf="filteredStudents.length > 0">
+    <div class="sr-pagination" *ngIf="filteredTeachers.length > 0">
       <span class="sr-pagination-info">{{ getShowingText() }}</span>
 
       <div class="sr-pagination-controls">
@@ -183,6 +158,8 @@
       </div>
     </div>
 
+  </div>
+
 </div>
 
 <!-- REGISTRATION POPUP MODAL (FORM) -->
@@ -192,8 +169,8 @@
     <!-- Modal Header -->
     <div class="sr-modal-header">
       <div class="sr-modal-header-text">
-        <span class="sr-modal-badge">{{ editMode ? '🛠️ EDIT PROFILE' : (bulkUploadMode ? '📂 BULK UPLOAD' : '✨ NEW REGISTRATION') }}</span>
-        <h2 class="sr-modal-title">{{ editMode ? 'Edit Candidate Details' : (bulkUploadMode ? 'Bulk Upload Candidates' : 'Register New Candidate') }}</h2>
+        <span class="sr-modal-badge">{{ editMode ? '🛠️ EDIT FACULTY' : (bulkUploadMode ? '📂 BULK UPLOAD' : '✨ NEW REGISTRATION') }}</span>
+        <h2 class="sr-modal-title">{{ editMode ? 'Edit Teacher Details' : (bulkUploadMode ? 'Bulk Upload Teachers' : 'Register New Teacher') }}</h2>
       </div>
       <button class="sr-modal-close-btn" (click)="closeModal()">
         <i class="fa-solid fa-xmark"></i>
@@ -201,25 +178,12 @@
     </div>
 
     <!-- Modal Body (Form / Bulk Upload) -->
-    <form (submit)="$event.preventDefault(); saveStudent()" class="sr-modal-form">
+    <form (submit)="$event.preventDefault(); saveTeacher()" class="sr-modal-form">
       <div class="sr-modal-body">
         
         <!-- Standard Registration Form fields -->
         <ng-container *ngIf="!bulkUploadMode">
-          <!-- Row: Unique ID (Read-only/auto-generated) -->
-          <div class="sr-form-group">
-            <label class="sr-form-label">UNIQUE IDENTIFIER (APP ID)</label>
-            <div class="sr-input-wrapper sr-input-wrapper--disabled">
-              <i class="fa-solid fa-id-card sr-input-icon"></i>
-              <input type="text" 
-                     name="uniqueId" 
-                     [(ngModel)]="studentForm.uniqueId" 
-                     disabled
-                     class="sr-form-input sr-form-input--disabled">
-            </div>
-            <small class="sr-input-help">Auto-generated unique app key.</small>
-          </div>
-
+          
           <!-- Row: Full Name -->
           <div class="sr-form-group">
             <label class="sr-form-label">FULL NAME <span class="sr-required">*</span></label>
@@ -227,9 +191,9 @@
               <i class="fa-solid fa-user sr-input-icon"></i>
               <input type="text" 
                      name="name" 
-                     [(ngModel)]="studentForm.name" 
+                     [(ngModel)]="teacherForm.name" 
                      required
-                     placeholder="e.g. Rahul Sharma" 
+                     placeholder="e.g. Dr. Amit Patel" 
                      class="sr-form-input">
             </div>
           </div>
@@ -241,9 +205,11 @@
               <i class="fa-solid fa-envelope sr-input-icon"></i>
               <input type="email" 
                      name="mail" 
-                     [(ngModel)]="studentForm.mail" 
+                     [(ngModel)]="teacherForm.mail" 
                      required
-                     placeholder="e.g. rahul.sharma@domain.com" 
+                     [disabled]="editMode"
+                     [class.sr-form-input--disabled]="editMode"
+                     placeholder="e.g. amit.patel@domain.com" 
                      class="sr-form-input">
             </div>
           </div>
@@ -255,7 +221,7 @@
               <i class="fa-solid fa-lock sr-input-icon"></i>
               <input [type]="showPassword ? 'text' : 'password'" 
                      name="password" 
-                     [(ngModel)]="studentForm.password" 
+                     [(ngModel)]="teacherForm.password" 
                      required
                      placeholder="Enter access password" 
                      class="sr-form-input sr-form-input--password">
@@ -265,28 +231,14 @@
             </div>
           </div>
 
-          <!-- Row: Section and Batch (Grid Side-by-side) -->
-          <div class="sr-form-row">
-            <!-- Section Select -->
-            <div class="sr-form-group sr-form-group--half">
-              <label class="sr-form-label">SECTION <span class="sr-required">*</span></label>
-              <div class="sr-input-wrapper">
-                <i class="fa-solid fa-cubes sr-input-icon"></i>
-                <select name="section" [(ngModel)]="studentForm.section" required class="sr-form-select">
-                  <option *ngFor="let sec of sections" [value]="sec">{{ sec }}</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Batch Select -->
-            <div class="sr-form-group sr-form-group--half">
-              <label class="sr-form-label">ASSIGNED BATCH <span class="sr-required">*</span></label>
-              <div class="sr-input-wrapper">
-                <i class="fa-solid fa-graduation-cap sr-input-icon"></i>
-                <select name="batch" [(ngModel)]="studentForm.batch" required class="sr-form-select">
-                  <option *ngFor="let b of batches" [value]="b">{{ b }}</option>
-                </select>
-              </div>
+          <!-- Row: Subject -->
+          <div class="sr-form-group">
+            <label class="sr-form-label">ASSIGNED SUBJECT <span class="sr-required">*</span></label>
+            <div class="sr-input-wrapper">
+              <i class="fa-solid fa-book-open sr-input-icon"></i>
+              <select name="subject" [(ngModel)]="teacherForm.subject" required class="sr-form-select">
+                <option *ngFor="let sub of subjects" [value]="sub">{{ sub }}</option>
+              </select>
             </div>
           </div>
         </ng-container>
@@ -294,7 +246,21 @@
         <!-- Bulk Upload excel module -->
         <ng-container *ngIf="bulkUploadMode">
           <div class="sr-bulk-upload-wrapper">
-            <div class="sr-template-download-bar" style="display: flex; justify-content: flex-end; margin-bottom: 8px;">
+            
+            <!-- Subject Select before upload -->
+            <div class="sr-form-group">
+              <label class="sr-form-label">SELECT SUBJECT FOR BULK UPLOAD <span class="sr-required">*</span></label>
+              <div class="sr-input-wrapper">
+                <i class="fa-solid fa-book-bookmark sr-input-icon"></i>
+                <select name="subjectBulk" [(ngModel)]="selectedSubjectBulk" required class="sr-form-select">
+                  <option value="" disabled selected>Choose Subject...</option>
+                  <option *ngFor="let sub of subjects" [value]="sub">{{ sub }}</option>
+                </select>
+              </div>
+              <small class="sr-input-help">All uploaded teachers will be registered under this subject.</small>
+            </div>
+
+            <div class="sr-template-download-bar" style="display: flex; justify-content: flex-end; margin-top: 8px;">
               <button type="button" class="sr-btn-link" (click)="downloadTemplate()" style="font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
                 <i class="fa-solid fa-download"></i> Download Excel Template
               </button>
@@ -339,7 +305,7 @@
                   file upload succesfully
                 </p>
                 <p class="sr-upload-hint" style="color: #047857; font-weight: 700; margin-bottom: 6px;">
-                  {{ fileName }} ({{ bulkUploadedStudents.length }} candidates ready)
+                  {{ fileName }} ({{ bulkUploadedTeachers.length }} teachers ready)
                 </p>
                 <p class="sr-upload-hint" style="font-size: 11px; text-decoration: underline; color: #64748b;">
                   Click to choose a different file
@@ -367,14 +333,13 @@
         
         <button type="submit" class="sr-btn sr-btn--save" [disabled]="bulkUploadMode && !isFileUploaded">
           <i class="fa-solid fa-circle-check"></i>
-          {{ editMode ? 'Update Profile' : 'Complete Registration' }}
+          {{ editMode ? 'Update Details' : 'Complete Registration' }}
         </button>
       </div>
 
     </form>
 
   </div>
-</div>
 </div>
 
 <!-- FLOATING TOAST NOTIFICATION CONTAINER -->

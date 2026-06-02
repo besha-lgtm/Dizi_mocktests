@@ -1,5 +1,5 @@
 /* ==========================================================================
-   STUDENT REGISTRATION CUSTOM STYLING SYSTEM (.sr-)
+   TEACHER REGISTRATION CUSTOM STYLING SYSTEM (.sr-)
    Matches current Sidebar (270px) and Header (85px) structures.
    ========================================================================== */
 
@@ -154,7 +154,7 @@
    ========================================================================== */
 .sr-stats-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   margin-bottom: 30px;
 }
@@ -387,13 +387,7 @@
   font-weight: 500;
 }
 
-.sr-td--password {
-  font-family: monospace;
-  letter-spacing: 2px;
-  color: #94a3b8;
-}
-
-/* SECTIONS BADGES */
+/* SECTIONS / SUBJECTS BADGES */
 .sr-badge {
   display: inline-flex;
   align-items: center;
@@ -404,28 +398,23 @@
   letter-spacing: 0.2px;
 }
 
-/* Section-specific badges */
-.sr-badge-sec--SectionA {
+/* Subject specific badges for teacher registration */
+.sr-badge-sec--Physics {
   background: #eff6ff;
   color: #2563eb;
 }
 
-.sr-badge-sec--SectionB {
+.sr-badge-sec--Chemistry {
   background: #ecfdf5;
   color: #059669;
 }
 
-.sr-badge-sec--SectionC {
+.sr-badge-sec--Mathematics {
   background: #fffbeb;
   color: #d97706;
 }
 
-.sr-badge-sec--SectionD {
-  background: #fff1f2;
-  color: #e11d48;
-}
-
-/* Batch-specific badges (Solid Slate styles but premium look) */
+/* Batch-specific badges */
 .sr-badge--batch {
   background: linear-gradient(135deg, #1e3a5f 0%, #162d4f 100%);
   color: #ffffff;
@@ -969,10 +958,6 @@
   
   .sr-stats-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .sr-stat-card:last-child {
-    grid-column: span 2;
   }
 }
 

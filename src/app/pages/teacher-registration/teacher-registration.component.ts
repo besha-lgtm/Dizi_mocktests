@@ -2,13 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 
-interface Student {
-  uniqueId: string;
+interface Teacher {
   name: string;
   mail: string;
   password?: string;
-  section: string;
-  batch: string;
+  subject: string;
 }
 
 interface Toast {
@@ -18,48 +16,44 @@ interface Toast {
 }
 
 @Component({
-  selector: 'app-student-registration',
+  selector: 'app-teacher-registration',
   standalone: false,
-  templateUrl: './student-registration.component.html',
-  styleUrls: ['./student-registration.component.css']
+  templateUrl: './teacher-registration.component.html',
+  styleUrls: ['./teacher-registration.component.css']
 })
-export class StudentRegistrationComponent implements OnInit {
-  students: Student[] = [];
-  filteredStudents: Student[] = [];
-  paginatedStudents: Student[] = [];
+export class TeacherRegistrationComponent implements OnInit {
+  teachers: Teacher[] = [];
+  filteredTeachers: Teacher[] = [];
+  paginatedTeachers: Teacher[] = [];
 
   // Form State
   showModal = false;
   editMode = false;
   showPassword = false;
-  selectedStudentIndex: number | null = null;
+
+  // Form Fields
+  teacherForm: Teacher = {
+    name: '',
+    mail: '',
+    password: '',
+    subject: ''
+  };
 
   // Bulk Upload State
   bulkUploadMode = false;
   isFileUploaded = false;
   fileName = '';
-  bulkUploadedStudents: Student[] = [];
+  bulkUploadedTeachers: Teacher[] = [];
+  selectedSubjectBulk = '';
   isDragOver = false;
   isUploading = false;
 
-  // Form Fields
-  studentForm: Student = {
-    uniqueId: '',
-    name: '',
-    mail: '',
-    password: '',
-    section: '',
-    batch: ''
-  };
-
   // Search & Filter
   searchText = '';
-  selectedSectionFilter = 'All';
-  selectedBatchFilter = 'All';
+  selectedSubjectFilter = 'All';
 
-  // Sections & Batches Options
-  sections = ['Section A', 'Section B', 'Section C', 'Section D'];
-  batches = ['Dropper Batch A', 'Regular Batch B', 'Foundation Batch A', 'Achiever Batch B'];
+  // Subjects Options
+  subjects = ['Physics', 'Chemistry', 'Mathematics'];
 
   // Pagination
   currentPage = 1;
@@ -73,55 +67,37 @@ export class StudentRegistrationComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    // Initial dummy data matching requirements and visual guidelines
-    this.students = [
+    // Initial dummy data matching visual guidelines
+    this.teachers = [
       {
-        uniqueId: 'JEE20260041',
-        name: 'Ananya Iyer',
-        mail: 'ananya.iyer@gmail.com',
-        password: 'ananyaPass123',
-        section: 'Section A',
-        batch: 'Dropper Batch A'
+        name: 'Dr. Amit Patel',
+        mail: 'amit.patel@gmail.com',
+        password: 'amitPassword123',
+        subject: 'Physics'
       },
       {
-        uniqueId: 'JEE20260089',
-        name: 'Vikram Malhotra',
-        mail: 'vikram.m@gmail.com',
-        password: 'vikramSecure99',
-        section: 'Section B',
-        batch: 'Regular Batch B'
+        name: 'Prof. Rita Sen',
+        mail: 'rita.sen@gmail.com',
+        password: 'ritaPassword123',
+        subject: 'Chemistry'
       },
       {
-        uniqueId: 'JEE20261093',
-        name: 'Rahul Sharma',
-        mail: 'rahul.sharma@yahoo.com',
-        password: 'rahulWord999',
-        section: 'Section A',
-        batch: 'Dropper Batch A'
+        name: 'Dr. Alok Verma',
+        mail: 'alok.verma@gmail.com',
+        password: 'alokPassword123',
+        subject: 'Mathematics'
       },
       {
-        uniqueId: 'JEE20261150',
-        name: 'Priya Patel',
-        mail: 'priya.patel@outlook.com',
-        password: 'priyaSecure!',
-        section: 'Section C',
-        batch: 'Foundation Batch A'
+        name: 'Dr. Neha Sharma',
+        mail: 'neha.sharma@gmail.com',
+        password: 'nehaPassword123',
+        subject: 'Physics'
       },
       {
-        uniqueId: 'JEE20261201',
-        name: 'Karan Johar',
-        mail: 'karan.j@gmail.com',
-        password: 'karanPassword',
-        section: 'Section D',
-        batch: 'Achiever Batch B'
-      },
-      {
-        uniqueId: 'JEE20261305',
-        name: 'Sneha Reddy',
-        mail: 'sneha.reddy@gmail.com',
-        password: 'snehaSecret1',
-        section: 'Section B',
-        batch: 'Regular Batch B'
+        name: 'Prof. Sanjay Dutt',
+        mail: 'sanjay.dutt@gmail.com',
+        password: 'sanjayPassword123',
+        subject: 'Chemistry'
       }
     ];
 
@@ -130,19 +106,15 @@ export class StudentRegistrationComponent implements OnInit {
 
   // Filter & Search Logic
   applyFilters(): void {
-    this.filteredStudents = this.students.filter(s => {
+    this.filteredTeachers = this.teachers.filter(t => {
       const matchSearch =
-        s.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        s.mail.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        s.uniqueId.toLowerCase().includes(this.searchText.toLowerCase());
+        t.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        t.mail.toLowerCase().includes(this.searchText.toLowerCase());
 
-      const matchSection =
-        this.selectedSectionFilter === 'All' || s.section === this.selectedSectionFilter;
+      const matchSubject =
+        this.selectedSubjectFilter === 'All' || t.subject === this.selectedSubjectFilter;
 
-      const matchBatch =
-        this.selectedBatchFilter === 'All' || s.batch === this.selectedBatchFilter;
-
-      return matchSearch && matchSection && matchBatch;
+      return matchSearch && matchSubject;
     });
 
     this.currentPage = 1;
@@ -151,10 +123,10 @@ export class StudentRegistrationComponent implements OnInit {
 
   // Pagination Logic
   updatePagination(): void {
-    const totalItems = this.filteredStudents.length;
+    const totalItems = this.filteredTeachers.length;
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
-    this.paginatedStudents = this.filteredStudents.slice(start, end);
+    this.paginatedTeachers = this.filteredTeachers.slice(start, end);
 
     const totalPages = this.totalPages;
     this.pageNumbers = [];
@@ -175,7 +147,7 @@ export class StudentRegistrationComponent implements OnInit {
   }
 
   get totalPages(): number {
-    return Math.ceil(this.filteredStudents.length / this.itemsPerPage);
+    return Math.ceil(this.filteredTeachers.length / this.itemsPerPage);
   }
 
   goToPage(page: number | string): void {
@@ -200,10 +172,10 @@ export class StudentRegistrationComponent implements OnInit {
   }
 
   getShowingText(): string {
-    if (this.filteredStudents.length === 0) return 'Showing 0 of 0 candidates';
+    if (this.filteredTeachers.length === 0) return 'Showing 0 of 0 teachers';
     const start = (this.currentPage - 1) * this.itemsPerPage + 1;
-    const end = Math.min(start + this.itemsPerPage - 1, this.filteredStudents.length);
-    return `Showing ${start} to ${end} of ${this.filteredStudents.length} candidates`;
+    const end = Math.min(start + this.itemsPerPage - 1, this.filteredTeachers.length);
+    return `Showing ${start} to ${end} of ${this.filteredTeachers.length} teachers`;
   }
 
   // CRUD Operations
@@ -214,27 +186,27 @@ export class StudentRegistrationComponent implements OnInit {
     this.isFileUploaded = false;
     this.isUploading = false;
     this.fileName = '';
-    this.bulkUploadedStudents = [];
-    this.studentForm = {
-      uniqueId: this.generateUniqueId(),
+    this.bulkUploadedTeachers = [];
+    this.selectedSubjectBulk = '';
+    this.teacherForm = {
       name: '',
       mail: '',
       password: '',
-      section: this.sections[0],
-      batch: this.batches[0]
+      subject: this.subjects[0]
     };
     this.showModal = true;
   }
 
-  openEditModal(student: Student): void {
+  openEditModal(teacher: Teacher): void {
     this.editMode = true;
     this.showPassword = false;
     this.bulkUploadMode = false;
     this.isFileUploaded = false;
     this.isUploading = false;
     this.fileName = '';
-    this.bulkUploadedStudents = [];
-    this.studentForm = { ...student };
+    this.bulkUploadedTeachers = [];
+    this.selectedSubjectBulk = '';
+    this.teacherForm = { ...teacher };
     this.showModal = true;
   }
 
@@ -251,7 +223,8 @@ export class StudentRegistrationComponent implements OnInit {
     this.isFileUploaded = false;
     this.isUploading = false;
     this.fileName = '';
-    this.bulkUploadedStudents = [];
+    this.bulkUploadedTeachers = [];
+    this.selectedSubjectBulk = '';
   }
 
   disableBulkUpload(): void {
@@ -259,7 +232,8 @@ export class StudentRegistrationComponent implements OnInit {
     this.isFileUploaded = false;
     this.isUploading = false;
     this.fileName = '';
-    this.bulkUploadedStudents = [];
+    this.bulkUploadedTeachers = [];
+    this.selectedSubjectBulk = '';
   }
 
   onDragOver(event: DragEvent): void {
@@ -279,6 +253,11 @@ export class StudentRegistrationComponent implements OnInit {
     event.stopPropagation();
     this.isDragOver = false;
     
+    if (!this.selectedSubjectBulk) {
+      this.showToast('Please select a subject for bulk upload first!', 'danger');
+      return;
+    }
+
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
       this.handleExcelFile(files[0]);
@@ -286,6 +265,11 @@ export class StudentRegistrationComponent implements OnInit {
   }
 
   onFileSelected(event: any): void {
+    if (!this.selectedSubjectBulk) {
+      this.showToast('Please select a subject for bulk upload first!', 'danger');
+      event.target.value = '';
+      return;
+    }
     const file = event.target.files?.[0];
     if (file) {
       this.handleExcelFile(file);
@@ -301,7 +285,7 @@ export class StudentRegistrationComponent implements OnInit {
 
     this.isUploading = true;
     this.isFileUploaded = false;
-    this.bulkUploadedStudents = [];
+    this.bulkUploadedTeachers = [];
 
     const reader = new FileReader();
     reader.onload = (e: any) => {
@@ -319,14 +303,11 @@ export class StudentRegistrationComponent implements OnInit {
             return;
           }
 
-          const parsedStudents: Student[] = [];
+          const parsedTeachers: Teacher[] = [];
           for (const row of jsonData) {
             const nameKey = Object.keys(row).find(k => k.toLowerCase() === 'name' || k.toLowerCase() === 'full name');
             const mailKey = Object.keys(row).find(k => k.toLowerCase() === 'email' || k.toLowerCase() === 'mail' || k.toLowerCase() === 'email address');
-            const sectionKey = Object.keys(row).find(k => k.toLowerCase() === 'section');
-            const batchKey = Object.keys(row).find(k => k.toLowerCase() === 'batch' || k.toLowerCase() === 'assigned batch');
             const passwordKey = Object.keys(row).find(k => k.toLowerCase() === 'password');
-            const idKey = Object.keys(row).find(k => k.toLowerCase() === 'uniqueid' || k.toLowerCase() === 'id' || k.toLowerCase() === 'unique id');
 
             const name = nameKey ? String(row[nameKey]).trim() : '';
             const mail = mailKey ? String(row[mailKey]).trim() : '';
@@ -335,34 +316,23 @@ export class StudentRegistrationComponent implements OnInit {
               continue;
             }
 
-            let section = sectionKey ? String(row[sectionKey]).trim() : '';
-            const matchedSection = this.sections.find(s => s.toLowerCase() === section.toLowerCase());
-            section = matchedSection || this.sections[0];
-
-            let batch = batchKey ? String(row[batchKey]).trim() : '';
-            const matchedBatch = this.batches.find(b => b.toLowerCase() === batch.toLowerCase());
-            batch = matchedBatch || this.batches[0];
-
             const password = passwordKey ? String(row[passwordKey]).trim() : 'Password123';
-            const uniqueId = idKey ? String(row[idKey]).trim() : this.generateUniqueId();
 
-            parsedStudents.push({
-              uniqueId,
+            parsedTeachers.push({
               name,
               mail,
               password,
-              section,
-              batch
+              subject: this.selectedSubjectBulk
             });
           }
 
-          if (parsedStudents.length === 0) {
-            this.showToast('No valid student entries found! Ensure columns for Name and Email exist.', 'danger');
+          if (parsedTeachers.length === 0) {
+            this.showToast('No valid teacher entries found! Ensure columns for Name and Email exist.', 'danger');
             this.isUploading = false;
             return;
           }
 
-          this.bulkUploadedStudents = parsedStudents;
+          this.bulkUploadedTeachers = parsedTeachers;
           this.fileName = file.name;
           this.isFileUploaded = true;
           this.isUploading = false;
@@ -377,106 +347,92 @@ export class StudentRegistrationComponent implements OnInit {
     reader.readAsArrayBuffer(file);
   }
 
-  importBulkStudents(): void {
-    if (!this.isFileUploaded || this.bulkUploadedStudents.length === 0) {
-      this.showToast('Please upload a valid Excel file first!', 'danger');
-      return;
-    }
-
-    let addedCount = 0;
-    for (const student of this.bulkUploadedStudents) {
-      let uniqueId = student.uniqueId;
-      const idExists = this.students.some(s => s.uniqueId.toLowerCase() === uniqueId.toLowerCase());
-      if (idExists) {
-        uniqueId = this.generateUniqueId();
-      }
-
-      this.students.unshift({
-        ...student,
-        uniqueId
-      });
-      addedCount++;
-    }
-
-    this.showToast(`Imported ${addedCount} candidates successfully!`, 'success');
-    this.closeModal();
-    this.applyFilters();
-  }
-
   downloadTemplate(): void {
     const templateData = [
       {
-        'Full Name': 'Rahul Sharma',
-        'Email Address': 'rahul.sharma@example.com',
-        'Password': 'Password123',
-        'Section': 'Section A',
-        'Assigned Batch': 'Dropper Batch A'
+        'Full Name': 'Dr. Amit Patel',
+        'Email Address': 'amit.patel@example.com',
+        'Password': 'TeacherPassword123'
       }
     ];
     const worksheet = XLSX.utils.json_to_sheet(templateData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Template');
-    XLSX.writeFile(workbook, 'student-registration-template.xlsx');
-    this.showToast('Student Excel template downloaded successfully!', 'success');
+    XLSX.writeFile(workbook, 'teacher-registration-template.xlsx');
+    this.showToast('Teacher Excel template downloaded successfully!', 'success');
   }
 
-  saveStudent(): void {
+  importBulkTeachers(): void {
+    if (!this.isFileUploaded || this.bulkUploadedTeachers.length === 0) {
+      this.showToast('Please upload a valid Excel file first!', 'danger');
+      return;
+    }
+
+    let addedCount = 0;
+    for (const teacher of this.bulkUploadedTeachers) {
+      const emailExists = this.teachers.some(t => t.mail.toLowerCase() === teacher.mail.toLowerCase());
+      if (emailExists) {
+        continue; // Skip duplicates for teachers
+      }
+
+      this.teachers.unshift({ ...teacher });
+      addedCount++;
+    }
+
+    this.showToast(`Imported ${addedCount} teachers successfully!`, 'success');
+    this.closeModal();
+    this.applyFilters();
+  }
+
+  saveTeacher(): void {
     if (this.bulkUploadMode) {
-      this.importBulkStudents();
+      this.importBulkTeachers();
       return;
     }
 
     // Simple Validation
-    if (!this.studentForm.name.trim() || !this.studentForm.mail.trim() || !this.studentForm.uniqueId.trim() || !this.studentForm.password?.trim()) {
+    if (!this.teacherForm.name.trim() || !this.teacherForm.mail.trim() || !this.teacherForm.password?.trim()) {
       this.showToast('Please fill all required fields correctly!', 'danger');
       return;
     }
 
     // Email format validation
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (!emailPattern.test(this.studentForm.mail)) {
+    if (!emailPattern.test(this.teacherForm.mail)) {
       this.showToast('Please enter a valid email address!', 'danger');
       return;
     }
 
     if (this.editMode) {
-      const index = this.students.findIndex(s => s.uniqueId === this.studentForm.uniqueId);
+      const index = this.teachers.findIndex(t => t.mail === this.teacherForm.mail);
       if (index !== -1) {
-        this.students[index] = { ...this.studentForm };
-        this.showToast(`Updated student registration for ${this.studentForm.name} successfully!`, 'success');
+        this.teachers[index] = { ...this.teacherForm };
+        this.showToast(`Updated teacher details for ${this.teacherForm.name} successfully!`, 'success');
       }
     } else {
-      // Check if unique ID already exists
-      const exists = this.students.some(s => s.uniqueId.toLowerCase() === this.studentForm.uniqueId.toLowerCase());
+      const exists = this.teachers.some(t => t.mail.toLowerCase() === this.teacherForm.mail.toLowerCase());
       if (exists) {
-        this.showToast('A student with this Unique ID already exists!', 'danger');
+        this.showToast('A teacher with this Email Address already exists!', 'danger');
         return;
       }
 
-      this.students.unshift({ ...this.studentForm });
-      this.showToast(`Registered new student ${this.studentForm.name} successfully!`, 'success');
+      this.teachers.unshift({ ...this.teacherForm });
+      this.showToast(`Registered new teacher ${this.teacherForm.name} successfully!`, 'success');
     }
 
     this.closeModal();
     this.applyFilters();
   }
 
-  deleteStudent(uniqueId: string): void {
-    const student = this.students.find(s => s.uniqueId === uniqueId);
-    const name = student ? student.name : 'student';
+  deleteTeacher(mail: string): void {
+    const teacher = this.teachers.find(t => t.mail === mail);
+    const name = teacher ? teacher.name : 'teacher';
     
     if (confirm(`Are you sure you want to delete the registration for ${name}?`)) {
-      this.students = this.students.filter(s => s.uniqueId !== uniqueId);
-      this.showToast(`Removed student registration for ${name}.`, 'info');
+      this.teachers = this.teachers.filter(t => t.mail !== mail);
+      this.showToast(`Removed teacher registration for ${name}.`, 'info');
       this.applyFilters();
     }
-  }
-
-  // Utilities
-  generateUniqueId(): string {
-    const year = new Date().getFullYear();
-    const random = Math.floor(1000 + Math.random() * 9000); // 4 digit random
-    return `JEE${year}${random}`;
   }
 
   showToast(message: string, type: 'success' | 'info' | 'danger'): void {

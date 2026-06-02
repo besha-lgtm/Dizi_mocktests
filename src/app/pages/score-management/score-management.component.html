@@ -164,6 +164,34 @@
 
         </div>
 
+        <!-- EXAM -->
+        <div class="sr-filter-select-wrapper">
+
+          <label class="sr-select-label">
+            Exam:
+          </label>
+
+          <select
+            class="sr-filter-select"
+            [(ngModel)]="selectedExam"
+            (change)="filterScores()">
+
+            <option value="All">
+              All Exams
+            </option>
+
+            <option value="JEE Mains">
+              JEE Mains
+            </option>
+
+            <option value="JEE Advanced">
+              JEE Advanced
+            </option>
+
+          </select>
+
+        </div>
+
         <!-- MOCK -->
         <div class="sr-filter-select-wrapper">
 
@@ -217,7 +245,7 @@
               BATCH
             </th>
 
-            <th class="sr-th">
+            <th class="sr-th sr-th--mock">
               MOCK TEST
             </th>
 
@@ -263,8 +291,8 @@
               {{ student.batch }}
             </td>
 
-            <td class="sr-td">
-              {{ student.mock }}
+            <td class="sr-td sr-td--mock">
+              {{ student.exam }} {{ student.mock }}
             </td>
 
             <td class="sr-td">
@@ -322,7 +350,7 @@
 
                 <button
                   class="sr-btn-link"
-                  (click)="searchText=''; selectedBatch='All'; selectedMock='All'; filterScores()">
+                  (click)="searchText=''; selectedBatch='All'; selectedExam='All'; selectedMock='All'; filterScores()">
 
                   Clear Filters
 

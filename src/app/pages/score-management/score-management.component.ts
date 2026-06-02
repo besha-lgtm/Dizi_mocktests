@@ -14,6 +14,8 @@ export class ScoreManagementComponent implements OnInit {
 
   selectedBatch = 'All';
 
+  selectedExam = 'All';
+
   selectedMock = 'All';
 
   currentPage = 1;
@@ -34,6 +36,7 @@ export class ScoreManagementComponent implements OnInit {
       id: 'JEE20260041',
       name: 'Ananya Iyer',
       batch: 'Dropper Batch',
+      exam: 'JEE Mains',
       mock: 'Mock Test 1',
       phy: 88,
       chm: 92,
@@ -46,6 +49,7 @@ export class ScoreManagementComponent implements OnInit {
       id: 'JEE20260042',
       name: 'Rahul Sharma',
       batch: 'Foundation',
+      exam: 'JEE Advanced',
       mock: 'Mock Test 2',
       phy: 71,
       chm: 78,
@@ -58,6 +62,7 @@ export class ScoreManagementComponent implements OnInit {
       id: 'JEE20260043',
       name: 'Sneha Reddy',
       batch: 'Dropper Batch',
+      exam: 'JEE Mains',
       mock: 'Mock Test 1',
       phy: 95,
       chm: 90,
@@ -70,6 +75,7 @@ export class ScoreManagementComponent implements OnInit {
       id: 'JEE20260044',
       name: 'Vikram Malhotra',
       batch: 'Foundation',
+      exam: 'JEE Advanced',
       mock: 'Mock Test 2',
       phy: 60,
       chm: 54,
@@ -82,6 +88,7 @@ export class ScoreManagementComponent implements OnInit {
       id: 'JEE20260045',
       name: 'Priya Patel',
       batch: 'Dropper Batch',
+      exam: 'JEE Mains',
       mock: 'Mock Test 1',
       phy: 82,
       chm: 86,
@@ -94,6 +101,7 @@ export class ScoreManagementComponent implements OnInit {
       id: 'JEE20260046',
       name: 'Arjun Verma',
       batch: 'Foundation',
+      exam: 'JEE Advanced',
       mock: 'Mock Test 2',
       phy: 73,
       chm: 75,
@@ -106,6 +114,7 @@ export class ScoreManagementComponent implements OnInit {
       id: 'JEE20260047',
       name: 'Meera Nair',
       batch: 'Dropper Batch',
+      exam: 'JEE Mains',
       mock: 'Mock Test 1',
       phy: 91,
       chm: 89,
@@ -118,6 +127,7 @@ export class ScoreManagementComponent implements OnInit {
       id: 'JEE20260048',
       name: 'Karthik Rao',
       batch: 'Foundation',
+      exam: 'JEE Advanced',
       mock: 'Mock Test 2',
       phy: 66,
       chm: 70,
@@ -130,6 +140,7 @@ export class ScoreManagementComponent implements OnInit {
       id: 'JEE20260049',
       name: 'Divya Kapoor',
       batch: 'Dropper Batch',
+      exam: 'JEE Mains',
       mock: 'Mock Test 1',
       phy: 84,
       chm: 88,
@@ -142,6 +153,7 @@ export class ScoreManagementComponent implements OnInit {
       id: 'JEE20260050',
       name: 'Aditya Singh',
       batch: 'Foundation',
+      exam: 'JEE Advanced',
       mock: 'Mock Test 2',
       phy: 58,
       chm: 61,
@@ -164,17 +176,22 @@ export class ScoreManagementComponent implements OnInit {
 
       const matchesSearch =
         student.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        student.id.toLowerCase().includes(this.searchText.toLowerCase());
+        student.id.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        (student.exam && student.exam.toLowerCase().includes(this.searchText.toLowerCase()));
 
       const matchesBatch =
         this.selectedBatch === 'All' ||
         student.batch === this.selectedBatch;
 
+      const matchesExam =
+        this.selectedExam === 'All' ||
+        student.exam === this.selectedExam;
+
       const matchesMock =
         this.selectedMock === 'All' ||
         student.mock === this.selectedMock;
 
-      return matchesSearch && matchesBatch && matchesMock;
+      return matchesSearch && matchesBatch && matchesExam && matchesMock;
 
     });
 
@@ -250,7 +267,7 @@ export class ScoreManagementComponent implements OnInit {
 
   }
    goBackToDashboard(): void {
-    this.router.navigate(['/admin-dashboard']);
+    this.router.navigate(['/admin-manageboard']);
   }
 
 }

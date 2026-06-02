@@ -17,6 +17,7 @@ import { MockListComponent } from './pages/mock-list/mock-list.component';
 import { SelectMocktestComponent } from './pages/select-mocktest/select-mocktest.component';
 import { AdminManageboardComponent } from './pages/admin-manageboard/admin-manageboard.component';
 import { StudentRegistrationComponent } from './pages/student-registration/student-registration.component';
+import { TeacherRegistrationComponent } from './pages/teacher-registration/teacher-registration.component';
 import { ScoreManagementComponent } from './pages/score-management/score-management.component';
 import { TeacherLoginComponent } from './teacher-login/teacher-login.component';
 import { TeacherRegisterComponent } from './teacher-register/teacher-register.component';
@@ -51,6 +52,7 @@ const routes: Routes = [
   { path: 'mock-list/:subject', component: MockListComponent },
   {path: 'admin-manageboard', component: AdminManageboardComponent },
   { path: 'student-registration', component: StudentRegistrationComponent },
+  { path: 'teacher-registration', component: TeacherRegistrationComponent },
   { path: 'score-management', component: ScoreManagementComponent },
   { path: 'exam-selection', component: ExamSelectionComponent },
   { path: 'jee-advanced', component: JeeAdvancedMocktestComponent },

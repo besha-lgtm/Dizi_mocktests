@@ -30,15 +30,6 @@
     <!-- MENU -->
     <div class="sidebar-menu">
 
-      <!-- DASHBOARD -->
-      <a
-        routerLink="/admin-dashboard"
-        routerLinkActive="active-link"
-        class="sidebar-link">
-        <i class="fa-solid fa-table-columns"></i>
-        <span *ngIf="!isCollapsed">Dashboard</span>
-      </a>
-
       <!-- MANAGE BOARD -->
       <a
         routerLink="/admin-manageboard"
@@ -55,6 +46,15 @@
         class="sidebar-link">
         <i class="fa-solid fa-user-plus"></i>
         <span *ngIf="!isCollapsed">Student Registration</span>
+      </a>
+
+      <!-- TEACHER REGISTRATION -->
+      <a
+        routerLink="/teacher-registration"
+        routerLinkActive="active-link"
+        class="sidebar-link">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <span *ngIf="!isCollapsed">Teacher Registration</span>
       </a>
       <!-- SCORE MANAGEMENT -->
       <a

@@ -1052,3 +1052,22 @@
     justify-content: center;
   }
 }
+
+/* ==========================================================================
+   RESPONSIVE COLUMN CONSTRAINTS (MOCK TEST COLUMN)
+   ========================================================================== */
+.sr-th--mock,
+.sr-td--mock {
+  width: 190px;
+  min-width: 170px;
+  max-width: 220px;
+  box-sizing: border-box;
+}
+
+.sr-td--mock {
+  font-weight: 600;
+  color: #1e293b;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: keep-all;
+}
