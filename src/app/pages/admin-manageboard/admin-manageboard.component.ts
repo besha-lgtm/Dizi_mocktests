@@ -25,6 +25,7 @@ export class AdminManageboardComponent implements OnInit {
   totalCourses = 12;
 
   students: any[] = [];
+  teachers: any[] = [];
 
   filteredStudents: any[] = [];
 
@@ -71,6 +72,34 @@ export class AdminManageboardComponent implements OnInit {
         status: 'Inactive'
       }
 
+    ];
+
+    this.teachers = [
+      {
+        name: 'Dr. Amit Patel',
+        mail: 'amit.patel@gmail.com',
+        subject: 'Physics'
+      },
+      {
+        name: 'Prof. Rita Sen',
+        mail: 'rita.sen@gmail.com',
+        subject: 'Chemistry'
+      },
+      {
+        name: 'Dr. Alok Verma',
+        mail: 'alok.verma@gmail.com',
+        subject: 'Mathematics'
+      },
+      {
+        name: 'Dr. Neha Sharma',
+        mail: 'neha.sharma@gmail.com',
+        subject: 'Physics'
+      },
+      {
+        name: 'Prof. Sanjay Dutt',
+        mail: 'sanjay.dutt@gmail.com',
+        subject: 'Chemistry'
+      }
     ];
 
     this.filteredStudents = [...this.students];
