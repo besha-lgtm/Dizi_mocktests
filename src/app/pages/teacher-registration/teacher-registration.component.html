@@ -81,49 +81,83 @@
 
     <!-- DATA TABLE -->
     <div class="sr-table-scroll">
-      <table class="sr-table">
-        <thead class="sr-table-head">
-          <tr>
-            <th class="sr-th">FULL NAME</th>
-            <th class="sr-th">EMAIL ADDRESS</th>
-            <th class="sr-th">ASSIGNED SUBJECT</th>
-            <th class="sr-th sr-th--center">ACTIONS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="sr-tr" *ngFor="let teacher of paginatedTeachers">
-            <td class="sr-td sr-td--name">{{ teacher.name }}</td>
-            <td class="sr-td sr-td--mail">{{ teacher.mail }}</td>
-            <td class="sr-td">
-              <span class="sr-badge sr-badge--section" [ngClass]="'sr-badge-sec--' + teacher.subject">
-                {{ teacher.subject }}
-              </span>
-            </td>
-            <td class="sr-td sr-td--actions">
-              <button class="sr-action-btn sr-action-btn--edit" (click)="openEditModal(teacher)">
-                <i class="fa-solid fa-pen"></i> Edit
-              </button>
-              <button class="sr-action-btn sr-action-btn--delete" (click)="deleteTeacher(teacher.mail)">
-                <i class="fa-solid fa-trash-can"></i> Delete
-              </button>
-            </td>
-          </tr>
+      <p-table
+  [value]="paginatedTeachers"
+  responsiveLayout="scroll"
+  styleClass="sr-table">
 
-          <!-- EMPTY STATE -->
-          <tr class="sr-tr" *ngIf="paginatedTeachers.length === 0">
-            <td colspan="4" class="sr-empty-row">
-              <div class="sr-empty-container">
-                <div class="sr-empty-icon"><i class="fa-solid fa-users-slash"></i></div>
-                <h3 class="sr-empty-title">No Teacher Registrations Found</h3>
-                <p class="sr-empty-text">No faculty members match your current search query or filter options.</p>
-                <button class="sr-btn-link" (click)="searchText = ''; selectedSubjectFilter = 'All'; applyFilters()">
-                  Clear Filters
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <ng-template pTemplate="header">
+    <tr>
+      <th class="sr-th">FULL NAME</th>
+      <th class="sr-th">EMAIL ADDRESS</th>
+      <th class="sr-th">ASSIGNED SUBJECT</th>
+      <th class="sr-th sr-th--center">ACTIONS</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-teacher>
+    <tr class="sr-tr">
+      <td class="sr-td sr-td--name">
+        {{ teacher.name }}
+      </td>
+
+      <td class="sr-td sr-td--mail">
+        {{ teacher.mail }}
+      </td>
+
+      <td class="sr-td">
+        <span
+          class="sr-badge sr-badge--section"
+          [ngClass]="'sr-badge-sec--' + teacher.subject">
+
+          {{ teacher.subject }}
+
+        </span>
+      </td>
+
+      <td class="sr-td sr-td--actions">
+        <button
+          class="sr-action-btn sr-action-btn--edit"
+          (click)="openEditModal(teacher)">
+
+          <i class="fa-solid fa-pen"></i>
+          Edit
+
+        </button>
+
+        <button
+          class="sr-action-btn sr-action-btn--delete"
+          (click)="deleteTeacher(teacher.mail)">
+
+          <i class="fa-solid fa-trash-can"></i>
+          Delete
+
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="4">
+        <div class="sr-empty-container">
+          <div class="sr-empty-icon">
+            <i class="fa-solid fa-users-slash"></i>
+          </div>
+
+          <h3 class="sr-empty-title">
+            No Teacher Registrations Found
+          </h3>
+
+          <p class="sr-empty-text">
+            No faculty members match your current filters.
+          </p>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+
+</p-table>
     </div>
 
     <!-- PAGINATION FOOTER -->

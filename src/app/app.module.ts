@@ -37,6 +37,7 @@ import { ExamSelectionComponent } from './pages/exam-selection/exam-selection.co
 import { JeeAdvancedMocktestComponent } from './pages/jee-advanced-mocktest/jee-advanced-mocktest.component';
 import { AdvancedInstructionsComponent } from './pages/advanced-instructions/advanced-instructions.component';
 import { JeeAdvancedQuestionsComponent } from './pages/jee-advanced-questions/jee-advanced-questions.component';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,7 @@ import { JeeAdvancedQuestionsComponent } from './pages/jee-advanced-questions/je
     TeacherDashboardComponent,
     TeacherSidebarComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, TableModule],
   providers: [provideBrowserGlobalErrorListeners()],
   bootstrap: [AppComponent],
 })

@@ -55,7 +55,7 @@ export class AdvancedInstructionsComponent {
   instructionData: InstructionData = {
 
     pageTitle:
-    'JEE ADVANCED — INSTRUCTIONS TO CANDIDATES',
+    'INSTRUCTIONS TO CANDIDATES',
 
     sections: [
 

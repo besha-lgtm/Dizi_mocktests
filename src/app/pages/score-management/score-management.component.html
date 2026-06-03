@@ -223,146 +223,141 @@
     <!-- TABLE -->
     <div class="sr-table-scroll">
 
-      <table class="sr-table">
+  <p-table
+    [value]="paginatedScores"
+    responsiveLayout="scroll"
+    styleClass="sr-table">
 
-        <thead class="sr-table-head">
+    <!-- HEADER -->
+    <ng-template pTemplate="header">
+      <tr>
 
-          <tr>
+        <th class="sr-th">APP ID</th>
 
-            <th class="sr-th">
-              APP ID
-            </th>
+        <th class="sr-th">
+          STUDENT NAME
+        </th>
 
-            <th class="sr-th">
-              STUDENT NAME
-            </th>
+        <th class="sr-th">
+          BATCH
+        </th>
 
-            <th class="sr-th">
-              BATCH
-            </th>
+        <th class="sr-th sr-th--mock">
+          MOCK TEST
+        </th>
 
-            <th class="sr-th sr-th--mock">
-              MOCK TEST
-            </th>
+        <th class="sr-th">
+          PHYSICS
+        </th>
 
-            <th class="sr-th">
-              PHYSICS
-            </th>
+        <th class="sr-th">
+          CHEMISTRY
+        </th>
 
-            <th class="sr-th">
-              CHEMISTRY
-            </th>
+        <th class="sr-th">
+          MATHEMATICS
+        </th>
 
-            <th class="sr-th">
-              MATHEMATICS
-            </th>
+        <th class="sr-th">
+          AGGREGATE
+        </th>
 
-            <th class="sr-th">
-              AGGREGATE
-            </th>
+        <th class="sr-th sr-th--center">
+          PERCENTILE
+        </th>
 
-            <th class="sr-th sr-th--center">
-              PERCENTILE
-            </th>
+      </tr>
+    </ng-template>
 
-          </tr>
+    <!-- BODY -->
+    <ng-template
+      pTemplate="body"
+      let-student>
 
-        </thead>
+      <tr class="sr-tr">
 
-        <tbody>
+        <td class="sr-td sr-td--id">
+          {{ student.id }}
+        </td>
 
-          <tr
-            class="sr-tr"
-            *ngFor="let student of paginatedScores">
+        <td class="sr-td sr-td--name">
+          {{ student.name }}
+        </td>
 
-            <td class="sr-td sr-td--id">
-              {{ student.id }}
-            </td>
+        <td class="sr-td">
+          {{ student.batch }}
+        </td>
 
-            <td class="sr-td sr-td--name">
-              {{ student.name }}
-            </td>
+        <td class="sr-td sr-td--mock">
+          {{ student.exam }} {{ student.mock }}
+        </td>
 
-            <td class="sr-td">
-              {{ student.batch }}
-            </td>
+        <td class="sr-td">
+          {{ student.phy }}
+        </td>
 
-            <td class="sr-td sr-td--mock">
-              {{ student.exam }} {{ student.mock }}
-            </td>
+        <td class="sr-td">
+          {{ student.chm }}
+        </td>
 
-            <td class="sr-td">
-              {{ student.phy }}
-            </td>
+        <td class="sr-td">
+          {{ student.math }}
+        </td>
 
-            <td class="sr-td">
-              {{ student.chm }}
-            </td>
+        <td class="sr-td sr-td--name">
+          {{ student.aggregate }}
+        </td>
 
-            <td class="sr-td">
-              {{ student.math }}
-            </td>
+        <td class="sr-td sr-td--actions">
 
-            <td class="sr-td sr-td--name">
-              {{ student.aggregate }}
-            </td>
+          <span
+            class="sr-badge sr-badge--batch"
+            [ngClass]="student.percentile > 98
+            ? 'sr-badge-success'
+            : 'sr-badge-warning'">
 
-            <td class="sr-td sr-td--actions">
+            {{ student.percentile }}%
 
-              <span
-                class="sr-badge sr-badge--batch"
-                [ngClass]="student.percentile > 98
-                ? 'sr-badge-success'
-                : 'sr-badge-warning'">
+          </span>
 
-                {{ student.percentile }}%
+        </td>
 
-              </span>
+      </tr>
 
-            </td>
+    </ng-template>
 
-          </tr>
+    <!-- EMPTY -->
+    <ng-template pTemplate="emptymessage">
 
-          <!-- EMPTY -->
-          <tr *ngIf="paginatedScores.length === 0">
+      <tr>
 
-            <td
-              colspan="9"
-              class="sr-empty-row">
+        <td colspan="9">
 
-              <div class="sr-empty-container">
+          <div class="sr-empty-container">
 
-                <div class="sr-empty-icon">
-                  <i class="fa-solid fa-chart-column"></i>
-                </div>
+            <div class="sr-empty-icon">
+              <i class="fa-solid fa-chart-column"></i>
+            </div>
 
-                <h3 class="sr-empty-title">
-                  No Score Records Found
-                </h3>
+            <h3 class="sr-empty-title">
+              No Score Records Found
+            </h3>
 
-                <p class="sr-empty-text">
-                  No students match the selected search or filter options.
-                </p>
+            <p class="sr-empty-text">
+              No students match the selected filters.
+            </p>
 
-                <button
-                  class="sr-btn-link"
-                  (click)="searchText=''; selectedBatch='All'; selectedExam='All'; selectedMock='All'; filterScores()">
+          </div>
 
-                  Clear Filters
+        </td>
 
-                </button>
+      </tr>
 
-              </div>
+    </ng-template>
 
-            </td>
+  </p-table>
 
-          </tr>
-
-        </tbody>
-
-      </table>
-
-    </div>
+</div>
 
     <!-- PAGINATION -->
     <div

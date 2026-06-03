@@ -74,11 +74,11 @@
 </div>
   </div>
 
-  <div class="ml-stats-grid">
+  <div class="am-stats-grid">
 
     <!-- Total Questions -->
-    <div class="ml-stat-card">
-      <div class="ml-stat-icon">
+    <div class="am-stat-card">
+      <div class="am-stat-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -86,39 +86,39 @@
           <line x1="9" y1="9" x2="9" y2="21"/>
         </svg>
       </div>
-      <div class="ml-stat-body">
-        <p class="ml-stat-label">Total Questions</p>
-        <p class="ml-stat-value">{{ totalQuestions.toLocaleString() }}</p>
+      <div class="am-stat-body">
+        <p class="am-stat-label">Total Questions</p>
+        <p class="am-stat-value">{{ totalQuestions.toLocaleString() }}</p>
       </div>
     </div>
 
     <!-- Active Topics -->
-    <div class="ml-stat-card">
-      <div class="ml-stat-icon">
+    <div class="am-stat-card">
+      <div class="am-stat-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path d="M12 2L2 7l10 5 10-5-10-5z"/>
           <path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
         </svg>
       </div>
-      <div class="ml-stat-body">
-        <p class="ml-stat-label">Active Topics</p>
-        <p class="ml-stat-value">{{ activeTopics }}</p>
+      <div class="am-stat-body">
+        <p class="am-stat-label">Active Topics</p>
+        <p class="am-stat-value">{{ activeTopics }}</p>
       </div>
     </div>
 
     <!-- Last Update -->
-    <div class="ml-stat-card">
-      <div class="ml-stat-icon">
+    <div class="am-stat-card">
+      <div class="am-stat-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
           <polyline points="12 6 12 12 16 14"/>
         </svg>
       </div>
-      <div class="ml-stat-body">
-        <p class="ml-stat-label">Last Update</p>
-        <p class="ml-stat-value">{{ lastUpdate }}</p>
+      <div class="am-stat-body">
+        <p class="am-stat-label">Last Update</p>
+        <p class="am-stat-value">{{ lastUpdate }}</p>
       </div>
     </div>
 
@@ -227,67 +227,137 @@
     </div><!-- /ml-filter-bar -->
 
     <!-- ── DESKTOP TABLE ── visible ≥ 769 px -->
-    <div class="ml-table-scroll">
-      <table class="ml-table">
-        <thead class="ml-table-head">
-          <tr>
-            <th class="ml-th">ID</th>
-            <th class="ml-th">TOPIC</th>
-            <th class="ml-th ml-th--wide">QUESTION TEXT</th>
-            <th class="ml-th">EXAM TYPE</th>
-            <th class="ml-th">DIFFICULTY</th>
-            <th class="ml-th">LAST MODIFIED</th>
-            <th class="ml-th ml-th--center">ACTIONS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="ml-tr" *ngFor="let q of paginatedQuestions">
-            <td class="ml-td ml-td--id">{{ q.id }}</td>
-            <td class="ml-td">
-              <span class="ml-topic-badge" [ngClass]="getTopicClass(q.topic)">{{ q.topic }}</span>
-            </td>
-            <td class="ml-td ml-td--question">{{ q.questionText }}</td>
-            <td class="ml-td">
-              <span class="ml-topic-badge">{{ q.examType }} </span>
-            </td>
-            <td class="ml-td">
-              <span class="ml-diff-badge" [ngClass]="getDifficultyClass(q.difficulty)">{{ q.difficulty }}</span>
-            </td>
-            <td class="ml-td ml-td--date">{{ q.lastModified }}</td>
-            <td class="ml-td ml-td--actions">
-              <!-- Edit placeholder — redirected later -->
-              <button class="ml-action-btn ml-action-btn--edit"
-                      (click)="editQuestion(q); $event.stopPropagation()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                     fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                </svg>
-                Edit
-              </button>
-              <button class="ml-action-btn ml-action-btn--delete"
-                      (click)="deleteQuestion(q.id); $event.stopPropagation()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                     fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <polyline points="3 6 5 6 21 6"/>
-                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                  <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
-                </svg>
-                Delete
-              </button>
-            </td>
-          </tr>
+   <div class="ml-table-scroll">
 
-          <!-- EMPTY STATE -->
-          <tr *ngIf="paginatedQuestions.length === 0">
-            <td colspan="6" class="ml-empty">
-              <div class="ml-empty-icon">📋</div>
-              <p class="ml-empty-text">No questions found matching your filters.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <p-table
+    [value]="paginatedQuestions"
+    responsiveLayout="scroll"
+    styleClass="ml-table">
+
+    <!-- HEADER -->
+    <ng-template pTemplate="header">
+      <tr>
+
+        <th class="ml-th">ID</th>
+
+        <th class="ml-th">TOPIC</th>
+
+        <th class="ml-th ml-th--wide">
+          QUESTION TEXT
+        </th>
+
+        <th class="ml-th">
+          EXAM TYPE
+        </th>
+
+        <th class="ml-th">
+          DIFFICULTY
+        </th>
+
+        <th class="ml-th">
+          LAST MODIFIED
+        </th>
+
+        <th class="ml-th ml-th--center">
+          ACTIONS
+        </th>
+
+      </tr>
+    </ng-template>
+
+    <!-- BODY -->
+    <ng-template
+      pTemplate="body"
+      let-q>
+
+      <tr class="ml-tr">
+
+        <td class="ml-td ml-td--id">
+          {{ q.id }}
+        </td>
+
+        <td class="ml-td">
+          <span
+            class="ml-topic-badge"
+            [ngClass]="getTopicClass(q.topic)">
+
+            {{ q.topic }}
+
+          </span>
+        </td>
+
+        <td class="ml-td ml-td--question">
+          {{ q.questionText }}
+        </td>
+
+        <td class="ml-td">
+          <span class="ml-topic-badge">
+            {{ q.examType }}
+          </span>
+        </td>
+
+        <td class="ml-td">
+          <span
+            class="ml-diff-badge"
+            [ngClass]="getDifficultyClass(q.difficulty)">
+
+            {{ q.difficulty }}
+
+          </span>
+        </td>
+
+        <td class="ml-td ml-td--date">
+          {{ q.lastModified }}
+        </td>
+
+        <td class="ml-td ml-td--actions">
+
+          <button
+            class="ml-action-btn ml-action-btn--edit"
+            (click)="editQuestion(q)">
+
+            Edit
+
+          </button>
+
+          <button
+            class="ml-action-btn ml-action-btn--delete"
+            (click)="deleteQuestion(q.id)">
+
+            Delete
+
+          </button>
+
+        </td>
+
+      </tr>
+
+    </ng-template>
+
+    <!-- EMPTY -->
+    <ng-template pTemplate="emptymessage">
+
+      <tr>
+
+        <td colspan="7" class="ml-empty">
+
+          <div class="ml-empty-icon">
+            📋
+          </div>
+
+          <p class="ml-empty-text">
+            No questions found matching your filters.
+          </p>
+
+        </td>
+
+      </tr>
+
+    </ng-template>
+
+  </p-table>
+
+</div>
 
     <div class="ml-card-list">
 

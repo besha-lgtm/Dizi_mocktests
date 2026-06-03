@@ -97,59 +97,125 @@
     </div>
 
     <!-- DATA TABLE -->
-    <div class="sr-table-scroll">
-      <table class="sr-table">
-        <thead class="sr-table-head">
-          <tr>
-            <th class="sr-th">UNIQUE ID</th>
-            <th class="sr-th">FULL NAME</th>
-            <th class="sr-th">EMAIL ADDRESS</th>
-            <th class="sr-th">SECTION</th>
-            <th class="sr-th">ASSIGNED BATCH</th>
-            <th class="sr-th sr-th--center">ACTIONS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="sr-tr" *ngFor="let student of paginatedStudents">
-            <td class="sr-td sr-td--id">{{ student.uniqueId }}</td>
-            <td class="sr-td sr-td--name">{{ student.name }}</td>
-            <td class="sr-td sr-td--mail">{{ student.mail }}</td>
-            <td class="sr-td">
-              <span class="sr-badge sr-badge--section" [ngClass]="'sr-badge-sec--' + student.section.replace(' ', '')">
-                {{ student.section }}
-              </span>
-            </td>
-            <td class="sr-td">
-              <span class="sr-badge sr-badge--batch" [ngClass]="'sr-badge-batch--' + student.batch.replace(' ', '')">
-                {{ student.batch }}
-              </span>
-            </td>
-            <td class="sr-td sr-td--actions">
-              <button class="sr-action-btn sr-action-btn--edit" (click)="openEditModal(student)">
-                <i class="fa-solid fa-pen"></i> Edit
-              </button>
-              <button class="sr-action-btn sr-action-btn--delete" (click)="deleteStudent(student.uniqueId)">
-                <i class="fa-solid fa-trash-can"></i> Delete
-              </button>
-            </td>
-          </tr>
+   <div class="sr-table-scroll">
 
-          <!-- EMPTY STATE -->
-          <tr *ngIf="paginatedStudents.length === 0">
-            <td colspan="6" class="sr-empty-row">
-              <div class="sr-empty-container">
-                <div class="sr-empty-icon"><i class="fa-solid fa-users-slash"></i></div>
-                <h3 class="sr-empty-title">No Candidate Registrations Found</h3>
-                <p class="sr-empty-text">No student registrations match your current search query or filter options.</p>
-                <button class="sr-btn-link" (click)="searchText = ''; selectedSectionFilter = 'All'; selectedBatchFilter = 'All'; applyFilters()">
-                  Clear Filters
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <p-table
+    [value]="paginatedStudents"
+    responsiveLayout="scroll"
+    styleClass="p-datatable-striped p-datatable-gridlines">
+
+    <!-- HEADER -->
+    <ng-template pTemplate="header">
+      <tr>
+        <th>UNIQUE ID</th>
+        <th>FULL NAME</th>
+        <th>EMAIL ADDRESS</th>
+        <th>SECTION</th>
+        <th>ASSIGNED BATCH</th>
+        <th>ACTIONS</th>
+      </tr>
+    </ng-template>
+
+    <!-- BODY -->
+    <ng-template pTemplate="body" let-student>
+
+      <tr>
+
+        <td class="sr-td--id">
+          {{ student.uniqueId }}
+        </td>
+
+        <td class="sr-td--name">
+          {{ student.name }}
+        </td>
+
+        <td class="sr-td--mail">
+          {{ student.mail }}
+        </td>
+
+        <td>
+          <span
+            class="sr-badge"
+            [ngClass]="'sr-badge-sec--' + student.section.replace(' ', '')">
+
+            {{ student.section }}
+
+          </span>
+        </td>
+
+        <td>
+          <span
+            class="sr-badge sr-badge--batch"
+            [ngClass]="'sr-badge-batch--' + student.batch.replace(' ', '')">
+
+            {{ student.batch }}
+
+          </span>
+        </td>
+
+        <td>
+
+          <button
+            class="sr-action-btn sr-action-btn--edit"
+            (click)="openEditModal(student)">
+
+            <i class="fa-solid fa-pen"></i>
+
+            Edit
+
+          </button>
+
+          <button
+            class="sr-action-btn sr-action-btn--delete"
+            (click)="deleteStudent(student.uniqueId)">
+
+            <i class="fa-solid fa-trash-can"></i>
+
+            Delete
+
+          </button>
+
+        </td>
+
+      </tr>
+
+    </ng-template>
+
+    <!-- EMPTY MESSAGE -->
+
+    <ng-template pTemplate="emptymessage">
+
+      <tr>
+
+        <td colspan="6">
+
+          <div class="sr-empty-container">
+
+            <div class="sr-empty-icon">
+
+              <i class="fa-solid fa-users-slash"></i>
+
+            </div>
+
+            <h3 class="sr-empty-title">
+              No Candidate Registrations Found
+            </h3>
+
+            <p class="sr-empty-text">
+              No student registrations match your current search query.
+            </p>
+
+          </div>
+
+        </td>
+
+      </tr>
+
+    </ng-template>
+
+  </p-table>
+
+</div>
 
     <!-- PAGINATION FOOTER -->
     <div class="sr-pagination" *ngIf="filteredStudents.length > 0">
