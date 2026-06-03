@@ -9330,3 +9330,9 @@ body.sidebar-collapsed .am-page-wrapper {
     }
 
 }
+
+
+body.sidebar-collapsed .sr-page-wrapper {
+
+    margin-left: 74px;
+}
