@@ -30,9 +30,7 @@ export class TeacherDashboardComponent implements OnInit {
   }
 
   goBackToHome(): void {
-
-    this.router.navigate(['/teacher-login']);
-
+    this.router.navigate(['/login']);
   }
 
 }

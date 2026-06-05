@@ -63,14 +63,13 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['/forgot-password']);
   }
 
-  // CHANGE: Updated onSubmit() method with comprehensive form validation
+  // CHANGE: Updated onSubmit() method to handle static credentials for Student, Teacher, and Admin
   onSubmit(): void {
     // Clear previous messages
     this.formError = '';
     this.formSuccess = '';
 
-    // Check if email or password are empty/invalid
-    const emailValue = this.user.email?.trim();
+    const emailValue = this.user.email?.trim().toLowerCase();
     const passwordValue = this.user.password?.trim();
 
     // Validate email is not empty and is valid format
@@ -92,21 +91,49 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    // Show success message - Account logged in successfully
-    this.formSuccess = 'Account logged in successfully!';
-    console.log('Login submitted with data:', {
-      email: this.user.email,
-      keepSigned: this.user.keepSigned
-    });
-
-    // Navigate to exam home page after successful login
-    setTimeout(() => {
-      this.router.navigate(['/exam-selection']);
-      this.user = { email: '', password: '', keepSigned: false };
-      this.formSuccess = '';
-    }, 1500);
+    // Static credentials checking and routing
+    if (emailValue === 'student@gmail.com') {
+      if (passwordValue === 'student1234') {
+        this.formSuccess = 'Student logged in successfully!';
+        setTimeout(() => {
+          this.router.navigate(['/exam-selection']);
+          this.clearForm();
+        }, 1200);
+      } else {
+        this.formError = 'Incorrect password for Student';
+      }
+    } else if (emailValue === 'teacher@gmail.com') {
+      if (passwordValue === 'teacher1234') {
+        this.formSuccess = 'Teacher logged in successfully!';
+        setTimeout(() => {
+          this.router.navigate(['/teacher-dashboard']);
+          this.clearForm();
+        }, 1200);
+      } else {
+        this.formError = 'Incorrect password for Teacher';
+      }
+    } else if (emailValue === 'admin@gmail.com') {
+      if (passwordValue === 'admin1234') {
+        this.formSuccess = 'Admin logged in successfully!';
+        setTimeout(() => {
+          this.router.navigate(['/admin-dashboard']);
+          this.clearForm();
+        }, 1200);
+      } else {
+        this.formError = 'Incorrect password for Admin';
+      }
+    } else {
+      this.formError = 'Invalid email or password';
+    }
   }
+
+  // Helper to clear form states
+  private clearForm(): void {
+    this.user = { email: '', password: '', keepSigned: false };
+    this.formSuccess = '';
+  }
+
   goBack(): void {
-  this.router.navigate(['/']);
-}
+    this.router.navigate(['/']);
+  }
 }

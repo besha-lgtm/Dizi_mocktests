@@ -29,6 +29,6 @@ export class AdminDashboardComponent {
 
   // BACK BUTTON
   goBackToSubjects(): void {
-    this.router.navigate(['/admin-login']);
+    this.router.navigate(['/login']);
   }
 }

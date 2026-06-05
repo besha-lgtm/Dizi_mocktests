@@ -9,7 +9,6 @@ import { MockQuestion } from './pages/mock-question/mock-question.component';
 import { MockSubmit } from './pages/mock-submit/mock-submit.component';
 import { FeedbackComponent } from './pages/feedback/feedback.component';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
-import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { SubjectUploadComponent } from './pages/subject-upload/subject-upload.component';
 import { MockListComponent } from './pages/mock-list/mock-list.component';
@@ -18,7 +17,7 @@ import { AdminManageboardComponent } from './pages/admin-manageboard/admin-manag
 import { StudentRegistrationComponent } from './pages/student-registration/student-registration.component';
 import { TeacherRegistrationComponent } from './pages/teacher-registration/teacher-registration.component';
 import { ScoreManagementComponent } from './pages/score-management/score-management.component';
-import { TeacherLoginComponent } from './teacher-login/teacher-login.component';
+
 import { ExamSelectionComponent } from './pages/exam-selection/exam-selection.component';
 import { JeeAdvancedMocktestComponent } from './pages/jee-advanced-mocktest/jee-advanced-mocktest.component';
 import { Header3Component } from './layout/header3/header3.component';
@@ -30,7 +29,7 @@ import { TeacherSidebarComponent } from './layout/teacher-sidebar/teacher-sideba
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'teacher-login', component: TeacherLoginComponent },
+  { path: 'teacher-login', redirectTo: '/login', pathMatch: 'full' },
   { path: '', redirectTo: '/mock-home', pathMatch: 'full' },
   { path: 'mock-home', component: MockHomeComponent },
   { path: 'exam-home', component: MainLayoutComponent },
@@ -42,7 +41,7 @@ const routes: Routes = [
   { path: 'mock-question', component: MockQuestion },
   { path: 'mock-submit', component: MockSubmit },
   { path: 'feedback', component: FeedbackComponent },
-  { path: 'admin-login', component: AdminLoginComponent },
+  { path: 'admin-login', redirectTo: '/login', pathMatch: 'full' },
   { path: 'admin-dashboard', component: AdminDashboardComponent },
   {path: 'subject-upload/:subject', component: SubjectUploadComponent},
   { path: 'mock-list/:subject', component: MockListComponent },

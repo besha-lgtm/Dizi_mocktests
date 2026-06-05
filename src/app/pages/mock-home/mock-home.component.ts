@@ -92,18 +92,8 @@ export class MockHomeComponent {
 
   constructor(private router: Router) {}
 
-  navigateToMockTests(): void {
-    // Navigate to mock tests page
+  navigateToLogin(): void {
     this.router.navigate(['/login']);
-  }
-
-  navigateToDiziChallenge(): void {
-    // Navigate to challenges page
-    this.router.navigate(['/admin-login']);
-  }
-
-  navigateToTeacherLogin():void{
-    this.router.navigate(['/teacher-login']);
   }
 
   takeMockTest(testId: number): void {

@@ -1,4 +1,4 @@
-﻿import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -16,13 +16,11 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 import { MainLayoutComponent2 } from './layout/main-layout2/main-layout2.component';
 import { FeedbackComponent } from './pages/feedback/feedback.component';
 /* Admin Components */
-import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { AdminManageboardComponent } from './pages/admin-manageboard/admin-manageboard.component';
 import { AdminSidebarComponent } from './layout/admin-sidebar/admin-sidebar.component';
 import { StudentRegistrationComponent } from './pages/student-registration/student-registration.component';
 /* Teacher Components */
-import { TeacherLoginComponent } from './teacher-login/teacher-login.component';
 import { TeacherRegistrationComponent } from './pages/teacher-registration/teacher-registration.component';
 import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard.component';
 import { TeacherSidebarComponent } from './layout/teacher-sidebar/teacher-sidebar.component';
@@ -43,7 +41,6 @@ import { TableModule } from 'primeng/table';
   declarations: [
     AppComponent,
     LoginComponent,
-    TeacherLoginComponent,
     MockHomeComponent,
     Instruction,
     Header1Component,
@@ -53,7 +50,6 @@ import { TableModule } from 'primeng/table';
     MockSubmit,
     MainLayoutComponent,
     FeedbackComponent,
-    AdminLoginComponent,
     AdminDashboardComponent,
     SubjectUploadComponent,
     MockListComponent,
