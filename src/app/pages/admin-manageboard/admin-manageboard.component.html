@@ -3,68 +3,499 @@
 
 <div class="am-page-wrapper">
 
-    <div class="top-back-wrapper">
+  <!-- TOP BAR -->
+  <div class="am-top-bar">
+    <nav class="am-breadcrumb" aria-label="breadcrumb">
+      <span class="am-breadcrumb-link" routerLink="/admin-dashboard">Dashboard</span>
+      <span class="am-breadcrumb-sep">›</span>
+      <span class="am-breadcrumb-active">Overview</span>
+    </nav>
+    <div class="am-header-actions" style="position: relative;">
+      <button class="am-btn-date" (click)="toggleDatePicker()">
+        <i class="fa-regular fa-calendar-days"></i>
+        <span>{{ selectedDateRange }}</span>
+        <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 6px; color: #64748b;"></i>
+      </button>
 
-        <!-- Back Button -->
+      <!-- Custom Date Picker Dropdown Menu -->
+      <div *ngIf="showDatePicker" class="am-datepicker-dropdown">
+        <div class="datepicker-option" *ngFor="let range of dateRanges" (click)="selectDateRange(range)">
+          <span class="range-label">{{ range.label }}</span>
+          <span class="range-dates">{{ range.value }}</span>
+        </div>
+      </div>
 
+      <button class="am-btn-report" (click)="generateReport()">
+        <i class="fa-solid fa-file-invoice"></i>
+        <span>Generate Report</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <div class="am-page-header">
+    <div class="am-page-header-text">
+      <h1 class="am-page-title">Admin Management Dashboard</h1>
+      <p class="am-page-subtitle">Organizing Institute: Dizi Edutech • Joint Entrance Examination</p>
+    </div>
+  </div>
+
+  <!-- KPI STATS GRID -->
+  <div class="am-kpi-grid">
+    <!-- Card 1: Mains Students -->
+    <div class="am-kpi-card">
+      <div class="am-kpi-header">
+        <div class="am-kpi-icon kpi-icon--blue"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="am-kpi-meta">
+          <span class="am-kpi-label">Mains Students</span>
+          <span class="am-kpi-value">{{ kpiStats.mainsStudents }}</span>
+        </div>
+      </div>
+      <div class="am-kpi-trend">
+        <i class="fa-solid fa-arrow-trend-up text-green"></i>
+        <span class="text-green">{{ kpiStats.mainsTrend }}</span>
+        <span class="trend-duration">this month</span>
+      </div>
     </div>
 
-    <!-- HEADER -->
-    <div class="am-page-header">
-
-        <div class="am-page-header-text">
-
-            <h1 class="am-page-title">
-                Admin Management Dashboard
-            </h1>
-
+    <!-- Card 2: Advanced Students -->
+    <div class="am-kpi-card">
+      <div class="am-kpi-header">
+        <div class="am-kpi-icon kpi-icon--green"><i class="fa-solid fa-user-graduate"></i></div>
+        <div class="am-kpi-meta">
+          <span class="am-kpi-label">Advanced Students</span>
+          <span class="am-kpi-value">{{ kpiStats.advancedStudents }}</span>
         </div>
-
+      </div>
+      <div class="am-kpi-trend">
+        <i class="fa-solid fa-arrow-trend-up text-green"></i>
+        <span class="text-green">{{ kpiStats.advancedTrend }}</span>
+        <span class="trend-duration">this month</span>
+      </div>
     </div>
 
-    <!-- STATS -->
-    <div class="am-stats-grid">
-
-        <div class="am-stat-card">
-
-            <div class="am-stat-icon am-stat-icon--students">
-                <i class="fa-solid fa-user-graduate"></i>
-            </div>
-
-            <div class="am-stat-body">
-
-                <p class="am-stat-label">
-                    Students Enrolled
-                </p>
-
-                <p class="am-stat-value">
-                    {{ students.length }}
-                </p>
-
-            </div>
-
+    <!-- Card 3: Teachers Registered -->
+    <div class="am-kpi-card">
+      <div class="am-kpi-header">
+        <div class="am-kpi-icon kpi-icon--purple"><i class="fa-solid fa-chalkboard-user"></i></div>
+        <div class="am-kpi-meta">
+          <span class="am-kpi-label">Teachers</span>
+          <span class="am-kpi-value">{{ kpiStats.teachers }}</span>
         </div>
-
-        <div class="am-stat-card">
-
-            <div class="am-stat-icon am-stat-icon--teachers">
-                <i class="fa-solid fa-chalkboard-user"></i>
-            </div>
-
-            <div class="am-stat-body">
-
-                <p class="am-stat-label">
-                    Teachers Registered
-                </p>
-
-                <p class="am-stat-value">
-                    {{ teachers.length }}
-                </p>
-
-            </div>
-
-        </div>
-
+      </div>
+      <div class="am-kpi-trend">
+        <i class="fa-solid fa-arrow-trend-up text-green"></i>
+        <span class="text-green">{{ kpiStats.teachersTrend }}</span>
+        <span class="trend-duration">this month</span>
+      </div>
     </div>
+
+    <!-- Card 4: Mock Tests -->
+    <div class="am-kpi-card">
+      <div class="am-kpi-header">
+        <div class="am-kpi-icon kpi-icon--orange"><i class="fa-solid fa-file-signature"></i></div>
+        <div class="am-kpi-meta">
+          <span class="am-kpi-label">Mock Tests</span>
+          <span class="am-kpi-value">{{ kpiStats.mockTests }}</span>
+        </div>
+      </div>
+      <div class="am-kpi-trend">
+        <i class="fa-solid fa-arrow-trend-up text-green"></i>
+        <span class="text-green">{{ kpiStats.mockTestsTrend }}</span>
+        <span class="trend-duration">this month</span>
+      </div>
+    </div>
+
+    <!-- Card 5: Total Attempts -->
+    <div class="am-kpi-card">
+      <div class="am-kpi-header">
+        <div class="am-kpi-icon kpi-icon--cyan"><i class="fa-solid fa-clipboard-list"></i></div>
+        <div class="am-kpi-meta">
+          <span class="am-kpi-label">Total Attempts</span>
+          <span class="am-kpi-value">{{ kpiStats.attempts }}</span>
+        </div>
+      </div>
+      <div class="am-kpi-trend">
+        <i class="fa-solid fa-arrow-trend-up text-green"></i>
+        <span class="text-green">{{ kpiStats.attemptsTrend }}</span>
+        <span class="trend-duration">this month</span>
+      </div>
+    </div>
+
+    <!-- Card 6: Average Score -->
+    <div class="am-kpi-card">
+      <div class="am-kpi-header">
+        <div class="am-kpi-icon kpi-icon--red"><i class="fa-solid fa-award"></i></div>
+        <div class="am-kpi-meta">
+          <span class="am-kpi-label">Average Score</span>
+          <span class="am-kpi-value">{{ kpiStats.avgScore }}</span>
+        </div>
+      </div>
+      <div class="am-kpi-trend">
+        <i class="fa-solid fa-arrow-trend-up text-green"></i>
+        <span class="text-green">{{ kpiStats.avgScoreTrend }}</span>
+        <span class="trend-duration">this month</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYTICS & CHARTS GRID -->
+  <div class="am-charts-grid">
+    <!-- Card 1: Students Overview (Line Chart) -->
+    <div class="am-chart-card am-chart-card--large">
+      <div class="am-chart-header">
+        <h3 class="am-chart-title">Students Overview</h3>
+        <div class="am-chart-controls">
+          <div class="am-chart-legend">
+            <span class="legend-item"><span class="legend-dot bg-blue"></span> Mains Students</span>
+            <span class="legend-item"><span class="legend-dot bg-green"></span> Advanced Students</span>
+          </div>
+          <select class="am-chart-select" [(ngModel)]="selectedPeriod" (change)="onPeriodChange()">
+            <option value="Yearly">Yearly</option>
+            <option value="Monthly">Monthly</option>
+          </select>
+        </div>
+      </div>
+      <div class="am-chart-body">
+        <div class="am-svg-chart-container">
+          <svg viewBox="0 0 500 200" preserveAspectRatio="none" class="am-line-chart-svg">
+            <defs>
+              <linearGradient id="blue-gradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#2563eb" stop-opacity="0.12"></stop>
+                <stop offset="100%" stop-color="#2563eb" stop-opacity="0.00"></stop>
+              </linearGradient>
+              <linearGradient id="green-gradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#10b981" stop-opacity="0.12"></stop>
+                <stop offset="100%" stop-color="#10b981" stop-opacity="0.00"></stop>
+              </linearGradient>
+            </defs>
+
+            <!-- Horizontal grid lines -->
+            <line x1="30" y1="20" x2="470" y2="20" stroke="#f1f5f9" stroke-width="1"></line>
+            <line x1="30" y1="55" x2="470" y2="55" stroke="#f1f5f9" stroke-width="1"></line>
+            <line x1="30" y1="90" x2="470" y2="90" stroke="#f1f5f9" stroke-width="1"></line>
+            <line x1="30" y1="125" x2="470" y2="125" stroke="#f1f5f9" stroke-width="1"></line>
+            <line x1="30" y1="160" x2="470" y2="160" stroke="#f1f5f9" stroke-width="1"></line>
+            <line x1="30" y1="180" x2="470" y2="180" stroke="#cbd5e1" stroke-width="1.5"></line>
+
+            <!-- Line fill and paths -->
+            <path [attr.d]="mainsFillPath" fill="url(#blue-gradient)"></path>
+            <path [attr.d]="advancedFillPath" fill="url(#green-gradient)"></path>
+            <path [attr.d]="mainsPath" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"></path>
+            <path [attr.d]="advancedPath" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round"></path>
+
+            <!-- Markers -->
+            <g>
+              <circle *ngFor="let pt of mainsPoints; let i = index" [attr.cx]="pt.x" [attr.cy]="pt.y" [attr.r]="hoveredIndex === i ? 6.5 : 4.5" fill="#2563eb" stroke="#ffffff" stroke-width="1.5" class="chart-point-marker" (mouseenter)="hoveredIndex = i" (mouseleave)="hoveredIndex = null"></circle>
+            </g>
+            <g>
+              <circle *ngFor="let pt of advancedPoints; let i = index" [attr.cx]="pt.x" [attr.cy]="pt.y" [attr.r]="hoveredIndex === i ? 6.5 : 4.5" fill="#10b981" stroke="#ffffff" stroke-width="1.5" class="chart-point-marker" (mouseenter)="hoveredIndex = i" (mouseleave)="hoveredIndex = null"></circle>
+            </g>
+
+            <!-- Vertical guide line on hover -->
+            <line *ngIf="hoveredIndex !== null" [attr.x1]="mainsPoints[hoveredIndex].x" y1="20" [attr.x2]="mainsPoints[hoveredIndex].x" y2="180" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3"></line>
+
+            <!-- Invisible tracking columns for smoother hover experience -->
+            <rect *ngFor="let pt of mainsPoints; let i = index"
+                  [attr.x]="pt.x - 18"
+                  y="10"
+                  width="36"
+                  height="170"
+                  fill="transparent"
+                  (mouseenter)="hoveredIndex = i"
+                  (mouseleave)="hoveredIndex = null"
+                  style="cursor: pointer;"></rect>
+          </svg>
+
+          <!-- Interactive Tooltip -->
+          <div *ngIf="hoveredIndex !== null" class="chart-tooltip-bubble interactive-tooltip"
+               [style.left.%]="(mainsPoints[hoveredIndex].x / 500) * 100"
+               [style.top.px]="mainsPoints[hoveredIndex].y - 12">
+            <div class="tooltip-title">{{ selectedPeriod === 'Monthly' ? 'Week ' + (hoveredIndex + 1) : months[hoveredIndex] + ' 2025' }}</div>
+            <div class="tooltip-row"><span class="legend-dot bg-blue"></span> Mains: {{ mainsEnrollments[hoveredIndex] | number }}</div>
+            <div class="tooltip-row"><span class="legend-dot bg-green"></span> Advanced: {{ advancedEnrollments[hoveredIndex] | number }}</div>
+          </div>
+
+          <!-- X axis labels -->
+          <div class="am-chart-x-labels">
+            <span *ngFor="let m of months">{{ m }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Students Distribution (Donut Chart) -->
+    <div class="am-chart-card">
+      <div class="am-chart-header">
+        <h3 class="am-chart-title">Students Distribution</h3>
+      </div>
+      <div class="am-chart-body body-center">
+        <div class="donut-chart-container">
+          <svg width="130" height="130" viewBox="0 0 100 100" class="donut-svg">
+            <circle cx="50" cy="50" r="40" fill="transparent" stroke="#f8fafc" stroke-width="11"></circle>
+            <!-- Mains -->
+            <circle cx="50" cy="50" r="40" fill="transparent" stroke="#2563eb" stroke-width="11" 
+                    [attr.stroke-dasharray]="studentsDist.mains.dash + ' 251.32'" 
+                    [attr.stroke-dashoffset]="studentsDist.mains.offset" 
+                    transform="rotate(-90 50 50)" stroke-linecap="round"
+                    (mouseenter)="hoveredStudentSegment = 'mains'"
+                    (mouseleave)="hoveredStudentSegment = null"></circle>
+            <!-- Advanced -->
+            <circle cx="50" cy="50" r="40" fill="transparent" stroke="#10b981" stroke-width="11" 
+                    [attr.stroke-dasharray]="studentsDist.advanced.dash + ' 251.32'" 
+                    [attr.stroke-dashoffset]="studentsDist.advanced.offset" 
+                    transform="rotate(-90 50 50)" stroke-linecap="round"
+                    (mouseenter)="hoveredStudentSegment = 'advanced'"
+                    (mouseleave)="hoveredStudentSegment = null"></circle>
+          </svg>
+          <div class="donut-center-label">
+            <span class="donut-total">{{ hoveredStudentSegment === 'mains' ? (studentsDist.mains.count | number) : (hoveredStudentSegment === 'advanced' ? (studentsDist.advanced.count | number) : (studentsDist.total | number)) }}</span>
+            <span class="donut-subtitle">{{ hoveredStudentSegment === 'mains' ? 'Mains (' + studentsDist.mains.percentage + '%)' : (hoveredStudentSegment === 'advanced' ? 'Advanced (' + studentsDist.advanced.percentage + '%)' : 'Total Students') }}</span>
+          </div>
+        </div>
+        <div class="donut-legend">
+          <div class="donut-legend-row" (mouseenter)="hoveredStudentSegment = 'mains'" (mouseleave)="hoveredStudentSegment = null" style="cursor: pointer;">
+            <span class="legend-label"><span class="legend-dot bg-blue"></span> Mains Students</span>
+            <span class="legend-val">{{ studentsDist.mains.count | number }} ({{ studentsDist.mains.percentage }}%)</span>
+          </div>
+          <div class="donut-legend-row" (mouseenter)="hoveredStudentSegment = 'advanced'" (mouseleave)="hoveredStudentSegment = null" style="cursor: pointer;">
+            <span class="legend-label"><span class="legend-dot bg-green"></span> Advanced Students</span>
+            <span class="legend-val">{{ studentsDist.advanced.count | number }} ({{ studentsDist.advanced.percentage }}%)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Score Overview (Donut Chart) -->
+    <div class="am-chart-card">
+      <div class="am-chart-header">
+        <h3 class="am-chart-title">Score Overview</h3>
+        <select class="am-chart-select" [(ngModel)]="selectedExamFilter" (change)="onExamFilterChange()">
+          <option value="All Exams">All Exams</option>
+          <option value="Mains">Mains</option>
+          <option value="Advanced">Advanced</option>
+        </select>
+      </div>
+      <div class="am-chart-body body-center">
+        <div class="donut-chart-container">
+          <svg width="130" height="130" viewBox="0 0 100 100" class="donut-svg">
+            <circle cx="50" cy="50" r="40" fill="transparent" stroke="#f8fafc" stroke-width="11"></circle>
+            <!-- 90-100% -->
+            <circle cx="50" cy="50" r="40" fill="transparent" stroke="#10b981" stroke-width="11" 
+                    [attr.stroke-dasharray]="scoreDistribution.excellent.dash + ' 251.32'" 
+                    [attr.stroke-dashoffset]="scoreDistribution.excellent.offset" 
+                    transform="rotate(-90 50 50)" stroke-linecap="round"
+                    (mouseenter)="hoveredScoreSegment = 'excellent'"
+                    (mouseleave)="hoveredScoreSegment = null"></circle>
+            <!-- 75-89% -->
+            <circle cx="50" cy="50" r="40" fill="transparent" stroke="#2563eb" stroke-width="11" 
+                    [attr.stroke-dasharray]="scoreDistribution.good.dash + ' 251.32'" 
+                    [attr.stroke-dashoffset]="scoreDistribution.good.offset" 
+                    transform="rotate(-90 50 50)" stroke-linecap="round"
+                    (mouseenter)="hoveredScoreSegment = 'good'"
+                    (mouseleave)="hoveredScoreSegment = null"></circle>
+            <!-- 50-74% -->
+            <circle cx="50" cy="50" r="40" fill="transparent" stroke="#f59e0b" stroke-width="11" 
+                    [attr.stroke-dasharray]="scoreDistribution.average.dash + ' 251.32'" 
+                    [attr.stroke-dashoffset]="scoreDistribution.average.offset" 
+                    transform="rotate(-90 50 50)" stroke-linecap="round"
+                    (mouseenter)="hoveredScoreSegment = 'average'"
+                    (mouseleave)="hoveredScoreSegment = null"></circle>
+            <!-- 0-49% -->
+            <circle cx="50" cy="50" r="40" fill="transparent" stroke="#ef4444" stroke-width="11" 
+                    [attr.stroke-dasharray]="scoreDistribution.poor.dash + ' 251.32'" 
+                    [attr.stroke-dashoffset]="scoreDistribution.poor.offset" 
+                    transform="rotate(-90 50 50)" stroke-linecap="round"
+                    (mouseenter)="hoveredScoreSegment = 'poor'"
+                    (mouseleave)="hoveredScoreSegment = null"></circle>
+          </svg>
+          <div class="donut-center-label">
+            <span class="donut-total">{{ hoveredScoreSegment === 'excellent' ? (scoreDistribution.excellent.count | number) : (hoveredScoreSegment === 'good' ? (scoreDistribution.good.count | number) : (hoveredScoreSegment === 'average' ? (scoreDistribution.average.count | number) : (hoveredScoreSegment === 'poor' ? (scoreDistribution.poor.count | number) : scoreDistribution.avgScoreText))) }}</span>
+            <span class="donut-subtitle">{{ hoveredScoreSegment === 'excellent' ? '90-100% (' + scoreDistribution.excellent.percentage + '%)' : (hoveredScoreSegment === 'good' ? '75-89% (' + scoreDistribution.good.percentage + '%)' : (hoveredScoreSegment === 'average' ? '50-74% (' + scoreDistribution.average.percentage + '%)' : (hoveredScoreSegment === 'poor' ? '0-49% (' + scoreDistribution.poor.percentage + '%)' : 'Avg. Score'))) }}</span>
+          </div>
+        </div>
+        <div class="donut-legend grid-legend">
+          <div class="donut-legend-row" (mouseenter)="hoveredScoreSegment = 'excellent'" (mouseleave)="hoveredScoreSegment = null" style="cursor: pointer;">
+            <span class="legend-label"><span class="legend-dot bg-green"></span> 90-100%</span>
+            <span class="legend-val">{{ scoreDistribution.excellent.count | number }}</span>
+          </div>
+          <div class="donut-legend-row" (mouseenter)="hoveredScoreSegment = 'good'" (mouseleave)="hoveredScoreSegment = null" style="cursor: pointer;">
+            <span class="legend-label"><span class="legend-dot bg-blue"></span> 75-89%</span>
+            <span class="legend-val">{{ scoreDistribution.good.count | number }}</span>
+          </div>
+          <div class="donut-legend-row" (mouseenter)="hoveredScoreSegment = 'average'" (mouseleave)="hoveredScoreSegment = null" style="cursor: pointer;">
+            <span class="legend-label"><span class="legend-dot bg-yellow"></span> 50-74%</span>
+            <span class="legend-val">{{ scoreDistribution.average.count | number }}</span>
+          </div>
+          <div class="donut-legend-row" (mouseenter)="hoveredScoreSegment = 'poor'" (mouseleave)="hoveredScoreSegment = null" style="cursor: pointer;">
+            <span class="legend-label"><span class="legend-dot bg-red"></span> 0-49%</span>
+            <span class="legend-val">{{ scoreDistribution.poor.count | number }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLES AND ACTIONS GRID -->
+  <div class="am-tables-grid">
+    <!-- Card 1: Recent Mock Tests Table -->
+    <div class="am-table-card">
+      <div class="am-table-card-header">
+        <h3 class="am-table-card-title">Recent Mock Tests</h3>
+        <a class="am-view-all-link" routerLink="/mock-list/All">View All</a>
+      </div>
+      <div class="am-table-container">
+        <p-table [value]="recentMocks" responsiveLayout="scroll" styleClass="sr-table p-datatable-striped">
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="sr-th">Test Name</th>
+              <th class="sr-th col-subject">Category</th>
+              <th class="sr-th col-physics">Students</th>
+              <th class="sr-th col-chemistry">Avg. Score</th>
+              <th class="sr-th col-actions">Status</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-mock>
+            <tr class="sr-tr">
+              <td class="sr-td" style="font-weight: 700; color: #1e293b;">
+                <i class="fa-regular fa-file-lines text-blue" style="margin-right: 8px;"></i>{{ mock.name }}
+              </td>
+              <td class="sr-td col-subject">
+                <span class="sr-badge" [ngClass]="mock.category === 'Mains' ? 'sr-badge-sec--SectionA' : 'sr-badge-sec--SectionB'">{{ mock.category }}</span>
+              </td>
+              <td class="sr-td col-physics" style="font-weight: 600; color: #334155;">{{ mock.studentsCount | number }}</td>
+              <td class="sr-td col-chemistry" style="font-weight: 600; color: #334155;">{{ mock.avgScore }}</td>
+              <td class="sr-td col-actions">
+                <span class="sr-badge bg-success" style="border: 1px solid rgba(16, 185, 129, 0.25);">
+                  <i class="fa-solid fa-circle-check" style="margin-right: 4px; font-size: 10px;"></i>{{ mock.status }}
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
+    <!-- Card 2: Top Performing Students Table -->
+    <div class="am-table-card">
+      <div class="am-table-card-header">
+        <h3 class="am-table-card-title">Top Performing Students</h3>
+        <a class="am-view-all-link" routerLink="/score-management">View All</a>
+      </div>
+      <div class="am-table-container">
+        <p-table [value]="topStudents" responsiveLayout="scroll" styleClass="sr-table p-datatable-striped">
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="sr-th col-physics" style="width: 70px;">Rank</th>
+              <th class="sr-th">Student Name</th>
+              <th class="sr-th">Exam</th>
+              <th class="sr-th col-chemistry">Score</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-student>
+            <tr class="sr-tr">
+              <td class="sr-td col-physics">
+                <span *ngIf="student.rank === 1" class="rank-medal gold"><i class="fa-solid fa-medal"></i></span>
+                <span *ngIf="student.rank === 2" class="rank-medal silver"><i class="fa-solid fa-medal"></i></span>
+                <span *ngIf="student.rank === 3" class="rank-medal bronze"><i class="fa-solid fa-medal"></i></span>
+                <span *ngIf="student.rank > 3" class="rank-num">{{ student.rank }}</span>
+              </td>
+              <td class="sr-td" style="font-weight: 700; color: #1e293b;">{{ student.name }}</td>
+              <td class="sr-td" style="color: #475569; font-weight: 500;">{{ student.exam }}</td>
+              <td class="sr-td col-chemistry" style="font-weight: 700; color: #10b981;">{{ student.score }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+
+    <!-- Card 3: Quick Actions & Monthly Activity -->
+    <div class="am-actions-column">
+      <!-- Subcard 1: Quick Actions -->
+      <div class="am-action-card">
+        <h3 class="am-action-card-title">Quick Actions</h3>
+        <div class="quick-actions-btn-grid">
+          <button class="action-grid-btn" (click)="navigateToAddStudent()">
+            <i class="fa-solid fa-user-plus text-blue"></i>
+            <span>Add Student</span>
+          </button>
+          <button class="action-grid-btn" (click)="navigateToAddTeacher()">
+            <i class="fa-solid fa-chalkboard-user text-green"></i>
+            <span>Add Teacher</span>
+          </button>
+          <button class="action-grid-btn" routerLink="/subject-upload/subject">
+            <i class="fa-solid fa-file-circle-plus text-orange"></i>
+            <span>Create Test</span>
+          </button>
+          <button class="action-grid-btn" routerLink="/mock-list/All">
+            <i class="fa-solid fa-circle-question text-purple"></i>
+            <span>Questions</span>
+          </button>
+          <button class="action-grid-btn" (click)="navigateToScoreManagement()">
+            <i class="fa-solid fa-chart-line text-blue"></i>
+            <span>Scores</span>
+          </button>
+          <button class="action-grid-btn" (click)="generateReport()">
+            <i class="fa-solid fa-chart-pie text-red"></i>
+            <span>Reports</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Subcard 2: Activity Summary (This Month) -->
+      <div class="am-action-card">
+        <h3 class="am-action-card-title">Activity Summary (This Month)</h3>
+        <div class="activity-summary-grid">
+          <!-- Widget 1 -->
+          <div class="summary-widget">
+            <div class="widget-icon bg-light-blue"><i class="fa-solid fa-users"></i></div>
+            <div class="widget-meta">
+              <span class="widget-label">New Students</span>
+              <span class="widget-value">326</span>
+              <span class="widget-trend text-green"><i class="fa-solid fa-arrow-trend-up"></i> 14.3%</span>
+            </div>
+          </div>
+          <!-- Widget 2 -->
+          <div class="summary-widget">
+            <div class="widget-icon bg-light-green"><i class="fa-solid fa-clipboard-check"></i></div>
+            <div class="widget-meta">
+              <span class="widget-label">Tests Conducted</span>
+              <span class="widget-value">48</span>
+              <span class="widget-trend text-green"><i class="fa-solid fa-arrow-trend-up"></i> 20.0%</span>
+            </div>
+          </div>
+          <!-- Widget 3 -->
+          <div class="summary-widget">
+            <div class="widget-icon bg-light-blue"><i class="fa-solid fa-clipboard-list"></i></div>
+            <div class="widget-meta">
+              <span class="widget-label">Total Attempts</span>
+              <span class="widget-value">6,742</span>
+              <span class="widget-trend text-green"><i class="fa-solid fa-arrow-trend-up"></i> 18.7%</span>
+            </div>
+          </div>
+          <!-- Widget 4 -->
+          <div class="summary-widget">
+            <div class="widget-icon bg-light-purple"><i class="fa-solid fa-circle-notch"></i></div>
+            <div class="widget-meta">
+              <span class="widget-label">Avg. Completion</span>
+              <span class="widget-value">78.6%</span>
+              <span class="widget-trend text-green"><i class="fa-solid fa-arrow-trend-up"></i> 7.2%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Toast / Notification -->
+  <div *ngIf="showReportToast" class="am-toast-notification">
+    <div class="toast-content">
+      <i class="fa-solid fa-circle-check text-green toast-icon"></i>
+      <div class="toast-text">
+        <span class="toast-title">Report Generated</span>
+        <span class="toast-desc">PDF format report downloaded successfully.</span>
+      </div>
+    </div>
+  </div>
 
 </div>

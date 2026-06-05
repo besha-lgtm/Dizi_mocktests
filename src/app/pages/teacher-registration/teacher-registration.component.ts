@@ -7,6 +7,7 @@ interface Teacher {
   mail: string;
   password?: string;
   subject: string;
+  role?: string;
 }
 
 interface Toast {
@@ -36,8 +37,18 @@ export class TeacherRegistrationComponent implements OnInit {
     name: '',
     mail: '',
     password: '',
-    subject: ''
+    subject: '',
+    role: 'teacher'
   };
+
+  // Delete Confirmation Modal State
+  showDeleteModal = false;
+  teacherToDeleteMail = '';
+  teacherToDeleteName = '';
+
+  // Update Success Modal State
+  showUpdateSuccessModal = false;
+  updateSuccessMessage = '';
 
   // Bulk Upload State
   bulkUploadMode = false;
@@ -73,31 +84,36 @@ export class TeacherRegistrationComponent implements OnInit {
         name: 'Dr. Amit Patel',
         mail: 'amit.patel@gmail.com',
         password: 'amitPassword123',
-        subject: 'Physics'
+        subject: 'Physics',
+        role: 'teacher'
       },
       {
         name: 'Prof. Rita Sen',
         mail: 'rita.sen@gmail.com',
         password: 'ritaPassword123',
-        subject: 'Chemistry'
+        subject: 'Chemistry',
+        role: 'teacher'
       },
       {
         name: 'Dr. Alok Verma',
         mail: 'alok.verma@gmail.com',
         password: 'alokPassword123',
-        subject: 'Mathematics'
+        subject: 'Mathematics',
+        role: 'teacher'
       },
       {
         name: 'Dr. Neha Sharma',
         mail: 'neha.sharma@gmail.com',
         password: 'nehaPassword123',
-        subject: 'Physics'
+        subject: 'Physics',
+        role: 'teacher'
       },
       {
         name: 'Prof. Sanjay Dutt',
         mail: 'sanjay.dutt@gmail.com',
         password: 'sanjayPassword123',
-        subject: 'Chemistry'
+        subject: 'Chemistry',
+        role: 'teacher'
       }
     ];
 
@@ -192,7 +208,8 @@ export class TeacherRegistrationComponent implements OnInit {
       name: '',
       mail: '',
       password: '',
-      subject: this.subjects[0]
+      subject: this.subjects[0],
+      role: 'teacher'
     };
     this.showModal = true;
   }
@@ -407,7 +424,7 @@ export class TeacherRegistrationComponent implements OnInit {
       const index = this.teachers.findIndex(t => t.mail === this.teacherForm.mail);
       if (index !== -1) {
         this.teachers[index] = { ...this.teacherForm };
-        this.showToast(`Updated teacher details for ${this.teacherForm.name} successfully!`, 'success');
+        this.showUpdateSuccessDialog(`Updated teacher details for ${this.teacherForm.name} successfully!`);
       }
     } else {
       const exists = this.teachers.some(t => t.mail.toLowerCase() === this.teacherForm.mail.toLowerCase());
@@ -426,13 +443,36 @@ export class TeacherRegistrationComponent implements OnInit {
 
   deleteTeacher(mail: string): void {
     const teacher = this.teachers.find(t => t.mail === mail);
-    const name = teacher ? teacher.name : 'teacher';
-    
-    if (confirm(`Are you sure you want to delete the registration for ${name}?`)) {
-      this.teachers = this.teachers.filter(t => t.mail !== mail);
-      this.showToast(`Removed teacher registration for ${name}.`, 'info');
-      this.applyFilters();
+    if (teacher) {
+      this.teacherToDeleteMail = mail;
+      this.teacherToDeleteName = teacher.name;
+      this.showDeleteModal = true;
     }
+  }
+
+  confirmDelete(): void {
+    if (this.teacherToDeleteMail) {
+      this.teachers = this.teachers.filter(t => t.mail !== this.teacherToDeleteMail);
+      this.showToast(`Removed teacher registration for ${this.teacherToDeleteName}.`, 'info');
+      this.applyFilters();
+      this.cancelDelete();
+    }
+  }
+
+  cancelDelete(): void {
+    this.showDeleteModal = false;
+    this.teacherToDeleteMail = '';
+    this.teacherToDeleteName = '';
+  }
+
+  showUpdateSuccessDialog(message: string): void {
+    this.updateSuccessMessage = message;
+    this.showUpdateSuccessModal = true;
+  }
+
+  closeUpdateSuccessModal(): void {
+    this.showUpdateSuccessModal = false;
+    this.updateSuccessMessage = '';
   }
 
   showToast(message: string, type: 'success' | 'info' | 'danger'): void {

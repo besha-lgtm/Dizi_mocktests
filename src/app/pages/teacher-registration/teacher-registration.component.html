@@ -49,6 +49,16 @@
       </div>
     </div>
 
+      <div class="sr-stat-card">
+      <div class="sr-stat-icon sr-stat-icon--sections">
+        <i class="fa-solid fa-book-bookmark"></i>
+      </div>
+      <div class="sr-stat-body">
+        <p class="sr-stat-label">Subjects Taught</p>
+        <p class="sr-stat-value">{{ subjects.length }}</p>
+      </div>
+    </div>
+
   </div>
 
   <!-- TABLE PANEL CARD -->
@@ -84,14 +94,14 @@
       <p-table
   [value]="paginatedTeachers"
   responsiveLayout="scroll"
-  styleClass="sr-table">
+  styleClass="sr-table p-datatable-striped">
 
   <ng-template pTemplate="header">
     <tr>
       <th class="sr-th">FULL NAME</th>
       <th class="sr-th">EMAIL ADDRESS</th>
-      <th class="sr-th">ASSIGNED SUBJECT</th>
-      <th class="sr-th sr-th--center">ACTIONS</th>
+      <th class="sr-th col-subject">ASSIGNED SUBJECT</th>
+      <th class="sr-th col-actions">ACTIONS</th>
     </tr>
   </ng-template>
 
@@ -105,7 +115,7 @@
         {{ teacher.mail }}
       </td>
 
-      <td class="sr-td">
+      <td class="sr-td col-subject">
         <span
           class="sr-badge sr-badge--section"
           [ngClass]="'sr-badge-sec--' + teacher.subject">
@@ -115,24 +125,21 @@
         </span>
       </td>
 
-      <td class="sr-td sr-td--actions">
-        <button
-          class="sr-action-btn sr-action-btn--edit"
-          (click)="openEditModal(teacher)">
-
-          <i class="fa-solid fa-pen"></i>
-          Edit
-
-        </button>
-
-        <button
-          class="sr-action-btn sr-action-btn--delete"
-          (click)="deleteTeacher(teacher.mail)">
-
-          <i class="fa-solid fa-trash-can"></i>
-          Delete
-
-        </button>
+      <td class="sr-td col-actions">
+        <div class="sr-actions-cell">
+          <button
+            class="sr-action-btn sr-action-btn--edit"
+            (click)="openEditModal(teacher)">
+            <i class="fa-solid fa-pen"></i>
+            Edit
+          </button>
+          <button
+            class="sr-action-btn sr-action-btn--delete"
+            (click)="deleteTeacher(teacher.mail)">
+            <i class="fa-solid fa-trash-can"></i>
+            Delete
+          </button>
+        </div>
       </td>
     </tr>
   </ng-template>
@@ -200,7 +207,17 @@
     <!-- Modal Header -->
     <div class="sr-modal-header">
       <div class="sr-modal-header-text">
-        <span class="sr-modal-badge">{{ editMode ? '🛠️ EDIT FACULTY' : (bulkUploadMode ? '📂 BULK UPLOAD' : '✨ NEW REGISTRATION') }}</span>
+        <span class="sr-modal-badge">
+          <ng-container *ngIf="editMode">
+            <i class="fa-solid fa-wrench" style="margin-right: 6px;"></i> EDIT FACULTY
+          </ng-container>
+          <ng-container *ngIf="bulkUploadMode">
+            <i class="fa-solid fa-folder-open" style="margin-right: 6px;"></i> BULK UPLOAD
+          </ng-container>
+          <ng-container *ngIf="!editMode && !bulkUploadMode">
+            <i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 6px;"></i> NEW REGISTRATION
+          </ng-container>
+        </span>
         <h2 class="sr-modal-title">{{ editMode ? 'Edit Teacher Details' : (bulkUploadMode ? 'Bulk Upload Teachers' : 'Register New Teacher') }}</h2>
       </div>
       <button class="sr-modal-close-btn" (click)="closeModal()">
@@ -269,6 +286,18 @@
               <i class="fa-solid fa-book-open sr-input-icon"></i>
               <select name="subject" [(ngModel)]="teacherForm.subject" required class="sr-form-select">
                 <option *ngFor="let sub of subjects" [value]="sub">{{ sub }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row: Role Select -->
+          <div class="sr-form-group">
+            <label class="sr-form-label">ROLE <span class="sr-required">*</span></label>
+            <div class="sr-input-wrapper">
+              <i class="fa-solid fa-user-shield sr-input-icon"></i>
+              <select name="role" [(ngModel)]="teacherForm.role" required class="sr-form-select">
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
               </select>
             </div>
           </div>
@@ -370,6 +399,65 @@
 
     </form>
 
+  </div>
+</div>
+
+<!-- DELETE CONFIRMATION MODAL -->
+<div class="sr-modal-overlay" *ngIf="showDeleteModal" (click)="cancelDelete()">
+  <div class="sr-modal-card confirm-modal" (click)="$event.stopPropagation()">
+    <div class="sr-modal-header">
+      <div class="sr-modal-header-text">
+        <span class="sr-modal-badge bg-danger">
+          <i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> CONFIRM DELETE
+        </span>
+        <h2 class="sr-modal-title">Delete Registration</h2>
+      </div>
+      <button class="sr-modal-close-btn" (click)="cancelDelete()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="sr-modal-body text-center">
+      <div class="confirm-icon danger-icon">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <p class="confirm-message">Are you sure you want to delete the registration for <strong>{{ teacherToDeleteName }}</strong>?</p>
+    </div>
+    <div class="sr-modal-footer justify-center">
+      <button type="button" class="sr-btn sr-btn--cancel" (click)="cancelDelete()">
+        No, Keep
+      </button>
+      <button type="button" class="sr-btn sr-btn--danger" (click)="confirmDelete()">
+        Yes, Delete
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- UPDATE SUCCESS DIALOG -->
+<div class="sr-modal-overlay" *ngIf="showUpdateSuccessModal" (click)="closeUpdateSuccessModal()">
+  <div class="sr-modal-card confirm-modal" (click)="$event.stopPropagation()">
+    <div class="sr-modal-header">
+      <div class="sr-modal-header-text">
+        <span class="sr-modal-badge bg-success">
+          <i class="fa-solid fa-circle-check" style="margin-right: 6px;"></i> SUCCESS
+        </span>
+        <h2 class="sr-modal-title">Details Updated</h2>
+      </div>
+      <button class="sr-modal-close-btn" (click)="closeUpdateSuccessModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="sr-modal-body text-center">
+      <div class="confirm-icon success-icon">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <p class="confirm-message">{{ updateSuccessMessage }}</p>
+    </div>
+    <div class="sr-modal-footer justify-center">
+      <button type="button" class="sr-btn sr-btn--save" (click)="closeUpdateSuccessModal()">
+        OK
+      </button>
+    </div>
   </div>
 </div>
 

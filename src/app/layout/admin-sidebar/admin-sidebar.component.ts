@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'app-admin-sidebar',
@@ -6,25 +6,30 @@ import { Component } from '@angular/core';
   templateUrl: './admin-sidebar.component.html',
   styleUrls: ['./admin-sidebar.component.css']
 })
-export class AdminSidebarComponent {
+export class AdminSidebarComponent implements OnInit {
 
-  isCollapsed = false;
+  isCollapsed = localStorage.getItem('admin-sidebar-collapsed') === 'true';
 
-  toggleSidebar() {
-
-  this.isCollapsed = !this.isCollapsed;
-  
-
-  if (this.isCollapsed) {
-
-    document.body.classList.add('sidebar-collapsed');
-
-  } else {
-
-    document.body.classList.remove('sidebar-collapsed');
-
+  @HostBinding('class.collapsed')
+  get collapsedClass() {
+    return this.isCollapsed;
   }
 
-}
+  ngOnInit() {
+    this.updateBodyClass();
+  }
 
+  toggleSidebar() {
+    this.isCollapsed = !this.isCollapsed;
+    localStorage.setItem('admin-sidebar-collapsed', String(this.isCollapsed));
+    this.updateBodyClass();
+  }
+
+  private updateBodyClass() {
+    if (this.isCollapsed) {
+      document.body.classList.add('sidebar-collapsed');
+    } else {
+      document.body.classList.remove('sidebar-collapsed');
+    }
+  }
 }

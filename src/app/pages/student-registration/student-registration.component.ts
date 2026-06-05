@@ -9,6 +9,7 @@ interface Student {
   password?: string;
   section: string;
   batch: string;
+  role?: string;
 }
 
 interface Toast {
@@ -49,8 +50,18 @@ export class StudentRegistrationComponent implements OnInit {
     mail: '',
     password: '',
     section: '',
-    batch: ''
+    batch: '',
+    role: 'student'
   };
+
+  // Delete Confirmation Modal State
+  showDeleteModal = false;
+  studentToDeleteId = '';
+  studentToDeleteName = '';
+
+  // Update Success Modal State
+  showUpdateSuccessModal = false;
+  updateSuccessMessage = '';
 
   // Search & Filter
   searchText = '';
@@ -81,7 +92,8 @@ export class StudentRegistrationComponent implements OnInit {
         mail: 'ananya.iyer@gmail.com',
         password: 'ananyaPass123',
         section: 'Section A',
-        batch: 'Dropper Batch A'
+        batch: 'Dropper Batch A',
+        role: 'student'
       },
       {
         uniqueId: 'JEE20260089',
@@ -89,7 +101,8 @@ export class StudentRegistrationComponent implements OnInit {
         mail: 'vikram.m@gmail.com',
         password: 'vikramSecure99',
         section: 'Section B',
-        batch: 'Regular Batch B'
+        batch: 'Regular Batch B',
+        role: 'student'
       },
       {
         uniqueId: 'JEE20261093',
@@ -97,7 +110,8 @@ export class StudentRegistrationComponent implements OnInit {
         mail: 'rahul.sharma@yahoo.com',
         password: 'rahulWord999',
         section: 'Section A',
-        batch: 'Dropper Batch A'
+        batch: 'Dropper Batch A',
+        role: 'student'
       },
       {
         uniqueId: 'JEE20261150',
@@ -105,7 +119,8 @@ export class StudentRegistrationComponent implements OnInit {
         mail: 'priya.patel@outlook.com',
         password: 'priyaSecure!',
         section: 'Section C',
-        batch: 'Foundation Batch A'
+        batch: 'Foundation Batch A',
+        role: 'student'
       },
       {
         uniqueId: 'JEE20261201',
@@ -113,7 +128,8 @@ export class StudentRegistrationComponent implements OnInit {
         mail: 'karan.j@gmail.com',
         password: 'karanPassword',
         section: 'Section D',
-        batch: 'Achiever Batch B'
+        batch: 'Achiever Batch B',
+        role: 'student'
       },
       {
         uniqueId: 'JEE20261305',
@@ -121,7 +137,8 @@ export class StudentRegistrationComponent implements OnInit {
         mail: 'sneha.reddy@gmail.com',
         password: 'snehaSecret1',
         section: 'Section B',
-        batch: 'Regular Batch B'
+        batch: 'Regular Batch B',
+        role: 'student'
       }
     ];
 
@@ -221,7 +238,8 @@ export class StudentRegistrationComponent implements OnInit {
       mail: '',
       password: '',
       section: this.sections[0],
-      batch: this.batches[0]
+      batch: this.batches[0],
+      role: 'student'
     };
     this.showModal = true;
   }
@@ -443,7 +461,7 @@ export class StudentRegistrationComponent implements OnInit {
       const index = this.students.findIndex(s => s.uniqueId === this.studentForm.uniqueId);
       if (index !== -1) {
         this.students[index] = { ...this.studentForm };
-        this.showToast(`Updated student registration for ${this.studentForm.name} successfully!`, 'success');
+        this.showUpdateSuccessDialog(`Updated student registration for ${this.studentForm.name} successfully!`);
       }
     } else {
       // Check if unique ID already exists
@@ -463,13 +481,36 @@ export class StudentRegistrationComponent implements OnInit {
 
   deleteStudent(uniqueId: string): void {
     const student = this.students.find(s => s.uniqueId === uniqueId);
-    const name = student ? student.name : 'student';
-    
-    if (confirm(`Are you sure you want to delete the registration for ${name}?`)) {
-      this.students = this.students.filter(s => s.uniqueId !== uniqueId);
-      this.showToast(`Removed student registration for ${name}.`, 'info');
-      this.applyFilters();
+    if (student) {
+      this.studentToDeleteId = uniqueId;
+      this.studentToDeleteName = student.name;
+      this.showDeleteModal = true;
     }
+  }
+
+  confirmDelete(): void {
+    if (this.studentToDeleteId) {
+      this.students = this.students.filter(s => s.uniqueId !== this.studentToDeleteId);
+      this.showToast(`Removed student registration for ${this.studentToDeleteName}.`, 'info');
+      this.applyFilters();
+      this.cancelDelete();
+    }
+  }
+
+  cancelDelete(): void {
+    this.showDeleteModal = false;
+    this.studentToDeleteId = '';
+    this.studentToDeleteName = '';
+  }
+
+  showUpdateSuccessDialog(message: string): void {
+    this.updateSuccessMessage = message;
+    this.showUpdateSuccessModal = true;
+  }
+
+  closeUpdateSuccessModal(): void {
+    this.showUpdateSuccessModal = false;
+    this.updateSuccessMessage = '';
   }
 
   // Utilities
