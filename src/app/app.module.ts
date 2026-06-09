@@ -1,5 +1,6 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -68,7 +69,7 @@ import { TableModule } from 'primeng/table';
     TeacherDashboardComponent,
     TeacherSidebarComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, TableModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, TableModule, HttpClientModule],
   providers: [provideBrowserGlobalErrorListeners()],
   bootstrap: [AppComponent],
 })
