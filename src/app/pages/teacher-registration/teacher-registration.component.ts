@@ -339,7 +339,8 @@ export class TeacherRegistrationComponent implements OnInit {
               name,
               mail,
               password,
-              subject: this.selectedSubjectBulk
+              subject: this.selectedSubjectBulk,
+              role: 'teacher'
             });
           }
 

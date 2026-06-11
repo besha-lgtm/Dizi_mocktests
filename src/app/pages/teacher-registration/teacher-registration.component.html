@@ -290,15 +290,16 @@
             </div>
           </div>
 
-          <!-- Row: Role Select -->
+          <!-- Row: Role Select (Static) -->
           <div class="sr-form-group">
-            <label class="sr-form-label">ROLE <span class="sr-required">*</span></label>
-            <div class="sr-input-wrapper">
+            <label class="sr-form-label">ROLE</label>
+            <div class="sr-input-wrapper sr-input-wrapper--disabled">
               <i class="fa-solid fa-user-shield sr-input-icon"></i>
-              <select name="role" [(ngModel)]="teacherForm.role" required class="sr-form-select">
-                <option value="student">Student</option>
-                <option value="teacher">Teacher</option>
-              </select>
+              <input type="text" 
+                     name="role" 
+                     [(ngModel)]="teacherForm.role" 
+                     disabled
+                     class="sr-form-input sr-form-input--disabled">
             </div>
           </div>
         </ng-container>

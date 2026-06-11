@@ -8,7 +8,6 @@ interface Student {
   mail: string;
   password?: string;
   section: string;
-  batch: string;
   role?: string;
 }
 
@@ -50,7 +49,6 @@ export class StudentRegistrationComponent implements OnInit {
     mail: '',
     password: '',
     section: '',
-    batch: '',
     role: 'student'
   };
 
@@ -66,11 +64,9 @@ export class StudentRegistrationComponent implements OnInit {
   // Search & Filter
   searchText = '';
   selectedSectionFilter = 'All';
-  selectedBatchFilter = 'All';
 
-  // Sections & Batches Options
+  // Sections Options
   sections = ['Section A', 'Section B', 'Section C', 'Section D'];
-  batches = ['Dropper Batch A', 'Regular Batch B', 'Foundation Batch A', 'Achiever Batch B'];
 
   // Pagination
   currentPage = 1;
@@ -92,7 +88,6 @@ export class StudentRegistrationComponent implements OnInit {
         mail: 'ananya.iyer@gmail.com',
         password: 'ananyaPass123',
         section: 'Section A',
-        batch: 'Dropper Batch A',
         role: 'student'
       },
       {
@@ -101,7 +96,6 @@ export class StudentRegistrationComponent implements OnInit {
         mail: 'vikram.m@gmail.com',
         password: 'vikramSecure99',
         section: 'Section B',
-        batch: 'Regular Batch B',
         role: 'student'
       },
       {
@@ -110,7 +104,6 @@ export class StudentRegistrationComponent implements OnInit {
         mail: 'rahul.sharma@yahoo.com',
         password: 'rahulWord999',
         section: 'Section A',
-        batch: 'Dropper Batch A',
         role: 'student'
       },
       {
@@ -119,7 +112,6 @@ export class StudentRegistrationComponent implements OnInit {
         mail: 'priya.patel@outlook.com',
         password: 'priyaSecure!',
         section: 'Section C',
-        batch: 'Foundation Batch A',
         role: 'student'
       },
       {
@@ -128,7 +120,6 @@ export class StudentRegistrationComponent implements OnInit {
         mail: 'karan.j@gmail.com',
         password: 'karanPassword',
         section: 'Section D',
-        batch: 'Achiever Batch B',
         role: 'student'
       },
       {
@@ -137,7 +128,6 @@ export class StudentRegistrationComponent implements OnInit {
         mail: 'sneha.reddy@gmail.com',
         password: 'snehaSecret1',
         section: 'Section B',
-        batch: 'Regular Batch B',
         role: 'student'
       }
     ];
@@ -148,18 +138,9 @@ export class StudentRegistrationComponent implements OnInit {
   // Filter & Search Logic
   applyFilters(): void {
     this.filteredStudents = this.students.filter(s => {
-      const matchSearch =
-        s.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      return s.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
         s.mail.toLowerCase().includes(this.searchText.toLowerCase()) ||
         s.uniqueId.toLowerCase().includes(this.searchText.toLowerCase());
-
-      const matchSection =
-        this.selectedSectionFilter === 'All' || s.section === this.selectedSectionFilter;
-
-      const matchBatch =
-        this.selectedBatchFilter === 'All' || s.batch === this.selectedBatchFilter;
-
-      return matchSearch && matchSection && matchBatch;
     });
 
     this.currentPage = 1;
@@ -237,8 +218,7 @@ export class StudentRegistrationComponent implements OnInit {
       name: '',
       mail: '',
       password: '',
-      section: this.sections[0],
-      batch: this.batches[0],
+      section: '',
       role: 'student'
     };
     this.showModal = true;
@@ -342,7 +322,6 @@ export class StudentRegistrationComponent implements OnInit {
             const nameKey = Object.keys(row).find(k => k.toLowerCase() === 'name' || k.toLowerCase() === 'full name');
             const mailKey = Object.keys(row).find(k => k.toLowerCase() === 'email' || k.toLowerCase() === 'mail' || k.toLowerCase() === 'email address');
             const sectionKey = Object.keys(row).find(k => k.toLowerCase() === 'section');
-            const batchKey = Object.keys(row).find(k => k.toLowerCase() === 'batch' || k.toLowerCase() === 'assigned batch');
             const passwordKey = Object.keys(row).find(k => k.toLowerCase() === 'password');
             const idKey = Object.keys(row).find(k => k.toLowerCase() === 'uniqueid' || k.toLowerCase() === 'id' || k.toLowerCase() === 'unique id');
 
@@ -353,13 +332,7 @@ export class StudentRegistrationComponent implements OnInit {
               continue;
             }
 
-            let section = sectionKey ? String(row[sectionKey]).trim() : '';
-            const matchedSection = this.sections.find(s => s.toLowerCase() === section.toLowerCase());
-            section = matchedSection || this.sections[0];
-
-            let batch = batchKey ? String(row[batchKey]).trim() : '';
-            const matchedBatch = this.batches.find(b => b.toLowerCase() === batch.toLowerCase());
-            batch = matchedBatch || this.batches[0];
+            const section = sectionKey && String(row[sectionKey]).trim() ? String(row[sectionKey]).trim() : 'Section A';
 
             const password = passwordKey ? String(row[passwordKey]).trim() : 'Password123';
             const uniqueId = idKey ? String(row[idKey]).trim() : this.generateUniqueId();
@@ -370,7 +343,7 @@ export class StudentRegistrationComponent implements OnInit {
               mail,
               password,
               section,
-              batch
+              role: 'student'
             });
           }
 
@@ -427,8 +400,7 @@ export class StudentRegistrationComponent implements OnInit {
         'Full Name': 'Rahul Sharma',
         'Email Address': 'rahul.sharma@example.com',
         'Password': 'Password123',
-        'Section': 'Section A',
-        'Assigned Batch': 'Dropper Batch A'
+        'Section': 'Section A'
       }
     ];
     const worksheet = XLSX.utils.json_to_sheet(templateData);
