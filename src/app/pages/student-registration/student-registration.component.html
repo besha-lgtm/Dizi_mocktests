@@ -45,7 +45,7 @@
       </div>
       <div class="sr-stat-body">
         <p class="sr-stat-label">Sections Assigned</p>
-        <p class="sr-stat-value">{{ sections.length }}</p>
+        <p class="sr-stat-value">{{ uniqueSectionsCount }}</p>
       </div>
     </div>
 
@@ -108,10 +108,8 @@
         <td class="sr-td col-section">
           <span
             class="sr-badge"
-            [ngClass]="'sr-badge-sec--' + student.section.replace(' ', '')">
-
+            [ngStyle]="getSectionStyle(student.section)">
             {{ student.section }}
-
           </span>
         </td>
 
