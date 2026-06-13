@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email:      ['', [Validators.required, Validators.email]],
-      password:   ['', [Validators.required, Validators.minLength(8)]],
+      password:   ['', [Validators.required]],
       keepSigned: [false]
     });
   }
@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
     // Client-side validation
     const emailRegex   = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isEmailValid = emailValue && emailRegex.test(emailValue);
-    const isPassValid  = passwordValue && passwordValue.length >= 8;
+    const isPassValid  = !!passwordValue;
 
     if (!isEmailValid && !isPassValid) {
       this.formError = 'Please fill all required fields';
@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
       this.formError = 'Please enter a valid email';
       return;
     } else if (!isPassValid) {
-      this.formError = 'Password must be at least 8 characters long';
+      this.formError = 'Password is required';
       return;
     }
 

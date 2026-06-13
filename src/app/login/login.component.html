@@ -54,9 +54,8 @@
                             id="password" 
                             name="password" 
                             [(ngModel)]="user.password"
-                            placeholder="Min 8 characters"
+                            placeholder="Enter password"
                             required
-                            minlength="8"
                             #password="ngModel">
                         <span class="toggle-password" (click)="togglePasswordVisibility()" role="button" tabindex="0">
                             <i [class]="showPassword ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
@@ -64,7 +63,6 @@
                     </div>
                     <span class="error-message" *ngIf="password.invalid && (password.dirty || password.touched)">
                         <span *ngIf="password.errors?.['required']">Password is required</span>
-                        <span *ngIf="password.errors?.['minlength']">Password </span>
                     </span>
                 </div>
 

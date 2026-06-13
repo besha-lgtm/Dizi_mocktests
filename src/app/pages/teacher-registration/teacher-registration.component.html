@@ -45,17 +45,7 @@
       </div>
       <div class="sr-stat-body">
         <p class="sr-stat-label">Subjects Taught</p>
-        <p class="sr-stat-value">{{ subjects.length }}</p>
-      </div>
-    </div>
-
-      <div class="sr-stat-card">
-      <div class="sr-stat-icon sr-stat-icon--sections">
-        <i class="fa-solid fa-book-bookmark"></i>
-      </div>
-      <div class="sr-stat-body">
-        <p class="sr-stat-label">Subjects Taught</p>
-        <p class="sr-stat-value">{{ subjects.length }}</p>
+        <p class="sr-stat-value">{{ uniqueSubjectsCount }}</p>
       </div>
     </div>
 
@@ -117,11 +107,9 @@
 
       <td class="sr-td col-subject">
         <span
-          class="sr-badge sr-badge--section"
-          [ngClass]="'sr-badge-sec--' + teacher.subject">
-
+          class="sr-badge"
+          [ngStyle]="getSubjectStyle(teacher.subject)">
           {{ teacher.subject }}
-
         </span>
       </td>
 

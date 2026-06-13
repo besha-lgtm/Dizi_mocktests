@@ -1,131 +1,167 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
+import { TeacherService } from '../../services/teacher.service';
 
 interface Teacher {
-  name: string;
-  mail: string;
+  name:      string;
+  mail:      string;
   password?: string;
-  subject: string;
-  role?: string;
+  subject:   string;
+  role?:     string;
 }
 
 interface Toast {
-  id: number;
+  id:      number;
   message: string;
-  type: 'success' | 'info' | 'danger';
+  type:    'success' | 'info' | 'danger';
 }
 
 @Component({
-  selector: 'app-teacher-registration',
-  standalone: false,
+  selector:    'app-teacher-registration',
+  standalone:  false,
   templateUrl: './teacher-registration.component.html',
-  styleUrls: ['./teacher-registration.component.css']
+  styleUrls:   ['./teacher-registration.component.css']
 })
 export class TeacherRegistrationComponent implements OnInit {
-  teachers: Teacher[] = [];
-  filteredTeachers: Teacher[] = [];
+  teachers:          Teacher[] = [];
+  filteredTeachers:  Teacher[] = [];
   paginatedTeachers: Teacher[] = [];
+  isPageLoading = false;
 
-  // Form State
-  showModal = false;
-  editMode = false;
-  showPassword = false;
+  // ── Form State ──────────────────────────────────────────────
+  showModal              = false;
+  editMode               = false;
+  showPassword           = false;
+  isSaving               = false;
 
-  // Form Fields
+  // ── Form Fields ──────────────────────────────────────────────
   teacherForm: Teacher = {
-    name: '',
-    mail: '',
+    name:     '',
+    mail:     '',
     password: '',
-    subject: '',
-    role: 'teacher'
+    subject:  '',
+    role:     'teacher'
   };
 
-  // Delete Confirmation Modal State
-  showDeleteModal = false;
+  // ── Delete Confirmation Modal State ──────────────────────────
+  showDeleteModal     = false;
   teacherToDeleteMail = '';
   teacherToDeleteName = '';
 
-  // Update Success Modal State
+  // ── Update Success Modal State ───────────────────────────────
   showUpdateSuccessModal = false;
-  updateSuccessMessage = '';
+  updateSuccessMessage   = '';
 
-  // Bulk Upload State
-  bulkUploadMode = false;
-  isFileUploaded = false;
-  fileName = '';
+  // ── Bulk Upload State ────────────────────────────────────────
+  bulkUploadMode       = false;
+  isFileUploaded       = false;
+  fileName             = '';
   bulkUploadedTeachers: Teacher[] = [];
-  selectedSubjectBulk = '';
-  isDragOver = false;
-  isUploading = false;
+  selectedSubjectBulk  = '';
+  isDragOver           = false;
+  isUploading          = false;
 
-  // Search & Filter
-  searchText = '';
+  // ── Search & Filter ──────────────────────────────────────────
+  searchText            = '';
   selectedSubjectFilter = 'All';
 
-  // Subjects Options
+  // ── Subjects Options ─────────────────────────────────────────
   subjects = ['Physics', 'Chemistry', 'Mathematics'];
 
-  // Pagination
-  currentPage = 1;
+  // Deterministic color palette for dynamic subject tagging
+  private subjectColorsMap: { [key: string]: { [key: string]: string } } = {};
+  private colorPalette = [
+    { background: '#eff6ff', color: '#2563eb' }, // Blue
+    { background: '#ecfdf5', color: '#059669' }, // Green
+    { background: '#fffbeb', color: '#d97706' }, // Amber
+    { background: '#fff1f2', color: '#e11d48' }, // Rose
+    { background: '#f5f3ff', color: '#7c3aed' }, // Purple
+    { background: '#ecfeff', color: '#0891b2' }, // Cyan
+    { background: '#fdf2f8', color: '#db2777' }, // Pink
+    { background: '#f0fdf4', color: '#16a34a' }  // Emerald
+  ];
+
+  // ── Pagination ───────────────────────────────────────────────
+  currentPage  = 1;
   itemsPerPage = 5;
   pageNumbers: (number | string)[] = [];
 
-  // Toasts
+  // ── Toasts ───────────────────────────────────────────────────
   toasts: Toast[] = [];
   private toastIdCounter = 0;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router:         Router,
+    private teacherService: TeacherService,
+    private cdr:            ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    // Initial dummy data matching visual guidelines
-    this.teachers = [
-      {
-        name: 'Dr. Amit Patel',
-        mail: 'amit.patel@gmail.com',
-        password: 'amitPassword123',
-        subject: 'Physics',
-        role: 'teacher'
-      },
-      {
-        name: 'Prof. Rita Sen',
-        mail: 'rita.sen@gmail.com',
-        password: 'ritaPassword123',
-        subject: 'Chemistry',
-        role: 'teacher'
-      },
-      {
-        name: 'Dr. Alok Verma',
-        mail: 'alok.verma@gmail.com',
-        password: 'alokPassword123',
-        subject: 'Mathematics',
-        role: 'teacher'
-      },
-      {
-        name: 'Dr. Neha Sharma',
-        mail: 'neha.sharma@gmail.com',
-        password: 'nehaPassword123',
-        subject: 'Physics',
-        role: 'teacher'
-      },
-      {
-        name: 'Prof. Sanjay Dutt',
-        mail: 'sanjay.dutt@gmail.com',
-        password: 'sanjayPassword123',
-        subject: 'Chemistry',
-        role: 'teacher'
-      }
-    ];
+    this.loadTeachers();
+  }
 
-    this.applyFilters();
+  // Helper to get deterministic styles for any dynamic subject
+  getSubjectStyle(subject: string): { [key: string]: string } {
+    if (!subject) {
+      return { 'background-color': '#f1f5f9', 'color': '#475569' };
+    }
+    const normalized = subject.trim().toLowerCase();
+    if (!this.subjectColorsMap[normalized]) {
+      let hash = 0;
+      for (let i = 0; i < normalized.length; i++) {
+        hash = normalized.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const index = Math.abs(hash) % this.colorPalette.length;
+      const paletteColor = this.colorPalette[index];
+      this.subjectColorsMap[normalized] = {
+        'background-color': paletteColor.background,
+        'color': paletteColor.color
+      };
+    }
+    return this.subjectColorsMap[normalized];
+  }
+
+  get uniqueSubjectsCount(): number {
+    const subSet = new Set(this.teachers.map(t => t.subject.trim()).filter(s => !!s));
+    return subSet.size;
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // API: Load all teachers from DB
+  // ─────────────────────────────────────────────────────────────
+  loadTeachers(): void {
+    this.isPageLoading = true;
+    this.teacherService.getTeachers().subscribe({
+      next: (res) => {
+        this.isPageLoading = false;
+        if (res.success) {
+          this.teachers = (res.teachers as any[]).map(t => ({
+            name:    t.name     || '',
+            mail:    t.email    || '',
+            subject: t.subject  || '',
+            role:    t.role     || 'teacher'
+          }));
+          this.applyFilters();
+        }
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.isPageLoading = false;
+        this.showToast('Failed to load teachers. Is the backend running?', 'danger');
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   // Filter & Search Logic
   applyFilters(): void {
+    const query = this.searchText.toLowerCase();
     this.filteredTeachers = this.teachers.filter(t => {
       const matchSearch =
-        t.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        t.mail.toLowerCase().includes(this.searchText.toLowerCase());
+        t.name.toLowerCase().includes(query) ||
+        t.mail.toLowerCase().includes(query) ||
+        t.subject.toLowerCase().includes(query);
 
       const matchSubject =
         this.selectedSubjectFilter === 'All' || t.subject === this.selectedSubjectFilter;
@@ -139,13 +175,12 @@ export class TeacherRegistrationComponent implements OnInit {
 
   // Pagination Logic
   updatePagination(): void {
-    const totalItems = this.filteredTeachers.length;
     const start = (this.currentPage - 1) * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
+    const end   = start + this.itemsPerPage;
     this.paginatedTeachers = this.filteredTeachers.slice(start, end);
 
     const totalPages = this.totalPages;
-    this.pageNumbers = [];
+    this.pageNumbers  = [];
 
     if (totalPages <= 5) {
       for (let i = 1; i <= totalPages; i++) {
@@ -190,45 +225,48 @@ export class TeacherRegistrationComponent implements OnInit {
   getShowingText(): string {
     if (this.filteredTeachers.length === 0) return 'Showing 0 of 0 teachers';
     const start = (this.currentPage - 1) * this.itemsPerPage + 1;
-    const end = Math.min(start + this.itemsPerPage - 1, this.filteredTeachers.length);
+    const end   = Math.min(start + this.itemsPerPage - 1, this.filteredTeachers.length);
     return `Showing ${start} to ${end} of ${this.filteredTeachers.length} teachers`;
   }
 
   // CRUD Operations
   openAddModal(): void {
-    this.editMode = false;
-    this.showPassword = false;
-    this.bulkUploadMode = false;
-    this.isFileUploaded = false;
-    this.isUploading = false;
-    this.fileName = '';
+    this.editMode          = false;
+    this.showPassword      = false;
+    this.bulkUploadMode    = false;
+    this.isFileUploaded    = false;
+    this.isUploading       = false;
+    this.isSaving          = false;
+    this.fileName          = '';
     this.bulkUploadedTeachers = [];
-    this.selectedSubjectBulk = '';
+    this.selectedSubjectBulk  = '';
     this.teacherForm = {
-      name: '',
-      mail: '',
+      name:     '',
+      mail:     '',
       password: '',
-      subject: this.subjects[0],
-      role: 'teacher'
+      subject:  this.subjects[0],
+      role:     'teacher'
     };
     this.showModal = true;
   }
 
   openEditModal(teacher: Teacher): void {
-    this.editMode = true;
-    this.showPassword = false;
-    this.bulkUploadMode = false;
-    this.isFileUploaded = false;
-    this.isUploading = false;
-    this.fileName = '';
+    this.editMode          = true;
+    this.showPassword      = false;
+    this.bulkUploadMode    = false;
+    this.isFileUploaded    = false;
+    this.isUploading       = false;
+    this.isSaving          = false;
+    this.fileName          = '';
     this.bulkUploadedTeachers = [];
-    this.selectedSubjectBulk = '';
+    this.selectedSubjectBulk  = '';
     this.teacherForm = { ...teacher };
     this.showModal = true;
   }
 
   closeModal(): void {
     this.showModal = false;
+    this.isSaving  = false;
   }
 
   togglePasswordVisibility(): void {
@@ -236,21 +274,21 @@ export class TeacherRegistrationComponent implements OnInit {
   }
 
   enableBulkUpload(): void {
-    this.bulkUploadMode = true;
-    this.isFileUploaded = false;
-    this.isUploading = false;
-    this.fileName = '';
+    this.bulkUploadMode  = true;
+    this.isFileUploaded  = false;
+    this.isUploading     = false;
+    this.fileName        = '';
     this.bulkUploadedTeachers = [];
-    this.selectedSubjectBulk = '';
+    this.selectedSubjectBulk  = '';
   }
 
   disableBulkUpload(): void {
-    this.bulkUploadMode = false;
-    this.isFileUploaded = false;
-    this.isUploading = false;
-    this.fileName = '';
+    this.bulkUploadMode  = false;
+    this.isFileUploaded  = false;
+    this.isUploading     = false;
+    this.fileName        = '';
     this.bulkUploadedTeachers = [];
-    this.selectedSubjectBulk = '';
+    this.selectedSubjectBulk  = '';
   }
 
   onDragOver(event: DragEvent): void {
@@ -300,8 +338,8 @@ export class TeacherRegistrationComponent implements OnInit {
       return;
     }
 
-    this.isUploading = true;
-    this.isFileUploaded = false;
+    this.isUploading          = true;
+    this.isFileUploaded       = false;
     this.bulkUploadedTeachers = [];
 
     const reader = new FileReader();
@@ -340,7 +378,7 @@ export class TeacherRegistrationComponent implements OnInit {
               mail,
               password,
               subject: this.selectedSubjectBulk,
-              role: 'teacher'
+              role:    'teacher'
             });
           }
 
@@ -351,14 +389,16 @@ export class TeacherRegistrationComponent implements OnInit {
           }
 
           this.bulkUploadedTeachers = parsedTeachers;
-          this.fileName = file.name;
-          this.isFileUploaded = true;
-          this.isUploading = false;
+          this.fileName             = file.name;
+          this.isFileUploaded       = true;
+          this.isUploading          = false;
           this.showToast('file upload succesfully', 'success');
+          this.cdr.detectChanges();
         } catch (err) {
           console.error(err);
           this.showToast('Failed to parse the Excel file.', 'danger');
           this.isUploading = false;
+          this.cdr.detectChanges();
         }
       }, 1200);
     };
@@ -368,13 +408,13 @@ export class TeacherRegistrationComponent implements OnInit {
   downloadTemplate(): void {
     const templateData = [
       {
-        'Full Name': 'Dr. Amit Patel',
+        'Full Name':     'Dr. Amit Patel',
         'Email Address': 'amit.patel@example.com',
-        'Password': 'TeacherPassword123'
+        'Password':      'TeacherPassword123'
       }
     ];
     const worksheet = XLSX.utils.json_to_sheet(templateData);
-    const workbook = XLSX.utils.book_new();
+    const workbook  = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Template');
     XLSX.writeFile(workbook, 'teacher-registration-template.xlsx');
     this.showToast('Teacher Excel template downloaded successfully!', 'success');
@@ -386,20 +426,31 @@ export class TeacherRegistrationComponent implements OnInit {
       return;
     }
 
-    let addedCount = 0;
-    for (const teacher of this.bulkUploadedTeachers) {
-      const emailExists = this.teachers.some(t => t.mail.toLowerCase() === teacher.mail.toLowerCase());
-      if (emailExists) {
-        continue; // Skip duplicates for teachers
+    this.isSaving = true;
+    const payload = this.bulkUploadedTeachers.map(t => ({
+      name:     t.name,
+      email:    t.mail,
+      password: t.password || 'Password123',
+      subject:  t.subject
+    }));
+
+    this.teacherService.bulkAddTeachers(payload).subscribe({
+      next: (res) => {
+        this.isSaving = false;
+        this.showToast(res.message || 'Imported teachers successfully!', 'success');
+        if (res.errors?.length) {
+          res.errors.forEach((e: string) => this.showToast(e, 'info'));
+        }
+        this.closeModal();
+        this.loadTeachers();
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.isSaving = false;
+        this.showToast(err.error?.message || 'Bulk import failed. Please try again.', 'danger');
+        this.cdr.detectChanges();
       }
-
-      this.teachers.unshift({ ...teacher });
-      addedCount++;
-    }
-
-    this.showToast(`Imported ${addedCount} teachers successfully!`, 'success');
-    this.closeModal();
-    this.applyFilters();
+    });
   }
 
   saveTeacher(): void {
@@ -421,25 +472,49 @@ export class TeacherRegistrationComponent implements OnInit {
       return;
     }
 
+    this.isSaving = true;
+    const payload = {
+      name:     this.teacherForm.name.trim(),
+      password: this.teacherForm.password?.trim() || '',
+      subject:  this.teacherForm.subject
+    };
+
     if (this.editMode) {
-      const index = this.teachers.findIndex(t => t.mail === this.teacherForm.mail);
-      if (index !== -1) {
-        this.teachers[index] = { ...this.teacherForm };
-        this.showUpdateSuccessDialog(`Updated teacher details for ${this.teacherForm.name} successfully!`);
-      }
+      this.teacherService.updateTeacher(this.teacherForm.mail, payload).subscribe({
+        next: (res) => {
+          this.isSaving = false;
+          this.showUpdateSuccessDialog(res.message || `Updated details for ${this.teacherForm.name} successfully!`);
+          this.closeModal();
+          this.loadTeachers();
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          this.isSaving = false;
+          this.showToast(err.error?.message || 'Update failed. Please try again.', 'danger');
+          this.cdr.detectChanges();
+        }
+      });
     } else {
-      const exists = this.teachers.some(t => t.mail.toLowerCase() === this.teacherForm.mail.toLowerCase());
-      if (exists) {
-        this.showToast('A teacher with this Email Address already exists!', 'danger');
-        return;
-      }
+      const fullPayload = {
+        ...payload,
+        email: this.teacherForm.mail.trim().toLowerCase()
+      };
 
-      this.teachers.unshift({ ...this.teacherForm });
-      this.showToast(`Registered new teacher ${this.teacherForm.name} successfully!`, 'success');
+      this.teacherService.addTeacher(fullPayload).subscribe({
+        next: (res) => {
+          this.isSaving = false;
+          this.showToast(res.message || `Registered new teacher ${this.teacherForm.name} successfully!`, 'success');
+          this.closeModal();
+          this.loadTeachers();
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          this.isSaving = false;
+          this.showToast(err.error?.message || 'Registration failed. Please try again.', 'danger');
+          this.cdr.detectChanges();
+        }
+      });
     }
-
-    this.closeModal();
-    this.applyFilters();
   }
 
   deleteTeacher(mail: string): void {
@@ -447,33 +522,42 @@ export class TeacherRegistrationComponent implements OnInit {
     if (teacher) {
       this.teacherToDeleteMail = mail;
       this.teacherToDeleteName = teacher.name;
-      this.showDeleteModal = true;
+      this.showDeleteModal     = true;
     }
   }
 
   confirmDelete(): void {
-    if (this.teacherToDeleteMail) {
-      this.teachers = this.teachers.filter(t => t.mail !== this.teacherToDeleteMail);
-      this.showToast(`Removed teacher registration for ${this.teacherToDeleteName}.`, 'info');
-      this.applyFilters();
-      this.cancelDelete();
-    }
+    if (!this.teacherToDeleteMail) return;
+
+    this.teacherService.deleteTeacher(this.teacherToDeleteMail).subscribe({
+      next: () => {
+        this.showToast(`Removed teacher registration for ${this.teacherToDeleteName}.`, 'info');
+        this.cancelDelete();
+        this.loadTeachers();
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.showToast(err.error?.message || 'Delete failed. Please try again.', 'danger');
+        this.cancelDelete();
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   cancelDelete(): void {
-    this.showDeleteModal = false;
+    this.showDeleteModal     = false;
     this.teacherToDeleteMail = '';
     this.teacherToDeleteName = '';
   }
 
   showUpdateSuccessDialog(message: string): void {
-    this.updateSuccessMessage = message;
+    this.updateSuccessMessage  = message;
     this.showUpdateSuccessModal = true;
   }
 
   closeUpdateSuccessModal(): void {
     this.showUpdateSuccessModal = false;
-    this.updateSuccessMessage = '';
+    this.updateSuccessMessage   = '';
   }
 
   showToast(message: string, type: 'success' | 'info' | 'danger'): void {
@@ -481,6 +565,7 @@ export class TeacherRegistrationComponent implements OnInit {
     this.toasts.push({ id, message, type });
     setTimeout(() => {
       this.removeToast(id);
+      this.cdr.detectChanges();
     }, 4000);
   }
 
