@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -35,7 +35,8 @@ export class LoginComponent implements OnInit {
     private fb:          FormBuilder,
     private authService: AuthService,
     private router:      Router,
-    private location:    Location
+    private location:    Location,
+    private cdr:         ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -104,24 +105,29 @@ export class LoginComponent implements OnInit {
             );
 
             this.formSuccess = res.message;
+            this.cdr.detectChanges();
 
             setTimeout(() => {
               this.clearForm();
               this.router.navigate([res.redirectTo]);
+              this.cdr.detectChanges();
             }, 1200);
           } else {
             this.formError = res.message || 'Login failed';
+            this.cdr.detectChanges();
           }
         },
         error: (err) => {
           this.isLoading = false;
+          console.error('Login request failed:', err);
           if (err.status === 401) {
             this.formError = err.error?.message || 'Invalid email or password';
           } else if (err.status === 0) {
             this.formError = 'Cannot reach server. Make sure backend is running.';
           } else {
-            this.formError = 'Something went wrong. Please try again.';
+            this.formError = err.error?.message || err.message || 'Something went wrong. Please try again.';
           }
+          this.cdr.detectChanges();
         }
       });
   }
