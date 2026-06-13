@@ -30,6 +30,7 @@ export class SubjectUploadComponent implements OnInit {
   questions: any[] = [
     {
       topic: '',
+      difficulty: '',
       questionText: '',
       questionImage: '',
       optionA: '',
@@ -68,6 +69,8 @@ export class SubjectUploadComponent implements OnInit {
       {
         topic: editData.topic || '',
 
+        difficulty: editData.difficulty || '',
+
         questionText: editData.questionText || '',
 
         questionImage: editData.questionImage || '',
@@ -92,6 +95,8 @@ export class SubjectUploadComponent implements OnInit {
   addQuestion(): void {
 
     this.questions.push({
+      topic: '',
+      difficulty: '',
       questionText: '',
       optionA: '',
       optionB: '',
@@ -177,6 +182,7 @@ export class SubjectUploadComponent implements OnInit {
   this.questions = [
     {
       topic: '',
+      difficulty: '',
       questionText: '',
       questionImage: '',
       optionA: '',
@@ -260,10 +266,10 @@ export class SubjectUploadComponent implements OnInit {
 downloadExcelTemplate(): void {
   // Create template data
   const templateData = [
-    ['Question', 'OptionA', 'OptionB', 'OptionC', 'OptionD', 'CorrectAnswer'],
-    ['Sample Question 1?', 'Option A', 'Option B', 'Option C', 'Option D', 'A'],
-    ['Sample Question 2?', 'Option A', 'Option B', 'Option C', 'Option D', 'B'],
-    ['Sample Question 3?', 'Option A', 'Option B', 'Option C', 'Option D', 'C'],
+    ['Question', 'Topic', 'Difficulty', 'OptionA', 'OptionB', 'OptionC', 'OptionD', 'CorrectAnswer'],
+    ['Sample Question 1?', 'Algebra', 'Easy', 'Option A', 'Option B', 'Option C', 'Option D', 'A'],
+    ['Sample Question 2?', 'Calculus', 'Medium', 'Option A', 'Option B', 'Option C', 'Option D', 'B'],
+    ['Sample Question 3?', 'Geometry', 'Hard', 'Option A', 'Option B', 'Option C', 'Option D', 'C'],
   ];
 
   // Create a new workbook
@@ -275,6 +281,8 @@ downloadExcelTemplate(): void {
   // Set column widths
   const columnWidths = [
     { wch: 30 },  // Question column
+    { wch: 15 },  // Topic column
+    { wch: 12 },  // Difficulty column
     { wch: 20 },  // OptionA column
     { wch: 20 },  // OptionB column
     { wch: 20 },  // OptionC column

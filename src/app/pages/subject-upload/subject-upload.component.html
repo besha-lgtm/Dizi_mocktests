@@ -141,6 +141,34 @@
     </div>
 
 </div>
+<!-- DIFFICULTY -->
+<div class="form-group">
+
+    <label>Difficulty</label>
+
+    <select
+        [(ngModel)]="q.difficulty"
+        #difficulty="ngModel"
+        name="difficulty{{i}}"
+        required
+        [class.field-error]="difficulty.invalid && difficulty.touched">
+
+        <option value="">Select Difficulty</option>
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+
+    </select>
+
+    <div
+        class="validation-error"
+        *ngIf="difficulty.invalid && difficulty.touched">
+
+        Difficulty is required
+
+    </div>
+
+</div>
 <!-- QUESTION IMAGE -->
 <div class="form-group">
 

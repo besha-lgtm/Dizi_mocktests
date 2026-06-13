@@ -49,15 +49,7 @@
       </div>
     </div>
 
-    <div class="sr-stat-card">
-      <div class="sr-stat-icon sr-stat-icon--batches">
-     <i class="fa-solid fa-graduation-cap"></i>
-      </div>
-      <div class="sr-stat-body">
-        <p class="sr-stat-label">Active Batches</p>
-        <p class="sr-stat-value">{{ batches.length }}</p>
-      </div>
-    </div>
+
   </div>
 
   <!-- TABLE PANEL CARD -->
@@ -74,26 +66,7 @@
                placeholder="Search by name, mail or unique ID...">
       </div>
 
-      <!-- Filters Dropdowns -->
-      <div class="sr-filters-group">
-        <!-- Section Filter -->
-        <div class="sr-filter-select-wrapper">
-          <label class="sr-select-label">Section:</label>
-          <select [(ngModel)]="selectedSectionFilter" (change)="applyFilters()" class="sr-filter-select">
-            <option value="All">All Sections</option>
-            <option *ngFor="let sec of sections" [value]="sec">{{ sec }}</option>
-          </select>
-        </div>
 
-        <!-- Batch Filter -->
-        <div class="sr-filter-select-wrapper">
-          <label class="sr-select-label">Batch:</label>
-          <select [(ngModel)]="selectedBatchFilter" (change)="applyFilters()" class="sr-filter-select">
-            <option value="All">All Batches</option>
-            <option *ngFor="let b of batches" [value]="b">{{ b }}</option>
-          </select>
-        </div>
-      </div>
     </div>
 
     <!-- DATA TABLE -->
@@ -111,7 +84,6 @@
         <th class="sr-th">FULL NAME</th>
         <th class="sr-th">EMAIL ADDRESS</th>
         <th class="sr-th col-section">SECTION</th>
-        <th class="sr-th col-batch">ASSIGNED BATCH</th>
         <th class="sr-th col-actions">ACTIONS</th>
       </tr>
     </ng-template>
@@ -143,16 +115,6 @@
           </span>
         </td>
 
-        <td class="sr-td col-batch">
-          <span
-            class="sr-badge sr-badge--batch"
-            [ngClass]="'sr-badge-batch--' + student.batch.replace(' ', '')">
-
-            {{ student.batch }}
-
-          </span>
-        </td>
-
         <td class="sr-td col-actions">
           <div class="sr-actions-cell">
             <button
@@ -180,7 +142,7 @@
 
       <tr>
 
-        <td colspan="6">
+        <td colspan="5">
 
           <div class="sr-empty-container">
 
@@ -331,40 +293,30 @@
             </div>
           </div>
 
-          <!-- Row: Section and Batch (Grid Side-by-side) -->
-          <div class="sr-form-row">
-            <!-- Section Select -->
-            <div class="sr-form-group sr-form-group--half">
-              <label class="sr-form-label">SECTION <span class="sr-required">*</span></label>
-              <div class="sr-input-wrapper">
-                <i class="fa-solid fa-cubes sr-input-icon"></i>
-                <select name="section" [(ngModel)]="studentForm.section" required class="sr-form-select">
-                  <option *ngFor="let sec of sections" [value]="sec">{{ sec }}</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Batch Select -->
-            <div class="sr-form-group sr-form-group--half">
-              <label class="sr-form-label">ASSIGNED BATCH <span class="sr-required">*</span></label>
-              <div class="sr-input-wrapper">
-                <i class="fa-solid fa-graduation-cap sr-input-icon"></i>
-                <select name="batch" [(ngModel)]="studentForm.batch" required class="sr-form-select">
-                  <option *ngFor="let b of batches" [value]="b">{{ b }}</option>
-                </select>
-              </div>
+          <!-- Row: Section -->
+          <div class="sr-form-group">
+            <label class="sr-form-label">SECTION <span class="sr-required">*</span></label>
+            <div class="sr-input-wrapper">
+              <i class="fa-solid fa-cubes sr-input-icon"></i>
+              <input type="text"
+                     name="section"
+                     [(ngModel)]="studentForm.section"
+                     required
+                     placeholder="e.g. Section A"
+                     class="sr-form-input">
             </div>
           </div>
 
-          <!-- Row: Role Select -->
+          <!-- Row: Role (Static) -->
           <div class="sr-form-group">
-            <label class="sr-form-label">ROLE <span class="sr-required">*</span></label>
-            <div class="sr-input-wrapper">
+            <label class="sr-form-label">ROLE</label>
+            <div class="sr-input-wrapper sr-input-wrapper--disabled">
               <i class="fa-solid fa-user-shield sr-input-icon"></i>
-              <select name="role" [(ngModel)]="studentForm.role" required class="sr-form-select">
-                <option value="student">Student</option>
-                <option value="teacher">Teacher</option>
-              </select>
+              <input type="text" 
+                     name="role" 
+                     [(ngModel)]="studentForm.role" 
+                     disabled
+                     class="sr-form-input sr-form-input--disabled">
             </div>
           </div>
         </ng-container>
