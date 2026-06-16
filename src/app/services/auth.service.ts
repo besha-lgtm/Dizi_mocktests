@@ -16,20 +16,22 @@ export interface LoginResponse {
   role:       string;
   redirectTo: string;
   user: {
-    id:    number;
-    email: string;
-    name:  string;
-    role:  string;
+    id:        number;
+    uniqueId?: string;
+    email:     string;
+    name:      string;
+    role:      string;
   };
 }
 
 export interface UserProfile {
   success: boolean;
   user: {
-    id:    number;
-    email: string;
-    name:  string;
-    role:  string;
+    id:        number;
+    uniqueId?: string;
+    email:     string;
+    name:      string;
+    role:      string;
   };
 }
 
@@ -82,11 +84,20 @@ export class AuthService {
   // ── Token Helpers ──────────────────────────────────────────
 
   /** Save token + user to storage */
-  saveSession(token: string, user: object, role: string, keepSigned: boolean): void {
+  saveSession(token: string, user: any, role: string, keepSigned: boolean): void {
     const storage = keepSigned ? localStorage : sessionStorage;
     storage.setItem('dizi_token', token);
     storage.setItem('dizi_user',  JSON.stringify(user));
     storage.setItem('dizi_role',  role);
+
+    if (user && user.name) {
+      storage.setItem('dizi_studentName', user.name);
+    }
+    if (user && user.uniqueId) {
+      storage.setItem('dizi_studentId', user.uniqueId);
+    } else if (user && user.id) {
+      storage.setItem('dizi_studentId', String(user.id));
+    }
   }
 
   /** Get stored token */
@@ -106,7 +117,14 @@ export class AuthService {
 
   /** Clear all stored session data */
   clearSession(): void {
-    ['dizi_token', 'dizi_user', 'dizi_role'].forEach(key => {
+    [
+      'dizi_token',
+      'dizi_user',
+      'dizi_role',
+      'dizi_studentName',
+      'dizi_studentId',
+      'dizi_last_score'
+    ].forEach(key => {
       localStorage.removeItem(key);
       sessionStorage.removeItem(key);
     });

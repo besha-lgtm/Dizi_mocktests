@@ -61,42 +61,37 @@
   <!-- TABLE PANEL -->
   <div class="sr-table-panel">
 
-    <!-- FILTER BAR -->
+    <!-- FILTER BAR — all dropdowns, no text search -->
     <div class="sr-filter-bar">
 
-      <!-- SEARCH -->
-      <div class="sr-search-box">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input
-          type="text"
-          [(ngModel)]="searchText"
-          (input)="filterScores()"
-          placeholder="Search by name or student ID...">
+      <!-- SECTION -->
+      <div class="sr-filter-select-wrapper">
+        <label class="sr-select-label">Section:</label>
+        <select class="sr-filter-select" [(ngModel)]="selectedSection" (change)="filterScores()">
+          <option value="All">All Sections</option>
+          <option *ngFor="let sec of sectionOptions" [value]="sec">{{ sec }}</option>
+        </select>
       </div>
 
-      <!-- FILTERS -->
-      <div class="sr-filters-group">
-
-        <!-- EXAM -->
-        <div class="sr-filter-select-wrapper">
-          <label class="sr-select-label">Exam:</label>
-          <select class="sr-filter-select" [(ngModel)]="selectedExam" (change)="filterScores()">
-            <option value="All">All Exams</option>
-            <option value="JEE Mains">JEE Mains</option>
-            <option value="JEE Advanced">JEE Advanced</option>
-          </select>
-        </div>
-
-        <!-- MOCK — dynamic from actual data -->
-        <div class="sr-filter-select-wrapper">
-          <label class="sr-select-label">Mock:</label>
-          <select class="sr-filter-select" [(ngModel)]="selectedMock" (change)="filterScores()">
-            <option value="All">All Mock Tests</option>
-            <option *ngFor="let m of mockOptions" [value]="m">{{ m }}</option>
-          </select>
-        </div>
-
+      <!-- EXAM -->
+      <div class="sr-filter-select-wrapper">
+        <label class="sr-select-label">Exam:</label>
+        <select class="sr-filter-select" [(ngModel)]="selectedExam" (change)="filterScores()">
+          <option value="All">All Exams</option>
+          <option value="JEE Mains">JEE Mains</option>
+          <option value="JEE Advanced">JEE Advanced</option>
+        </select>
       </div>
+
+      <!-- MOCK — dynamic from data -->
+      <div class="sr-filter-select-wrapper">
+        <label class="sr-select-label">Mock:</label>
+        <select class="sr-filter-select" [(ngModel)]="selectedMock" (change)="filterScores()">
+          <option value="All">All Mock Tests</option>
+          <option *ngFor="let m of mockOptions" [value]="m">{{ m }}</option>
+        </select>
+      </div>
+
     </div>
 
     <!-- TABLE -->
@@ -108,6 +103,7 @@
           <tr>
             <th class="sr-th">STUDENT ID</th>
             <th class="sr-th">STUDENT NAME</th>
+            <th class="sr-th">SECTION</th>
             <th class="sr-th">EXAM</th>
             <th class="sr-th sr-th--mock">MOCK TEST</th>
             <th class="sr-th col-physics">PHYSICS</th>
@@ -116,7 +112,7 @@
             <th class="sr-th col-aggregate">TOTAL</th>
             <th class="sr-th">✔ CORRECT</th>
             <th class="sr-th">✘ WRONG</th>
-            <th class="sr-th">SUBMITTED</th>
+            <th class="sr-th col-percentile">PERCENTILE</th>
           </tr>
         </ng-template>
 
@@ -125,6 +121,9 @@
           <tr class="sr-tr">
             <td class="sr-td sr-td--id">{{ student.id }}</td>
             <td class="sr-td sr-td--name">{{ student.name }}</td>
+            <td class="sr-td">
+              <span class="sr-section-badge">{{ student.section }}</span>
+            </td>
             <td class="sr-td">
               <span class="sr-exam-badge"
                 [class.sr-exam-badge--advanced]="student.exam === 'JEE Advanced'">
@@ -144,14 +143,21 @@
             <td class="sr-td">
               <span class="sr-badge sr-badge-warning">{{ student.wrong }}</span>
             </td>
-            <td class="sr-td sr-td--date">{{ student.submittedAt }}</td>
+            <td class="sr-td col-percentile">
+              <span class="sr-percentile-badge"
+                [class.sr-pct--high]="student.percentile >= 75"
+                [class.sr-pct--mid]="student.percentile >= 40 && student.percentile < 75"
+                [class.sr-pct--low]="student.percentile < 40">
+                {{ student.percentile !== undefined ? student.percentile + '%' : '—' }}
+              </span>
+            </td>
           </tr>
         </ng-template>
 
         <!-- EMPTY -->
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="11">
+            <td colspan="12">
               <div class="sr-empty-container">
                 <div class="sr-empty-icon">
                   <i class="fa-solid fa-chart-column"></i>

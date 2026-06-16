@@ -11,19 +11,20 @@ import { ScoreService } from '../../services/score.service';
 })
 export class ScoreManagementComponent implements OnInit {
 
-  searchText    = '';
-  selectedExam  = 'All';
-  selectedMock  = 'All';
+  selectedExam    = 'All';
+  selectedMock    = 'All';
+  selectedSection = 'All';
 
-  currentPage   = 1;
-  itemsPerPage  = 10;
+  currentPage  = 1;
+  itemsPerPage = 10;
 
-  scores        : any[] = [];
-  filteredScores: any[] = [];
+  scores         : any[] = [];
+  filteredScores : any[] = [];
   paginatedScores: any[] = [];
 
-  /** Unique mock test labels for the filter dropdown (built from data) */
-  mockOptions: string[] = [];
+  /** Dropdown options built from actual data */
+  mockOptions   : string[] = [];
+  sectionOptions: string[] = [];
 
   constructor(private router: Router, private scoreService: ScoreService) {}
 
@@ -31,33 +32,40 @@ export class ScoreManagementComponent implements OnInit {
     this.loadScores();
   }
 
-  // ── Load real scores from localStorage ──────────────────────────────────────
+  // ── Load scores from backend ──────────────────────────────────────────────
   loadScores(): void {
     this.scoreService.getScores().subscribe({
       next: (res) => {
         const stored = res.scores || [];
 
-        // Normalize stored structure to match the table columns
         this.scores = stored.map((s: any) => ({
-          id         : s.studentId  || '—',
-          name       : s.studentName|| '—',
-          exam       : s.examType   || '—',
-          mock       : s.mock       || `Mock Test ${s.mockTestId || 1}`,
-          mockTestId : s.mockTestId || 1,
-          phy        : s.phy        ?? 0,
-          chm        : s.chm        ?? 0,
-          math       : s.math       ?? 0,
-          total      : s.total      ?? 0,
-          maxMarks   : s.maxMarks   ?? 0,
-          correct    : s.correct    ?? 0,
-          wrong      : s.wrong      ?? 0,
-          unattempted: s.unattempted ?? 0,
-          submittedAt: s.submittedAt ? new Date(s.submittedAt).toLocaleString() : '—',
+          id          : s.studentId   || '—',
+          name        : s.studentName || '—',
+          section     : s.section     || '—',
+          exam        : s.examType    || '—',
+          mock        : s.mock        || `Mock Test ${s.mockTestId || 1}`,
+          mockTestId  : s.mockTestId  || 1,
+          phy         : s.phy         ?? 0,
+          chm         : s.chm         ?? 0,
+          math        : s.math        ?? 0,
+          total       : s.total       ?? 0,
+          maxMarks    : s.maxMarks    ?? 0,
+          correct     : s.correct     ?? 0,
+          wrong       : s.wrong       ?? 0,
+          unattempted : s.unattempted ?? 0,
         }));
 
-        // Build dynamic mock dropdown options
-        const mocks = new Set<string>(this.scores.map(s => s.mock));
-        this.mockOptions = Array.from(mocks).sort();
+        // Compute percentile per student within their mock test group
+        this.computePercentiles();
+
+        // Build dynamic dropdown options from actual data
+        const mocks    = new Set<string>(this.scores.map(s => s.mock));
+        const sections = new Set<string>(
+          this.scores.map(s => s.section).filter(s => s && s !== '—')
+        );
+
+        this.mockOptions    = Array.from(mocks).sort();
+        this.sectionOptions = Array.from(sections).sort();
 
         this.filteredScores = [...this.scores];
         this.updatePagination();
@@ -68,7 +76,26 @@ export class ScoreManagementComponent implements OnInit {
     });
   }
 
-  // ── Computed stats ───────────────────────────────────────────────────────────
+  // ── Percentile computation ────────────────────────────────────────────────
+  private computePercentiles(): void {
+    const groups: { [key: string]: number[] } = {};
+    this.scores.forEach(s => {
+      const key = `${s.exam}||${s.mockTestId}`;
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(s.total);
+    });
+
+    this.scores.forEach(s => {
+      const key   = `${s.exam}||${s.mockTestId}`;
+      const group = groups[key];
+      const below = group.filter(t => t < s.total).length;
+      s.percentile = group.length <= 1
+        ? 100
+        : Math.round((below / (group.length - 1)) * 100);
+    });
+  }
+
+  // ── Computed stats ────────────────────────────────────────────────────────
   get highestScore(): number {
     if (!this.scores.length) return 0;
     return Math.max(...this.scores.map(s => s.total));
@@ -78,29 +105,20 @@ export class ScoreManagementComponent implements OnInit {
     return new Set(this.scores.map(s => `${s.exam}-${s.mockTestId}`)).size;
   }
 
-  // ── Filtering ────────────────────────────────────────────────────────────────
+  // ── Filtering ─────────────────────────────────────────────────────────────
   filterScores(): void {
-    this.filteredScores = this.scores.filter(student => {
-      const q = this.searchText.toLowerCase();
-      const matchesSearch =
-        student.name.toLowerCase().includes(q) ||
-        student.id.toLowerCase().includes(q) ||
-        (student.exam && student.exam.toLowerCase().includes(q));
-
-      const matchesExam =
-        this.selectedExam === 'All' || student.exam === this.selectedExam;
-
-      const matchesMock =
-        this.selectedMock === 'All' || student.mock === this.selectedMock;
-
-      return matchesSearch && matchesExam && matchesMock;
+    this.filteredScores = this.scores.filter(s => {
+      const matchesExam    = this.selectedExam    === 'All' || s.exam    === this.selectedExam;
+      const matchesMock    = this.selectedMock    === 'All' || s.mock    === this.selectedMock;
+      const matchesSection = this.selectedSection === 'All' || s.section === this.selectedSection;
+      return matchesExam && matchesMock && matchesSection;
     });
 
     this.currentPage = 1;
     this.updatePagination();
   }
 
-  // ── Pagination ───────────────────────────────────────────────────────────────
+  // ── Pagination ────────────────────────────────────────────────────────────
   updatePagination(): void {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     this.paginatedScores = this.filteredScores.slice(start, start + this.itemsPerPage);
@@ -118,33 +136,33 @@ export class ScoreManagementComponent implements OnInit {
     if (this.currentPage > 1) { this.currentPage--; this.updatePagination(); }
   }
 
-  // ── Export — respects current filter ────────────────────────────────────────
+  // ── Export — respects current filter ─────────────────────────────────────
   exportExcel(): void {
-    // Map to clean readable column names
     const exportData = this.filteredScores.map(s => ({
-      'Student ID'   : s.id,
-      'Student Name' : s.name,
-      'Exam Type'    : s.exam,
-      'Mock Test'    : s.mock,
-      'Physics'      : s.phy,
-      'Chemistry'    : s.chm,
-      'Mathematics'  : s.math,
-      'Total Score'  : s.total,
-      'Max Marks'    : s.maxMarks,
-      'Correct'      : s.correct,
-      'Wrong'        : s.wrong,
-      'Unattempted'  : s.unattempted,
-      'Submitted At' : s.submittedAt,
+      'Student ID'  : s.id,
+      'Student Name': s.name,
+      'Section'     : s.section,
+      'Exam Type'   : s.exam,
+      'Mock Test'   : s.mock,
+      'Physics'     : s.phy,
+      'Chemistry'   : s.chm,
+      'Mathematics' : s.math,
+      'Total Score' : s.total,
+      'Max Marks'   : s.maxMarks,
+      'Correct'     : s.correct,
+      'Wrong'       : s.wrong,
+      'Unattempted' : s.unattempted,
+      'Percentile'  : s.percentile !== undefined ? `${s.percentile}%` : '—',
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(exportData);
     const workbook  = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Scores');
 
-    // File name reflects the active filter
-    const examPart = this.selectedExam !== 'All' ? `_${this.selectedExam.replace(/\s+/g, '-')}` : '';
-    const mockPart = this.selectedMock !== 'All' ? `_${this.selectedMock.replace(/\s+/g, '-')}` : '';
-    XLSX.writeFile(workbook, `scores${examPart}${mockPart}.xlsx`);
+    const examPart    = this.selectedExam    !== 'All' ? `_${this.selectedExam.replace(/\s+/g, '-')}`    : '';
+    const mockPart    = this.selectedMock    !== 'All' ? `_${this.selectedMock.replace(/\s+/g, '-')}`    : '';
+    const sectionPart = this.selectedSection !== 'All' ? `_${this.selectedSection.replace(/\s+/g, '-')}` : '';
+    XLSX.writeFile(workbook, `scores${examPart}${mockPart}${sectionPart}.xlsx`);
   }
 
   goBackToDashboard(): void {
