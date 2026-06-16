@@ -68,21 +68,17 @@ export class LoginComponent implements OnInit {
     this.formError   = '';
     this.formSuccess = '';
 
-    const emailValue    = this.user.email?.trim().toLowerCase();
+    const identifier    = this.user.email?.trim();
     const passwordValue = this.user.password?.trim();
 
-    // Client-side validation
-    const emailRegex   = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isEmailValid = emailValue && emailRegex.test(emailValue);
-    const isPassValid  = !!passwordValue;
-
-    if (!isEmailValid && !isPassValid) {
+    // Client-side validation — just check not empty
+    if (!identifier && !passwordValue) {
       this.formError = 'Please fill all required fields';
       return;
-    } else if (!isEmailValid) {
-      this.formError = 'Please enter a valid email';
+    } else if (!identifier) {
+      this.formError = 'Please enter your Email or ID';
       return;
-    } else if (!isPassValid) {
+    } else if (!passwordValue) {
       this.formError = 'Password is required';
       return;
     }
@@ -90,7 +86,7 @@ export class LoginComponent implements OnInit {
     // ── Call backend via AuthService ──────────────────────────
     this.isLoading = true;
 
-    this.authService.login({ email: emailValue, password: passwordValue })
+    this.authService.login({ email: identifier, password: passwordValue })
       .subscribe({
         next: (res) => {
           this.isLoading = false;

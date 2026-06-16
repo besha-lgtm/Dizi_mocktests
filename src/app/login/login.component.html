@@ -12,7 +12,7 @@
         <div class="form-card-wrapper">
             <div class="login-header">
                 <h1>Login</h1>
-                <p class="subtitle">Enter your email and password to access your account</p>
+                <p class="subtitle">Enter your Email or Student/Teacher ID and password</p>
             </div>
 
             <!-- Display form-level error messages -->
@@ -27,21 +27,19 @@
             <form #loginForm="ngForm" (ngSubmit)="onSubmit()" class="login-form">
                 <!-- Email Field -->
                 <div class="form-group">
-                    <label for="email">EMAIL ADDRESS</label>
+                    <label for="email">EMAIL OR ID</label>
                     <div class="input-group" [class.input-error]="email.invalid && (email.dirty || email.touched)">
                         <input 
-                            type="email" 
+                            type="text"
                             id="email" 
                             name="email" 
                             [(ngModel)]="user.email"
-                            placeholder="you@example.com"
+                            placeholder="you@example.com or your ID"
                             required
-                            email
                             #email="ngModel">
                     </div>
                     <span class="error-message" *ngIf="email.invalid && (email.dirty || email.touched)">
-                        <span *ngIf="email.errors?.['required']">Email is required</span>
-                        <span *ngIf="email.errors?.['email']">Invalid email format</span>
+                        <span *ngIf="email.errors?.['required']">Email or ID is required</span>
                     </span>
                 </div>
 
