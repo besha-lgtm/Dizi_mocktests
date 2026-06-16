@@ -5,107 +5,55 @@
 
   <!-- TOP BAR -->
   <div class="sr-top-bar">
-
     <nav class="sr-breadcrumb">
-
-      <span class="sr-breadcrumb-link"  (click)="goBackToDashboard()">
-        Dashboard
-      </span>
-
+      <span class="sr-breadcrumb-link" (click)="goBackToDashboard()">Dashboard</span>
       <span class="sr-breadcrumb-sep">›</span>
-
-      <span class="sr-breadcrumb-active">
-        Score Management
-      </span>
-
+      <span class="sr-breadcrumb-active">Score Management</span>
     </nav>
-
   </div>
 
   <!-- PAGE HEADER -->
   <div class="sr-page-header">
-
     <div class="sr-page-header-text">
-
-      <h1 class="sr-page-title">
-        Score Management
-      </h1>
-
+      <h1 class="sr-page-title">Score Management</h1>
     </div>
-
-    <button
-      class="sr-add-btn"
-      (click)="exportExcel()">
-
+    <button class="sr-add-btn" (click)="exportExcel()">
       <i class="fa-solid fa-file-excel"></i>
-
       Export Score Sheet
-
     </button>
-
   </div>
 
   <!-- STATS -->
   <div class="sr-stats-grid">
 
     <div class="sr-stat-card">
-
       <div class="sr-stat-icon sr-stat-icon--students">
         <i class="fa-solid fa-users"></i>
       </div>
-
       <div class="sr-stat-body">
-
-        <p class="sr-stat-label">
-          Total Students
-        </p>
-
-        <p class="sr-stat-value">
-          {{ scores.length }}
-        </p>
-
+        <p class="sr-stat-label">Total Submissions</p>
+        <p class="sr-stat-value">{{ scores.length }}</p>
       </div>
-
     </div>
 
     <div class="sr-stat-card">
-
       <div class="sr-stat-icon sr-stat-icon--sections">
         <i class="fa-solid fa-chart-line"></i>
       </div>
-
       <div class="sr-stat-body">
-
-        <p class="sr-stat-label">
-          Highest Percentile
-        </p>
-
-        <p class="sr-stat-value">
-          99.84%
-        </p>
-
+        <p class="sr-stat-label">Highest Score</p>
+        <p class="sr-stat-value">{{ highestScore }}</p>
       </div>
-
     </div>
 
     <div class="sr-stat-card">
-
       <div class="sr-stat-icon sr-stat-icon--batches">
         <i class="fa-solid fa-book"></i>
       </div>
-
       <div class="sr-stat-body">
-
-        <p class="sr-stat-label">
-          Mock Tests
-        </p>
-
-        <p class="sr-stat-value">
-          12
-        </p>
-
+        <p class="sr-stat-label">Mock Tests Attempted</p>
+        <p class="sr-stat-value">{{ uniqueMockCount }}</p>
       </div>
-
     </div>
 
   </div>
@@ -118,288 +66,124 @@
 
       <!-- SEARCH -->
       <div class="sr-search-box">
-
         <i class="fa-solid fa-magnifying-glass"></i>
-
         <input
           type="text"
           [(ngModel)]="searchText"
           (input)="filterScores()"
-          placeholder="Search by name or app ID...">
-
+          placeholder="Search by name or student ID...">
       </div>
 
       <!-- FILTERS -->
       <div class="sr-filters-group">
 
-        <!-- BATCH -->
-        <div class="sr-filter-select-wrapper">
-
-          <label class="sr-select-label">
-            Batch:
-          </label>
-
-          <select
-            class="sr-filter-select"
-            [(ngModel)]="selectedBatch"
-            (change)="filterScores()">
-
-            <option value="All">
-              All Batches
-            </option>
-
-            <option value="Dropper Batch">
-              Dropper Batch
-            </option>
-
-            <option value="Foundation">
-              Foundation
-            </option>
-
-          </select>
-
-        </div>
-
         <!-- EXAM -->
         <div class="sr-filter-select-wrapper">
-
-          <label class="sr-select-label">
-            Exam:
-          </label>
-
-          <select
-            class="sr-filter-select"
-            [(ngModel)]="selectedExam"
-            (change)="filterScores()">
-
-            <option value="All">
-              All Exams
-            </option>
-
-            <option value="JEE Mains">
-              JEE Mains
-            </option>
-
-            <option value="JEE Advanced">
-              JEE Advanced
-            </option>
-
+          <label class="sr-select-label">Exam:</label>
+          <select class="sr-filter-select" [(ngModel)]="selectedExam" (change)="filterScores()">
+            <option value="All">All Exams</option>
+            <option value="JEE Mains">JEE Mains</option>
+            <option value="JEE Advanced">JEE Advanced</option>
           </select>
-
         </div>
 
-        <!-- MOCK -->
+        <!-- MOCK — dynamic from actual data -->
         <div class="sr-filter-select-wrapper">
-
-          <label class="sr-select-label">
-            Mock:
-          </label>
-
-          <select
-            class="sr-filter-select"
-            [(ngModel)]="selectedMock"
-            (change)="filterScores()">
-
-            <option value="All">
-              All Mock Tests
-            </option>
-
-            <option value="Mock Test 1">
-              Mock Test 1
-            </option>
-
-            <option value="Mock Test 2">
-              Mock Test 2
-            </option>
-
+          <label class="sr-select-label">Mock:</label>
+          <select class="sr-filter-select" [(ngModel)]="selectedMock" (change)="filterScores()">
+            <option value="All">All Mock Tests</option>
+            <option *ngFor="let m of mockOptions" [value]="m">{{ m }}</option>
           </select>
-
         </div>
 
       </div>
-
     </div>
 
     <!-- TABLE -->
     <div class="sr-table-scroll">
+      <p-table [value]="paginatedScores" responsiveLayout="scroll" styleClass="sr-table">
 
-  <p-table
-    [value]="paginatedScores"
-    responsiveLayout="scroll"
-    styleClass="sr-table">
+        <!-- HEADER -->
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="sr-th">STUDENT ID</th>
+            <th class="sr-th">STUDENT NAME</th>
+            <th class="sr-th">EXAM</th>
+            <th class="sr-th sr-th--mock">MOCK TEST</th>
+            <th class="sr-th col-physics">PHYSICS</th>
+            <th class="sr-th col-chemistry">CHEMISTRY</th>
+            <th class="sr-th col-mathematics">MATHEMATICS</th>
+            <th class="sr-th col-aggregate">TOTAL</th>
+            <th class="sr-th">✔ CORRECT</th>
+            <th class="sr-th">✘ WRONG</th>
+            <th class="sr-th">SUBMITTED</th>
+          </tr>
+        </ng-template>
 
-    <!-- HEADER -->
-    <ng-template pTemplate="header">
-      <tr>
+        <!-- BODY -->
+        <ng-template pTemplate="body" let-student>
+          <tr class="sr-tr">
+            <td class="sr-td sr-td--id">{{ student.id }}</td>
+            <td class="sr-td sr-td--name">{{ student.name }}</td>
+            <td class="sr-td">
+              <span class="sr-exam-badge"
+                [class.sr-exam-badge--advanced]="student.exam === 'JEE Advanced'">
+                {{ student.exam }}
+              </span>
+            </td>
+            <td class="sr-td sr-td--mock">{{ student.mock }}</td>
+            <td class="sr-td col-physics">{{ student.phy }}</td>
+            <td class="sr-td col-chemistry">{{ student.chm }}</td>
+            <td class="sr-td col-mathematics">{{ student.math }}</td>
+            <td class="sr-td col-aggregate sr-td--name">
+              {{ student.total }} / {{ student.maxMarks }}
+            </td>
+            <td class="sr-td">
+              <span class="sr-badge sr-badge-success">{{ student.correct }}</span>
+            </td>
+            <td class="sr-td">
+              <span class="sr-badge sr-badge-warning">{{ student.wrong }}</span>
+            </td>
+            <td class="sr-td sr-td--date">{{ student.submittedAt }}</td>
+          </tr>
+        </ng-template>
 
-        <th class="sr-th">APP ID</th>
+        <!-- EMPTY -->
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="11">
+              <div class="sr-empty-container">
+                <div class="sr-empty-icon">
+                  <i class="fa-solid fa-chart-column"></i>
+                </div>
+                <h3 class="sr-empty-title">No Score Records Found</h3>
+                <p class="sr-empty-text">
+                  No students have submitted this exam yet, or no records match your filters.
+                </p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
 
-        <th class="sr-th">
-          STUDENT NAME
-        </th>
-
-        <th class="sr-th">
-          BATCH
-        </th>
-
-        <th class="sr-th sr-th--mock">
-          MOCK TEST
-        </th>
-
-        <th class="sr-th col-physics">
-          PHYSICS
-        </th>
-
-        <th class="sr-th col-chemistry">
-          CHEMISTRY
-        </th>
-
-        <th class="sr-th col-mathematics">
-          MATHEMATICS
-        </th>
-
-        <th class="sr-th col-aggregate">
-          AGGREGATE
-        </th>
-
-        <th class="sr-th col-percentile">
-          PERCENTILE
-        </th>
-
-      </tr>
-    </ng-template>
-
-    <!-- BODY -->
-    <ng-template
-      pTemplate="body"
-      let-student>
-
-      <tr class="sr-tr">
-
-        <td class="sr-td sr-td--id">
-          {{ student.id }}
-        </td>
-
-        <td class="sr-td sr-td--name">
-          {{ student.name }}
-        </td>
-
-        <td class="sr-td">
-          {{ student.batch }}
-        </td>
-
-        <td class="sr-td sr-td--mock">
-          {{ student.exam }} {{ student.mock }}
-        </td>
-
-        <td class="sr-td col-physics">
-          {{ student.phy }}
-        </td>
-
-        <td class="sr-td col-chemistry">
-          {{ student.chm }}
-        </td>
-
-        <td class="sr-td col-mathematics">
-          {{ student.math }}
-        </td>
-
-        <td class="sr-td col-aggregate sr-td--name">
-          {{ student.aggregate }}
-        </td>
-
-        <td class="sr-td col-percentile">
-
-          <span
-            class="sr-badge sr-badge--batch"
-            [ngClass]="student.percentile > 98
-            ? 'sr-badge-success'
-            : 'sr-badge-warning'">
-
-            {{ student.percentile }}%
-
-          </span>
-
-        </td>
-
-      </tr>
-
-    </ng-template>
-
-    <!-- EMPTY -->
-    <ng-template pTemplate="emptymessage">
-
-      <tr>
-
-        <td colspan="9">
-
-          <div class="sr-empty-container">
-
-            <div class="sr-empty-icon">
-              <i class="fa-solid fa-chart-column"></i>
-            </div>
-
-            <h3 class="sr-empty-title">
-              No Score Records Found
-            </h3>
-
-            <p class="sr-empty-text">
-              No students match the selected filters.
-            </p>
-
-          </div>
-
-        </td>
-
-      </tr>
-
-    </ng-template>
-
-  </p-table>
-
-</div>
+      </p-table>
+    </div>
 
     <!-- PAGINATION -->
-    <div
-      class="sr-pagination"
-      *ngIf="filteredScores.length > 0">
-
+    <div class="sr-pagination" *ngIf="filteredScores.length > 0">
       <span class="sr-pagination-info">
-
         Page {{ currentPage }} of {{ totalPages }}
-
+        &nbsp;·&nbsp; {{ filteredScores.length }} record(s)
       </span>
-
       <div class="sr-pagination-controls">
-
-        <button
-          class="sr-page-btn sr-page-btn--nav"
-          (click)="prevPage()"
-          [disabled]="currentPage === 1">
-
+        <button class="sr-page-btn sr-page-btn--nav" (click)="prevPage()" [disabled]="currentPage === 1">
           <i class="fa-solid fa-chevron-left"></i>
-
         </button>
-
-        <span class="sr-page-btn sr-page-btn--active">
-
-          {{ currentPage }}
-
-        </span>
-
-        <button
-          class="sr-page-btn sr-page-btn--nav"
-          (click)="nextPage()"
-          [disabled]="currentPage === totalPages">
-
+        <span class="sr-page-btn sr-page-btn--active">{{ currentPage }}</span>
+        <button class="sr-page-btn sr-page-btn--nav" (click)="nextPage()" [disabled]="currentPage === totalPages">
           <i class="fa-solid fa-chevron-right"></i>
-
         </button>
-
       </div>
-
     </div>
 
   </div>
-
 </div>

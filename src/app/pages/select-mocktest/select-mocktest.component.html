@@ -2,20 +2,66 @@
 
 <div class="smt-page-wrapper">
 
+  <!-- BACK BUTTON -->
+  <div class="smt-top-back-wrapper" style="margin-bottom: 20px;">
+    <button class="smt-back-btn" (click)="goBack()" style="
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    " onmouseover="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.color='#f8fafc'" onmouseout="this.style.background='rgba(255, 255, 255, 0.05)'; this.style.color='#94a3b8'">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="width: 14px; height: 14px;">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Back to Exam Selection
+    </button>
+  </div>
+
   <!-- PAGE HEADER -->
   <div class="smt-page-header">
+    <div class="smt-exam-badge" [class.smt-exam-badge--advanced]="examType === 'JEE Advanced'">
+      {{ examType }}
+    </div>
     <h1 class="smt-page-title">Select Mock Test</h1>
-    <p class="smt-page-subtitle">Access your scheduled assessments and upcoming exams.</p>
+    <p class="smt-page-subtitle">Access your scheduled assessments for {{ examType }}.</p>
+  </div>
+
+  <!-- LOADING STATE -->
+  <div class="ml-loading" *ngIf="isLoading">
+    <div class="ml-spinner"></div>
+    <p>Loading available mock tests...</p>
+  </div>
+
+  <!-- ERROR STATE -->
+  <div class="smt-api-error" *ngIf="apiError && !isLoading">
+    <span>⚠️ {{ apiError }}</span>
+    <button (click)="loadMockTests()">Retry</button>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="smt-empty-state" *ngIf="!isLoading && !apiError && mockTests.length === 0">
+    <div class="smt-empty-icon">📭</div>
+    <h3>No Mock Tests Available</h3>
+    <p>No {{ examType }} questions have been added yet. Please check back later.</p>
   </div>
 
   <!-- MOCK TEST CARDS GRID -->
-  <div class="smt-cards-grid">
+  <div class="smt-cards-grid" *ngIf="!isLoading && !apiError && mockTests.length > 0">
 
     <div
       *ngFor="let test of mockTests"
       class="smt-card"
       [class.smt-card--live]="test.status === 'live'"
       [class.smt-card--coming-soon]="test.status === 'coming-soon'"
+      [class.smt-card--attempted]="test.status === 'attempted'"
     >
       <!-- Card Top Row: Status Badge + Questions -->
       <div class="smt-card-top">
@@ -23,9 +69,11 @@
           class="smt-status-badge"
           [class.smt-status-badge--live]="test.status === 'live'"
           [class.smt-status-badge--coming]="test.status === 'coming-soon'"
+          [class.smt-status-badge--attempted]="test.status === 'attempted'"
         >
           <span *ngIf="test.status === 'live'" class="smt-live-dot"></span>
-          {{ test.status === 'live' ? 'Live Now' : 'Coming Soon' }}
+          <span *ngIf="test.status === 'attempted'">✓ </span>
+          {{ test.status === 'live' ? 'Live Now' : test.status === 'attempted' ? 'Attempted' : 'Coming Soon' }}
         </span>
 
         <div class="smt-questions-info">
@@ -60,14 +108,18 @@
           <span>Available</span>
         </div>
 
+        <div *ngIf="test.status === 'attempted'" class="smt-availability smt-availability--attempted">
+          <span>✓ Already submitted</span>
+        </div>
+
         <button
           class="smt-action-btn"
           [class.smt-action-btn--active]="test.status === 'live'"
-          [class.smt-action-btn--disabled]="test.status === 'coming-soon'"
-          [disabled]="test.status === 'coming-soon'"
+          [class.smt-action-btn--disabled]="test.status === 'coming-soon' || test.status === 'attempted'"
+          [disabled]="test.status === 'coming-soon' || test.status === 'attempted'"
           (click)="startTest(test)"
         >
-          {{ test.status === 'live' ? 'Start Test' : 'Coming Soon' }}
+          {{ test.status === 'live' ? 'Start Test' : test.status === 'attempted' ? 'Already Attended' : 'Coming Soon' }}
         </button>
 
       </div>

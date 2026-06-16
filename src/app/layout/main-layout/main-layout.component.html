@@ -7,7 +7,7 @@
 <!-- STATE 2: After Exam Starts (Header 2 + Future Component) -->
 <ng-container *ngIf="isExamStarted">
   <app-header2></app-header2>
-  <app-mock-question></app-mock-question>
+  <app-mock-question [mockTestId]="mockTestId" [examType]="examType"></app-mock-question>
   <!-- 
     USER INSTRUCTION: 
     This is the space for the another component that you will develop later.

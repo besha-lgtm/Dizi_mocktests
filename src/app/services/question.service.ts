@@ -10,6 +10,7 @@ export interface Question {
   subject      : string;
   topic        : string;
   examType     : string;        // JEE Mains | JEE Advanced
+  mockTestId   : number;
   questionText : string;
   questionImage?: string | null; // Base64 encoded image (optional)
   optionA      : string;
@@ -25,6 +26,7 @@ export interface QuestionPayload {
   subject      : string;
   topic        : string;
   examType     : string;
+  mockTestId   : number;
   questionText : string;
   questionImage?: string | null;
   optionA      : string;
@@ -37,6 +39,7 @@ export interface QuestionPayload {
 
 export interface BulkQuestionPayload {
   subject   : string;
+  mockTestId: number;
   questions : Omit<QuestionPayload, 'subject'>[];
 }
 
@@ -75,13 +78,36 @@ export class QuestionService {
 
   // ── API Calls ──────────────────────────────────────────────────────────────
 
-  /**
-   * GET /api/questions?subject=Mathematics
-   * Fetches all questions for the given subject
-   */
-  getQuestions(subject: string): Observable<ApiResponse> {
+  getQuestions(subject?: string, mockTestId?: number, examType?: string): Observable<ApiResponse> {
+    let url = `${this.base}/api/questions?`;
+    const params: string[] = [];
+    if (subject) {
+      params.push(`subject=${encodeURIComponent(subject)}`);
+    }
+    if (mockTestId !== undefined && mockTestId !== null) {
+      params.push(`mockTestId=${mockTestId}`);
+    }
+    if (examType) {
+      params.push(`examType=${encodeURIComponent(examType)}`);
+    }
+    url += params.join('&');
     return this.http.get<ApiResponse>(
-      `${this.base}/api/questions?subject=${encodeURIComponent(subject)}`,
+      url,
+      { headers: this.getHeaders() }
+    );
+  }
+
+  /**
+   * GET /api/questions?mockTestId=1&examType=JEE+Mains
+   * Fetches all questions for a specific mock test, optionally filtered by examType
+   */
+  getQuestionsByMockTest(mockTestId: number, examType?: string): Observable<ApiResponse> {
+    let url = `${this.base}/api/questions?mockTestId=${mockTestId}`;
+    if (examType) {
+      url += `&examType=${encodeURIComponent(examType)}`;
+    }
+    return this.http.get<ApiResponse>(
+      url,
       { headers: this.getHeaders() }
     );
   }

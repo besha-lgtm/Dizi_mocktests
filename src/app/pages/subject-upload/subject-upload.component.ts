@@ -28,6 +28,7 @@ export class SubjectUploadComponent implements OnInit {
     {
       topic        : '',
       difficulty   : '',
+      mockTestId   : 1,
       questionText : '',
       questionImage: '',
       optionA      : '',
@@ -41,6 +42,7 @@ export class SubjectUploadComponent implements OnInit {
   // Bulk upload state
   selectedFile    : File | null = null;
   selectedFileName: string = '';
+  excelMockTestId : number = 1;      // Mock Test ID selection for Excel upload
   excelUploadSuccess: string = '';
   excelUploadError  : string = '';
   isBulkUploading   : boolean = false;
@@ -78,6 +80,7 @@ export class SubjectUploadComponent implements OnInit {
         {
           topic        : editData.topic         || '',
           difficulty   : editData.difficulty     || '',
+          mockTestId   : editData.mockTestId     || 1,
           questionText : editData.questionText   || '',
           questionImage: editData.questionImage  || '',
           optionA      : editData.optionA        || '',
@@ -99,7 +102,7 @@ export class SubjectUploadComponent implements OnInit {
 
   addQuestion(): void {
     this.questions.push({
-      topic: '', difficulty: '', questionText: '',
+      topic: '', difficulty: '', mockTestId: 1, questionText: '',
       questionImage: '',
       optionA: '', optionB: '', optionC: '', optionD: '', correctAnswer: ''
     });
@@ -126,6 +129,7 @@ export class SubjectUploadComponent implements OnInit {
       const payload = {
         topic        : q.topic,
         examType     : this.examType || q.examType || 'JEE Mains',
+        mockTestId   : q.mockTestId || 1,
         questionText : q.questionText,
         questionImage: q.questionImage || null,
         optionA      : q.optionA,
@@ -148,7 +152,7 @@ export class SubjectUploadComponent implements OnInit {
         },
         error: (err) => {
           this.isSubmitting = false;
-          this.submitError  = 'Server error. Please try again.';
+          this.submitError  = err.error?.message || 'Server error. Please try again.';
           console.error('updateQuestion error:', err);
         }
       });
@@ -159,6 +163,7 @@ export class SubjectUploadComponent implements OnInit {
         subject      : this.subject,
         topic        : q.topic,
         examType     : this.examType || 'JEE Mains',
+        mockTestId   : q.mockTestId || 1,
         questionText : q.questionText,
         questionImage: q.questionImage || null,
         optionA      : q.optionA,
@@ -185,7 +190,7 @@ export class SubjectUploadComponent implements OnInit {
         },
         error: (err) => {
           this.isSubmitting = false;
-          this.submitError  = 'Server error. Please try again.';
+          this.submitError  = err.error?.message || 'Server error. Please try again.';
           console.error('addQuestion error:', err);
         }
       });
@@ -195,7 +200,7 @@ export class SubjectUploadComponent implements OnInit {
   private resetForm(form: NgForm): void {
     this.questions = [
       {
-        topic: '', difficulty: '', questionText: '', questionImage: '',
+        topic: '', difficulty: '', mockTestId: 1, questionText: '', questionImage: '',
         optionA: '', optionB: '', optionC: '', optionD: '', correctAnswer: ''
       }
     ];
@@ -258,10 +263,11 @@ export class SubjectUploadComponent implements OnInit {
         }
 
         // Map Excel columns → API payload fields
-        // Expected columns: Question | Topic | Difficulty | OptionA | OptionB | OptionC | OptionD | CorrectAnswer | ExamType
+        // Expected columns: Question | Topic | Difficulty | OptionA | OptionB | OptionC | OptionD | CorrectAnswer | ExamType | MockTestId
         const questions = rows.map(row => ({
           topic        : String(row['Topic']        || '').trim(),
           examType     : String(row['ExamType']      || row['Exam Type'] || this.examType || 'JEE Mains').trim(),
+          mockTestId   : Number(row['MockTestId']    || row['Mock Test ID'] || row['MockTest'] || this.excelMockTestId || 1),
           questionText : String(row['Question']      || '').trim(),
           optionA      : String(row['OptionA']       || row['Option A'] || '').trim(),
           optionB      : String(row['OptionB']       || row['Option B'] || '').trim(),
@@ -273,8 +279,9 @@ export class SubjectUploadComponent implements OnInit {
 
         // POST bulk to API
         this.questionService.bulkAddQuestions({
-          subject  : this.subject,
-          questions: questions
+          subject   : this.subject,
+          mockTestId: this.excelMockTestId,
+          questions : questions
         }).subscribe({
           next: (res) => {
             this.isBulkUploading = false;
@@ -294,7 +301,7 @@ export class SubjectUploadComponent implements OnInit {
           },
           error: (err) => {
             this.isBulkUploading  = false;
-            this.excelUploadError = 'Server error during bulk upload. Please try again.';
+            this.excelUploadError = err.error?.message || 'Server error during bulk upload. Please try again.';
             console.error('bulkAddQuestions error:', err);
           }
         });
@@ -313,10 +320,10 @@ export class SubjectUploadComponent implements OnInit {
 
   downloadExcelTemplate(): void {
     const templateData = [
-      ['Question', 'Topic', 'Difficulty', 'OptionA', 'OptionB', 'OptionC', 'OptionD', 'CorrectAnswer', 'ExamType'],
-      ['Sample question 1?', 'Algebra',  'Easy',   'Option A', 'Option B', 'Option C', 'Option D', 'A', 'JEE Mains'],
-      ['Sample question 2?', 'Calculus', 'Medium', 'Option A', 'Option B', 'Option C', 'Option D', 'B', 'JEE Advanced'],
-      ['Sample question 3?', 'Geometry', 'Hard',   'Option A', 'Option B', 'Option C', 'Option D', 'C', 'JEE Mains'],
+      ['Question', 'Topic', 'Difficulty', 'OptionA', 'OptionB', 'OptionC', 'OptionD', 'CorrectAnswer', 'ExamType', 'MockTestId'],
+      ['Sample question 1?', 'Algebra',  'Easy',   'Option A', 'Option B', 'Option C', 'Option D', 'A', 'JEE Mains', '1'],
+      ['Sample question 2?', 'Calculus', 'Medium', 'Option A', 'Option B', 'Option C', 'Option D', 'B', 'JEE Advanced', '1'],
+      ['Sample question 3?', 'Geometry', 'Hard',   'Option A', 'Option B', 'Option C', 'Option D', 'C', 'JEE Mains', '2'],
     ];
 
     const workbook  = XLSX.utils.book_new();

@@ -1,0 +1,70 @@
+/* ── Loading / Error Overlays ────────────────────────────────────────────────── */
+.loading-overlay,
+.error-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  width: 100%;
+}
+
+.loader-card,
+.error-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 40px 48px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+  text-align: center;
+  font-size: 1rem;
+  color: #444;
+}
+
+.error-icon {
+  font-size: 2.5rem;
+}
+
+/* Spinner */
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #e3e9f7;
+  border-top-color: #1a56db;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Mock Test Badge ─────────────────────────────────────────────────────────── */
+.mock-test-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  background: #1a56db;
+  border-radius: 20px;
+  padding: 2px 10px;
+  margin-left: 10px;
+  vertical-align: middle;
+  letter-spacing: 0.04em;
+}
+
+/* ── Question Image ───────────────────────────────────────────────────────────── */
+.question-image-container {
+  margin: 12px 0;
+  text-align: center;
+}
+
+.question-image {
+  max-width: 100%;
+  max-height: 260px;
+  border-radius: 8px;
+  border: 1px solid #e0e6f0;
+  object-fit: contain;
+}

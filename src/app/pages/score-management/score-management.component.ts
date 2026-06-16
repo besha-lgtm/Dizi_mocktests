@@ -1,273 +1,153 @@
 import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { Router } from '@angular/router';
+import { ScoreService } from '../../services/score.service';
 
 @Component({
   selector: 'app-score-management',
-  standalone:false,
+  standalone: false,
   templateUrl: './score-management.component.html',
   styleUrls: ['./score-management.component.css']
 })
 export class ScoreManagementComponent implements OnInit {
 
-  searchText = '';
+  searchText    = '';
+  selectedExam  = 'All';
+  selectedMock  = 'All';
 
-  selectedBatch = 'All';
+  currentPage   = 1;
+  itemsPerPage  = 10;
 
-  selectedExam = 'All';
-
-  selectedMock = 'All';
-
-  currentPage = 1;
-
-  itemsPerPage = 5;
-
-  scores: any[] = [];
-
+  scores        : any[] = [];
   filteredScores: any[] = [];
-
   paginatedScores: any[] = [];
-  constructor(private router: Router) {}
+
+  /** Unique mock test labels for the filter dropdown (built from data) */
+  mockOptions: string[] = [];
+
+  constructor(private router: Router, private scoreService: ScoreService) {}
+
   ngOnInit(): void {
+    this.loadScores();
+  }
 
-  this.scores = [
+  // ── Load real scores from localStorage ──────────────────────────────────────
+  loadScores(): void {
+    this.scoreService.getScores().subscribe({
+      next: (res) => {
+        const stored = res.scores || [];
 
-    {
-      id: 'JEE20260041',
-      name: 'Ananya Iyer',
-      batch: 'Dropper Batch',
-      exam: 'JEE Mains',
-      mock: 'Mock Test 1',
-      phy: 88,
-      chm: 92,
-      math: 96,
-      aggregate: '276/300',
-      percentile: 99.84
-    },
+        // Normalize stored structure to match the table columns
+        this.scores = stored.map((s: any) => ({
+          id         : s.studentId  || '—',
+          name       : s.studentName|| '—',
+          exam       : s.examType   || '—',
+          mock       : s.mock       || `Mock Test ${s.mockTestId || 1}`,
+          mockTestId : s.mockTestId || 1,
+          phy        : s.phy        ?? 0,
+          chm        : s.chm        ?? 0,
+          math       : s.math       ?? 0,
+          total      : s.total      ?? 0,
+          maxMarks   : s.maxMarks   ?? 0,
+          correct    : s.correct    ?? 0,
+          wrong      : s.wrong      ?? 0,
+          unattempted: s.unattempted ?? 0,
+          submittedAt: s.submittedAt ? new Date(s.submittedAt).toLocaleString() : '—',
+        }));
 
-    {
-      id: 'JEE20260042',
-      name: 'Rahul Sharma',
-      batch: 'Foundation',
-      exam: 'JEE Advanced',
-      mock: 'Mock Test 2',
-      phy: 71,
-      chm: 78,
-      math: 82,
-      aggregate: '231/300',
-      percentile: 97.12
-    },
+        // Build dynamic mock dropdown options
+        const mocks = new Set<string>(this.scores.map(s => s.mock));
+        this.mockOptions = Array.from(mocks).sort();
 
-    {
-      id: 'JEE20260043',
-      name: 'Sneha Reddy',
-      batch: 'Dropper Batch',
-      exam: 'JEE Mains',
-      mock: 'Mock Test 1',
-      phy: 95,
-      chm: 90,
-      math: 94,
-      aggregate: '279/300',
-      percentile: 99.91
-    },
+        this.filteredScores = [...this.scores];
+        this.updatePagination();
+      },
+      error: (err) => {
+        console.error('Failed to load scores from backend:', err);
+      }
+    });
+  }
 
-    {
-      id: 'JEE20260044',
-      name: 'Vikram Malhotra',
-      batch: 'Foundation',
-      exam: 'JEE Advanced',
-      mock: 'Mock Test 2',
-      phy: 60,
-      chm: 54,
-      math: 48,
-      aggregate: '162/300',
-      percentile: 94.12
-    },
+  // ── Computed stats ───────────────────────────────────────────────────────────
+  get highestScore(): number {
+    if (!this.scores.length) return 0;
+    return Math.max(...this.scores.map(s => s.total));
+  }
 
-    {
-      id: 'JEE20260045',
-      name: 'Priya Patel',
-      batch: 'Dropper Batch',
-      exam: 'JEE Mains',
-      mock: 'Mock Test 1',
-      phy: 82,
-      chm: 86,
-      math: 79,
-      aggregate: '247/300',
-      percentile: 98.04
-    },
+  get uniqueMockCount(): number {
+    return new Set(this.scores.map(s => `${s.exam}-${s.mockTestId}`)).size;
+  }
 
-    {
-      id: 'JEE20260046',
-      name: 'Arjun Verma',
-      batch: 'Foundation',
-      exam: 'JEE Advanced',
-      mock: 'Mock Test 2',
-      phy: 73,
-      chm: 75,
-      math: 69,
-      aggregate: '217/300',
-      percentile: 96.22
-    },
-
-    {
-      id: 'JEE20260047',
-      name: 'Meera Nair',
-      batch: 'Dropper Batch',
-      exam: 'JEE Mains',
-      mock: 'Mock Test 1',
-      phy: 91,
-      chm: 89,
-      math: 92,
-      aggregate: '272/300',
-      percentile: 99.45
-    },
-
-    {
-      id: 'JEE20260048',
-      name: 'Karthik Rao',
-      batch: 'Foundation',
-      exam: 'JEE Advanced',
-      mock: 'Mock Test 2',
-      phy: 66,
-      chm: 70,
-      math: 64,
-      aggregate: '200/300',
-      percentile: 95.04
-    },
-
-    {
-      id: 'JEE20260049',
-      name: 'Divya Kapoor',
-      batch: 'Dropper Batch',
-      exam: 'JEE Mains',
-      mock: 'Mock Test 1',
-      phy: 84,
-      chm: 88,
-      math: 90,
-      aggregate: '262/300',
-      percentile: 98.88
-    },
-
-    {
-      id: 'JEE20260050',
-      name: 'Aditya Singh',
-      batch: 'Foundation',
-      exam: 'JEE Advanced',
-      mock: 'Mock Test 2',
-      phy: 58,
-      chm: 61,
-      math: 66,
-      aggregate: '185/300',
-      percentile: 93.76
-    }
-
-  ];
-
-  this.filteredScores = [...this.scores];
-
-  this.updatePagination();
-
-}
-
-  filterScores() {
-
+  // ── Filtering ────────────────────────────────────────────────────────────────
+  filterScores(): void {
     this.filteredScores = this.scores.filter(student => {
-
+      const q = this.searchText.toLowerCase();
       const matchesSearch =
-        student.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        student.id.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        (student.exam && student.exam.toLowerCase().includes(this.searchText.toLowerCase()));
-
-      const matchesBatch =
-        this.selectedBatch === 'All' ||
-        student.batch === this.selectedBatch;
+        student.name.toLowerCase().includes(q) ||
+        student.id.toLowerCase().includes(q) ||
+        (student.exam && student.exam.toLowerCase().includes(q));
 
       const matchesExam =
-        this.selectedExam === 'All' ||
-        student.exam === this.selectedExam;
+        this.selectedExam === 'All' || student.exam === this.selectedExam;
 
       const matchesMock =
-        this.selectedMock === 'All' ||
-        student.mock === this.selectedMock;
+        this.selectedMock === 'All' || student.mock === this.selectedMock;
 
-      return matchesSearch && matchesBatch && matchesExam && matchesMock;
-
+      return matchesSearch && matchesExam && matchesMock;
     });
 
     this.currentPage = 1;
-
     this.updatePagination();
-
   }
 
-  updatePagination() {
-
-    const start =
-      (this.currentPage - 1) * this.itemsPerPage;
-
-    const end =
-      start + this.itemsPerPage;
-
-    this.paginatedScores =
-      this.filteredScores.slice(start, end);
-
+  // ── Pagination ───────────────────────────────────────────────────────────────
+  updatePagination(): void {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    this.paginatedScores = this.filteredScores.slice(start, start + this.itemsPerPage);
   }
 
   get totalPages(): number {
-
-    return Math.ceil(
-      this.filteredScores.length / this.itemsPerPage
-    );
-
+    return Math.max(1, Math.ceil(this.filteredScores.length / this.itemsPerPage));
   }
 
-  nextPage() {
-
-    if (this.currentPage < this.totalPages) {
-
-      this.currentPage++;
-
-      this.updatePagination();
-
-    }
-
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) { this.currentPage++; this.updatePagination(); }
   }
 
-  prevPage() {
-
-    if (this.currentPage > 1) {
-
-      this.currentPage--;
-
-      this.updatePagination();
-
-    }
-
+  prevPage(): void {
+    if (this.currentPage > 1) { this.currentPage--; this.updatePagination(); }
   }
 
+  // ── Export — respects current filter ────────────────────────────────────────
   exportExcel(): void {
+    // Map to clean readable column names
+    const exportData = this.filteredScores.map(s => ({
+      'Student ID'   : s.id,
+      'Student Name' : s.name,
+      'Exam Type'    : s.exam,
+      'Mock Test'    : s.mock,
+      'Physics'      : s.phy,
+      'Chemistry'    : s.chm,
+      'Mathematics'  : s.math,
+      'Total Score'  : s.total,
+      'Max Marks'    : s.maxMarks,
+      'Correct'      : s.correct,
+      'Wrong'        : s.wrong,
+      'Unattempted'  : s.unattempted,
+      'Submitted At' : s.submittedAt,
+    }));
 
-    const worksheet =
-      XLSX.utils.json_to_sheet(this.filteredScores);
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook  = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Scores');
 
-    const workbook =
-      XLSX.utils.book_new();
-
-    XLSX.utils.book_append_sheet(
-      workbook,
-      worksheet,
-      'Scores'
-    );
-
-    XLSX.writeFile(
-      workbook,
-      'score-management.xlsx'
-    );
-
+    // File name reflects the active filter
+    const examPart = this.selectedExam !== 'All' ? `_${this.selectedExam.replace(/\s+/g, '-')}` : '';
+    const mockPart = this.selectedMock !== 'All' ? `_${this.selectedMock.replace(/\s+/g, '-')}` : '';
+    XLSX.writeFile(workbook, `scores${examPart}${mockPart}.xlsx`);
   }
-   goBackToDashboard(): void {
+
+  goBackToDashboard(): void {
     this.router.navigate(['/admin-manageboard']);
   }
-
 }

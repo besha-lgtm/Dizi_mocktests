@@ -25,12 +25,15 @@ export class MockListComponent implements OnInit {
   selectedTopic      : string = 'All Topics';
   selectedDifficulty : string = 'All Difficulty';
   selectedExamType   : string = 'All Exams';
+  selectedMockTest   : string = 'All Mock Tests';
 
   examTypes: string[] = ['All Exams', 'JEE Mains', 'JEE Advanced'];
+  mockTestIds: string[] = ['All Mock Tests'];
 
   examDropdownOpen      : boolean = false;
   topicDropdownOpen     : boolean = false;
   difficultyDropdownOpen: boolean = false;
+  mockTestDropdownOpen  : boolean = false;
 
   // Pagination
   currentPage : number = 1;
@@ -78,6 +81,7 @@ export class MockListComponent implements OnInit {
     this.selectedTopic     = 'All Topics';
     this.selectedDifficulty= 'All Difficulty';
     this.selectedExamType  = 'All Exams';
+    this.selectedMockTest  = 'All Mock Tests';
 
     this.questionService.getQuestions(this.subject)
       .pipe(
@@ -92,6 +96,11 @@ export class MockListComponent implements OnInit {
           this.allQuestions   = res.questions ?? [];
           this.totalQuestions = this.allQuestions.length;
           this.activeTopics   = new Set(this.allQuestions.map(q => q.topic)).size;
+          
+          // Compile available mock test IDs dynamically from loaded questions
+          const ids = Array.from(new Set(this.allQuestions.map(q => q.mockTestId || 1))).sort((a, b) => a - b);
+          this.mockTestIds = ['All Mock Tests', ...ids.map(id => `Mock Test ${id}`)];
+
           this.lastUpdate     = this.allQuestions.length > 0
             ? (this.allQuestions[0].lastModified ?? '—')
             : '—';
@@ -112,7 +121,11 @@ export class MockListComponent implements OnInit {
       const topicMatch = this.selectedTopic === 'All Topics' || q.topic === this.selectedTopic;
       const diffMatch  = this.selectedDifficulty === 'All Difficulty' || q.difficulty === this.selectedDifficulty;
       const examMatch  = this.selectedExamType === 'All Exams' || q.examType === this.selectedExamType;
-      return topicMatch && diffMatch && examMatch;
+      
+      const mockTestNum = this.selectedMockTest === 'All Mock Tests' ? null : parseInt(this.selectedMockTest.replace('Mock Test ', ''), 10);
+      const mockTestMatch = this.selectedMockTest === 'All Mock Tests' || (q.mockTestId || 1) === mockTestNum;
+      
+      return topicMatch && diffMatch && examMatch && mockTestMatch;
     });
 
     this.currentPage = 1;
@@ -182,28 +195,45 @@ export class MockListComponent implements OnInit {
     this.applyFilters();
   }
 
+  selectMockTest(mt: string): void {
+    this.selectedMockTest = mt;
+    this.mockTestDropdownOpen = false;
+    this.applyFilters();
+  }
+
   toggleTopicDropdown(): void {
     this.topicDropdownOpen = !this.topicDropdownOpen;
     this.difficultyDropdownOpen = false;
     this.examDropdownOpen = false;
+    this.mockTestDropdownOpen = false;
   }
 
   toggleDifficultyDropdown(): void {
     this.difficultyDropdownOpen = !this.difficultyDropdownOpen;
     this.topicDropdownOpen = false;
     this.examDropdownOpen = false;
+    this.mockTestDropdownOpen = false;
   }
 
   toggleExamDropdown(): void {
     this.examDropdownOpen = !this.examDropdownOpen;
     this.topicDropdownOpen = false;
     this.difficultyDropdownOpen = false;
+    this.mockTestDropdownOpen = false;
+  }
+
+  toggleMockTestDropdown(): void {
+    this.mockTestDropdownOpen = !this.mockTestDropdownOpen;
+    this.topicDropdownOpen = false;
+    this.difficultyDropdownOpen = false;
+    this.examDropdownOpen = false;
   }
 
   closeDropdowns(): void {
     this.topicDropdownOpen      = false;
     this.difficultyDropdownOpen = false;
     this.examDropdownOpen       = false;
+    this.mockTestDropdownOpen   = false;
     this.showExamDropdown       = false;
   }
 

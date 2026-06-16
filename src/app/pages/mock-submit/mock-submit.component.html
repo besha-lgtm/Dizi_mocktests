@@ -1,38 +1,23 @@
 <app-header1></app-header1>
-<div class="submit-page-wrapper">
-    <div class="submit-container">
-        <!-- Success Icon -->
-        <div class="success-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                </svg>
-        </div>
 
-        <!-- Title -->
-        <h1 class="submit-title">{{ submitData.title }}</h1>
+<div class="ty-page">
+  <div class="ty-card">
 
-        <!-- Message -->
-        <p class="submit-message">{{ submitData.message }}</p>
-
-        <div class="feedback-timer-card" aria-live="polite">
-            <span class="feedback-timer-label">Feedback form opens in</span>
-            <strong class="feedback-timer-value">{{ timerDisplay }}</strong>
-        </div>
-
-        <!-- Submission Details Card -->
-        <div class="submission-details">
-            <p class="detail-label">{{ submitData.description }}</p>
-            <div class="detail-content">
-                <p class="submission-id">
-                    <span class="label">Submission ID:</span> 
-                    <span class="value">{{ submitData.submissionId }}</span>
-                </p>
-                <p class="timestamp">
-                    <span class="label">Timestamp:</span> 
-                    <span class="value">{{ submitData.timestamp }}</span>
-                </p>
-            </div>
-        </div>
+    <!-- Checkmark icon -->
+    <div class="ty-icon">
+      <svg viewBox="0 0 52 52" class="ty-check-svg">
+        <circle class="ty-circle" cx="26" cy="26" r="25" fill="none"/>
+        <path class="ty-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+      </svg>
     </div>
+
+    <h1 class="ty-title">Thank You!</h1>
+    <p class="ty-msg">
+      Your exam has been submitted successfully.<br>
+      Your answers have been recorded.
+    </p>
+
+    <button class="ty-btn" (click)="goHome()">Go to Home</button>
+
+  </div>
 </div>

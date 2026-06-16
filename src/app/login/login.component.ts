@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -36,7 +36,8 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router:      Router,
     private location:    Location,
-    private cdr:         ChangeDetectorRef
+    private cdr:         ChangeDetectorRef,
+    private zone:        NgZone
   ) {}
 
   ngOnInit(): void {
@@ -86,46 +87,54 @@ export class LoginComponent implements OnInit {
     // ── Call backend via AuthService ──────────────────────────
     this.isLoading = true;
 
-    this.authService.login({ email: identifier, password: passwordValue })
-      .subscribe({
-        next: (res) => {
-          this.isLoading = false;
+    try {
+      this.authService.login({ email: identifier, password: passwordValue })
+        .subscribe({
+          next: (res) => {
+            this.isLoading = false;
 
-          if (res.success) {
-            // Save JWT + user info using service helper
-            this.authService.saveSession(
-              res.token,
-              res.user,
-              res.role,
-              this.user.keepSigned
-            );
+            if (res.success) {
+              // Save JWT + user info using service helper
+              this.authService.saveSession(
+                res.token,
+                res.user,
+                res.role,
+                this.user.keepSigned
+              );
 
-            this.formSuccess = res.message;
-            this.cdr.detectChanges();
-
-            setTimeout(() => {
-              this.clearForm();
-              this.router.navigate([res.redirectTo]);
+              this.formSuccess = res.message;
               this.cdr.detectChanges();
-            }, 1200);
-          } else {
-            this.formError = res.message || 'Login failed';
+
+              setTimeout(() => {
+                this.clearForm();
+                this.zone.run(() => {
+                  this.router.navigate([res.redirectTo]);
+                });
+                this.cdr.detectChanges();
+              }, 1200);
+            } else {
+              this.formError = res.message || 'Login failed';
+              this.cdr.detectChanges();
+            }
+          },
+          error: (err) => {
+            this.isLoading = false;
+            console.error('Login request failed:', err);
+            if (err.status === 401) {
+              this.formError = err.error?.message || 'Invalid email or password';
+            } else if (err.status === 0) {
+              this.formError = 'Cannot reach server. Make sure backend is running.';
+            } else {
+              this.formError = err.error?.message || err.message || 'Something went wrong. Please try again.';
+            }
             this.cdr.detectChanges();
           }
-        },
-        error: (err) => {
-          this.isLoading = false;
-          console.error('Login request failed:', err);
-          if (err.status === 401) {
-            this.formError = err.error?.message || 'Invalid email or password';
-          } else if (err.status === 0) {
-            this.formError = 'Cannot reach server. Make sure backend is running.';
-          } else {
-            this.formError = err.error?.message || err.message || 'Something went wrong. Please try again.';
-          }
-          this.cdr.detectChanges();
-        }
-      });
+        });
+    } catch (e) {
+      this.isLoading = false;
+      this.formError = 'An unexpected error occurred. Please try again.';
+      this.cdr.detectChanges();
+    }
   }
 
   private clearForm(): void {

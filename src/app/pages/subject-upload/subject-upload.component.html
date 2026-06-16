@@ -141,6 +141,31 @@
     </div>
 
 </div>
+
+<!-- MOCK TEST ID -->
+<div class="form-group">
+
+    <label>Mock Test Number (ID)</label>
+
+    <input
+        type="number"
+        min="1"
+        [(ngModel)]="q.mockTestId"
+        #mockTestId="ngModel"
+        name="mockTestId{{i}}"
+        required
+        placeholder="Enter Mock Test Number (e.g., 1, 2, 3...)"
+        [class.field-error]="mockTestId.invalid && mockTestId.touched">
+
+    <div
+        class="validation-error"
+        *ngIf="mockTestId.invalid && mockTestId.touched">
+
+        Mock Test Number is required
+
+    </div>
+
+</div>
 <!-- DIFFICULTY -->
 <div class="form-group">
 
@@ -372,10 +397,18 @@
         
     </div>
 
-    <!-- <p>
-        Excel should contain:
-        Question | OptionA | OptionB | OptionC | OptionD | CorrectAnswer
-    </p> -->
+    <!-- DEFAULT MOCK TEST ID FOR BULK UPLOAD -->
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px;">Default Mock Test Number for this file</label>
+        <input 
+            type="number" 
+            min="1" 
+            [(ngModel)]="excelMockTestId" 
+            name="excelMockTestId" 
+            class="excel-mocktest-input"
+            style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; box-sizing: border-box;"
+            required>
+    </div>
 
     <!-- CUSTOM FILE UPLOAD -->
     <label class="custom-upload-box">
