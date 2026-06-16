@@ -331,15 +331,28 @@
 
     </button> -->
 
+    <!-- SUCCESS / ERROR BANNER -->
+    <div class="upload-success-message" *ngIf="submitSuccess">
+      {{ submitSuccess }}
+    </div>
+    <div class="upload-error-message" *ngIf="submitError">
+      {{ submitError }}
+    </div>
+
     <!-- SUBMIT -->
-
     <button
-    type="submit"
-    class="mock-btn-primary">
+      type="submit"
+      class="mock-btn-primary"
+      [disabled]="isSubmitting">
 
-    {{ isEditMode ? 'Update Question' : 'Submit Question' }}
+      <span *ngIf="!isSubmitting">
+        {{ isEditMode ? 'Update Question' : 'Submit Question' }}
+      </span>
+      <span *ngIf="isSubmitting">
+        {{ isEditMode ? 'Updating...' : 'Submitting...' }}
+      </span>
 
-</button>
+    </button>
 
 </form>
 
@@ -406,11 +419,17 @@
 
    <button
     class="mock-btn-primary upload-btn"
-    (click)="uploadExcelFile()">
+    (click)="uploadExcelFile()"
+    [disabled]="isBulkUploading">
 
-    Upload Excel
+    <span *ngIf="!isBulkUploading">Upload Excel</span>
+    <span *ngIf="isBulkUploading">Uploading...</span>
 
 </button>
+
+<div class="upload-error-message" *ngIf="excelUploadError">
+  {{ excelUploadError }}
+</div>
 
 </div>
 

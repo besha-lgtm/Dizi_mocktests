@@ -1,0 +1,81 @@
+/* ── Loading State ─────────────────────────────────────────────────────────── */
+.ml-loading {
+  display        : flex;
+  flex-direction : column;
+  align-items    : center;
+  justify-content: center;
+  gap            : 12px;
+  padding        : 60px 0;
+  color          : #94a3b8;
+  font-size      : 0.95rem;
+}
+
+.ml-spinner {
+  width        : 36px;
+  height       : 36px;
+  border       : 3px solid rgba(99, 102, 241, 0.2);
+  border-top   : 3px solid #6366f1;
+  border-radius: 50%;
+  animation    : spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── API Error Banner ──────────────────────────────────────────────────────── */
+.ml-api-error {
+  display        : flex;
+  align-items    : center;
+  justify-content: space-between;
+  background     : rgba(239, 68, 68, 0.1);
+  border         : 1px solid rgba(239, 68, 68, 0.3);
+  border-radius  : 10px;
+  padding        : 14px 20px;
+  margin         : 16px 0;
+  color          : #f87171;
+  font-size      : 0.9rem;
+}
+
+.ml-api-error button {
+  background   : rgba(239, 68, 68, 0.2);
+  border       : 1px solid rgba(239, 68, 68, 0.4);
+  color        : #f87171;
+  border-radius: 6px;
+  padding      : 6px 14px;
+  cursor       : pointer;
+  font-size    : 0.82rem;
+  transition   : background 0.2s;
+}
+
+.ml-api-error button:hover {
+  background: rgba(239, 68, 68, 0.35);
+}
+
+/* ── Image Thumbnail Column ────────────────────────────────────────────────── */
+.ml-td--img {
+  width     : 72px;
+  text-align: center;
+}
+
+.ml-q-thumb {
+  width        : 54px;
+  height       : 40px;
+  object-fit   : cover;
+  border-radius: 6px;
+  border       : 1px solid rgba(99, 102, 241, 0.25);
+  cursor       : pointer;
+  transition   : transform 0.2s, box-shadow 0.2s;
+}
+
+.ml-q-thumb:hover {
+  transform : scale(1.6);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  z-index   : 10;
+  position  : relative;
+}
+
+.ml-no-img {
+  color    : #475569;
+  font-size: 1rem;
+}

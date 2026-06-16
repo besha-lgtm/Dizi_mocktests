@@ -1,6 +1,7 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -69,8 +70,8 @@ import { TableModule } from 'primeng/table';
     TeacherDashboardComponent,
     TeacherSidebarComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, TableModule, HttpClientModule],
-  providers: [provideBrowserGlobalErrorListeners()],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, TableModule],
+  providers: [provideBrowserGlobalErrorListeners(), provideAnimationsAsync(), provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

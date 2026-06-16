@@ -2,15 +2,21 @@
 <app-teacher-sidebar></app-teacher-sidebar>
 <div class="ml-page-wrapper" (click)="closeDropdowns()">
 
-  <div class="ml-top-nav">
-    <!-- <button class="ml-back-btn" (click)="goBackToSubjects(); $event.stopPropagation()">
-      <svg class="ml-back-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-           fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-        <polyline points="15 18 9 12 15 6"/>
-      </svg>
-      Back to Subjects
-    </button> -->
+  <!-- LOADING STATE -->
+  <div class="ml-loading" *ngIf="isLoading">
+    <div class="ml-spinner"></div>
+    <p>Loading questions...</p>
+  </div>
 
+  <!-- ERROR STATE -->
+  <div class="ml-api-error" *ngIf="apiError && !isLoading">
+    <span>⚠️ {{ apiError }}</span>
+    <button (click)="loadSubjectData()">Retry</button>
+  </div>
+
+  <div *ngIf="!isLoading">
+
+  <div class="ml-top-nav">
     <nav class="ml-breadcrumb" aria-label="breadcrumb">
       <span class="ml-breadcrumb-link" (click)="goBackToSubjects(); $event.stopPropagation()">Subjects</span>
       <span class="ml-breadcrumb-sep">›</span>
@@ -228,136 +234,49 @@
 
     <!-- ── DESKTOP TABLE ── visible ≥ 769 px -->
    <div class="ml-table-scroll">
-
-  <p-table
-    [value]="paginatedQuestions"
-    responsiveLayout="scroll"
-    styleClass="ml-table">
-
-    <!-- HEADER -->
-    <ng-template pTemplate="header">
-      <tr>
-
-        <th class="ml-th">ID</th>
-
-        <th class="ml-th">TOPIC</th>
-
-        <th class="ml-th ml-th--wide">
-          QUESTION TEXT
-        </th>
-
-        <th class="ml-th">
-          EXAM TYPE
-        </th>
-
-        <th class="ml-th">
-          DIFFICULTY
-        </th>
-
-        <th class="ml-th">
-          LAST MODIFIED
-        </th>
-
-        <th class="ml-th ml-th--center">
-          ACTIONS
-        </th>
-
-      </tr>
-    </ng-template>
-
-    <!-- BODY -->
-    <ng-template
-      pTemplate="body"
-      let-q>
-
-      <tr class="ml-tr">
-
-        <td class="ml-td ml-td--id">
-          {{ q.id }}
-        </td>
-
-        <td class="ml-td">
-          <span
-            class="ml-topic-badge"
-            [ngClass]="getTopicClass(q.topic)">
-
-            {{ q.topic }}
-
-          </span>
-        </td>
-
-        <td class="ml-td ml-td--question">
-          {{ q.questionText }}
-        </td>
-
-        <td class="ml-td">
-          <span class="ml-topic-badge">
-            {{ q.examType }}
-          </span>
-        </td>
-
-        <td class="ml-td">
-          <span
-            class="ml-diff-badge"
-            [ngClass]="getDifficultyClass(q.difficulty)">
-
-            {{ q.difficulty }}
-
-          </span>
-        </td>
-
-        <td class="ml-td ml-td--date">
-          {{ q.lastModified }}
-        </td>
-
-        <td class="ml-td ml-td--actions">
-
-          <button
-            class="ml-action-btn ml-action-btn--edit"
-            (click)="editQuestion(q)">
-
-            Edit
-
-          </button>
-
-          <button
-            class="ml-action-btn ml-action-btn--delete"
-            (click)="deleteQuestion(q.id)">
-
-            Delete
-
-          </button>
-
-        </td>
-
-      </tr>
-
-    </ng-template>
-
-    <!-- EMPTY -->
-    <ng-template pTemplate="emptymessage">
-
-      <tr>
-
-        <td colspan="7" class="ml-empty">
-
-          <div class="ml-empty-icon">
-            📋
-          </div>
-
-          <p class="ml-empty-text">
-            No questions found matching your filters.
-          </p>
-
-        </td>
-
-      </tr>
-
-    </ng-template>
-
-  </p-table>
-
-</div>
+    <table class="ml-table">
+      <thead>
+        <tr>
+          <th class="ml-th">ID</th>
+          <th class="ml-th">TOPIC</th>
+          <th class="ml-th ml-th--wide">QUESTION TEXT</th>
+          <th class="ml-th">IMAGE</th>
+          <th class="ml-th">EXAM TYPE</th>
+          <th class="ml-th">DIFFICULTY</th>
+          <th class="ml-th">LAST MODIFIED</th>
+          <th class="ml-th ml-th--center">ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="ml-tr" *ngFor="let q of paginatedQuestions">
+          <td class="ml-td ml-td--id">{{ q.id }}</td>
+          <td class="ml-td">
+            <span class="ml-topic-badge" [ngClass]="getTopicClass(q.topic)">{{ q.topic }}</span>
+          </td>
+          <td class="ml-td ml-td--question">{{ q.questionText }}</td>
+          <td class="ml-td ml-td--img">
+            <img *ngIf="q.questionImage" [src]="q.questionImage" alt="Q Image" class="ml-q-thumb">
+            <span *ngIf="!q.questionImage" class="ml-no-img">—</span>
+          </td>
+          <td class="ml-td"><span class="ml-topic-badge">{{ q.examType }}</span></td>
+          <td class="ml-td">
+            <span class="ml-diff-badge" [ngClass]="getDifficultyClass(q.difficulty)">{{ q.difficulty }}</span>
+          </td>
+          <td class="ml-td ml-td--date">{{ q.lastModified }}</td>
+          <td class="ml-td ml-td--actions">
+            <button class="ml-action-btn ml-action-btn--edit" (click)="editQuestion(q)">Edit</button>
+            <button class="ml-action-btn ml-action-btn--delete" (click)="deleteQuestion(q.id)">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="paginatedQuestions.length === 0">
+          <td colspan="8" class="ml-empty">
+            <div class="ml-empty-icon">📋</div>
+            <p class="ml-empty-text">No questions found matching your filters.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
     <div class="ml-card-list">
 
@@ -438,5 +357,7 @@
     </div><!-- /ml-pagination -->
 
   </div><!-- /ml-table-panel -->
+
+  </div><!-- /ngIf !isLoading -->
 
 </div><!-- /ml-page-wrapper -->
