@@ -148,7 +148,7 @@
                 [class.sr-pct--high]="student.percentile >= 75"
                 [class.sr-pct--mid]="student.percentile >= 40 && student.percentile < 75"
                 [class.sr-pct--low]="student.percentile < 40">
-                {{ student.percentile !== undefined ? student.percentile + '%' : '—' }}
+                {{ student.percentile !== undefined ? student.percentile : '—' }}
               </span>
             </td>
           </tr>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { Router } from '@angular/router';
 import { ScoreService } from '../../services/score.service';
@@ -26,7 +26,11 @@ export class ScoreManagementComponent implements OnInit {
   mockOptions   : string[] = [];
   sectionOptions: string[] = [];
 
-  constructor(private router: Router, private scoreService: ScoreService) {}
+  constructor(
+    private router: Router,
+    private scoreService: ScoreService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loadScores();
@@ -69,6 +73,7 @@ export class ScoreManagementComponent implements OnInit {
 
         this.filteredScores = [...this.scores];
         this.updatePagination();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Failed to load scores from backend:', err);
@@ -79,19 +84,29 @@ export class ScoreManagementComponent implements OnInit {
   // ── Percentile computation ────────────────────────────────────────────────
   private computePercentiles(): void {
     const groups: { [key: string]: number[] } = {};
+
     this.scores.forEach(s => {
       const key = `${s.exam}||${s.mockTestId}`;
-      if (!groups[key]) groups[key] = [];
+      if (!groups[key]) {
+        groups[key] = [];
+      }
       groups[key].push(s.total);
     });
 
+    Object.keys(groups).forEach(key => {
+      groups[key].sort((a, b) => a - b);
+    });
+
     this.scores.forEach(s => {
-      const key   = `${s.exam}||${s.mockTestId}`;
-      const group = groups[key];
+      const key = `${s.exam}||${s.mockTestId}`;
+      const group = groups[key] || [];
       const below = group.filter(t => t < s.total).length;
-      s.percentile = group.length <= 1
-        ? 100
-        : Math.round((below / (group.length - 1)) * 100);
+      const equal = group.filter(t => t === s.total).length;
+      const total = group.length;
+
+      s.percentile = total === 0
+        ? 0
+        : Math.round(((below + 0.5 * equal) / total) * 100);
     });
   }
 
@@ -116,7 +131,8 @@ export class ScoreManagementComponent implements OnInit {
 
     this.currentPage = 1;
     this.updatePagination();
-  }
+    this.cdr.detectChanges();  
+    }
 
   // ── Pagination ────────────────────────────────────────────────────────────
   updatePagination(): void {
@@ -152,7 +168,7 @@ export class ScoreManagementComponent implements OnInit {
       'Correct'     : s.correct,
       'Wrong'       : s.wrong,
       'Unattempted' : s.unattempted,
-      'Percentile'  : s.percentile !== undefined ? `${s.percentile}%` : '—',
+      'Percentile'  : s.percentile !== undefined ? s.percentile : '—',
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(exportData);

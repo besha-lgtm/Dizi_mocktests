@@ -27,9 +27,9 @@ export class Header3Component implements OnInit, OnDestroy {
   get totalTimeMinutes(): number {
     return this._totalTimeMinutes;
   }
-  private _totalTimeMinutes: number = 10; // Default 180 mins (3 Hours)
+  private _totalTimeMinutes: number = 180; // Default 180 mins (3 Hours)
 
-  timeLeftSeconds: number = 25 * 60;
+  timeLeftSeconds: number = this._totalTimeMinutes * 60;
   private timerInterval: any;
 
   // Modal controls
@@ -40,7 +40,7 @@ export class Header3Component implements OnInit, OnDestroy {
     {
       title: 'GENERAL INSTRUCTIONS',
       items: [
-        `Total duration of the paper is <b>3 hours (${this.totalTimeMinutes} minutes)</b>.`,
+        this.getDurationText(this._totalTimeMinutes),
         'The on-screen clock will be set at the server. Only <b>saved</b> answers will be recorded.',
         'The Question Palette shows status for each question using colour-coded symbols.',
         '<b>Mark for Review</b> indicates you would like to revisit the question.',
@@ -92,8 +92,13 @@ export class Header3Component implements OnInit, OnDestroy {
   private resetTimer(minutes: number): void {
     this.timeLeftSeconds = minutes * 60;
     // Synchronously update the instructions to match the updated time minutes
-    this.instructionSections[0].items[0] = `Total duration of the paper is <b>${Math.floor(minutes / 60)} hours (${minutes} minutes)</b>.`;
+    this.instructionSections[0].items[0] = this.getDurationText(minutes);
     this.startTimer();
+  }
+
+  private getDurationText(minutes: number): string {
+    const hours = Math.floor(minutes / 60);
+    return `Total duration of the paper is <b>${hours} hours (${minutes} minutes)</b>.`;
   }
 
   get formattedTimeLeft(): string {
