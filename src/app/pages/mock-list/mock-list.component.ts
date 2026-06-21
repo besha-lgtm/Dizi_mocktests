@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { QuestionService, Question } from '../../services/question.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector    : 'app-mock-list',
@@ -61,12 +62,20 @@ export class MockListComponent implements OnInit {
     private route           : ActivatedRoute,
     private router          : Router,
     private questionService : QuestionService,
-    private cdr             : ChangeDetectorRef
+    private cdr             : ChangeDetectorRef,
+    private authService     : AuthService
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.subject = params['subject'] || 'Mathematics';
+
+      const userSubject = this.authService.getSubject();
+      const userRole = this.authService.getRole();
+      if (userRole === 'teacher' && userSubject && this.subject !== userSubject) {
+        this.subject = userSubject;
+      }
+
       this.loadSubjectData();
     });
   }

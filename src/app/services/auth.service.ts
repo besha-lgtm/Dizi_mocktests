@@ -21,6 +21,7 @@ export interface LoginResponse {
     email:     string;
     name:      string;
     role:      string;
+    subject?:  string;
   };
 }
 
@@ -32,6 +33,7 @@ export interface UserProfile {
     email:     string;
     name:      string;
     role:      string;
+    subject?:  string;
   };
 }
 
@@ -108,6 +110,22 @@ export class AuthService {
   /** Get stored role */
   getRole(): string | null {
     return localStorage.getItem('dizi_role') || sessionStorage.getItem('dizi_role');
+  }
+
+  /** Get stored user details */
+  getUser(): any {
+    const userStr = localStorage.getItem('dizi_user') || sessionStorage.getItem('dizi_user');
+    try {
+      return userStr ? JSON.parse(userStr) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /** Get stored subject */
+  getSubject(): string | null {
+    const user = this.getUser();
+    return user ? user.subject : null;
   }
 
   /** Check if user is logged in */

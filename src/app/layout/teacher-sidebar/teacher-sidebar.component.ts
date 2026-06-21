@@ -1,4 +1,5 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-teacher-sidebar',
@@ -9,14 +10,18 @@ import { Component, OnInit, HostBinding } from '@angular/core';
 export class TeacherSidebarComponent implements OnInit {
 
   isCollapsed = localStorage.getItem('teacher-sidebar-collapsed') === 'true';
+  teacherSubject: string = 'All';
 
   @HostBinding('class.collapsed')
   get collapsedClass() {
     return this.isCollapsed;
   }
 
+  constructor(private authService: AuthService) {}
+
   ngOnInit() {
     this.updateBodyClass();
+    this.teacherSubject = this.authService.getSubject() || 'All';
   }
 
   toggleSidebar() {

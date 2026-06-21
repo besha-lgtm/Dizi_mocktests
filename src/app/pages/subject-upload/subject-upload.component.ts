@@ -5,6 +5,7 @@ import * as XLSX from 'xlsx';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { QuestionService } from '../../services/question.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector    : 'app-subject-upload',
@@ -55,13 +56,20 @@ export class SubjectUploadComponent implements OnInit {
     private route          : ActivatedRoute,
     private router         : Router,
     private location       : Location,
-    private questionService: QuestionService
+    private questionService: QuestionService,
+    private authService    : AuthService
   ) {}
 
   ngOnInit(): void {
     // Get subject from route param
     this.route.params.subscribe(params => {
       this.subject = params['subject'];
+
+      const userSubject = this.authService.getSubject();
+      const userRole = this.authService.getRole();
+      if (userRole === 'teacher' && userSubject && this.subject !== userSubject) {
+        this.subject = userSubject;
+      }
     });
 
     // Get examType from query param

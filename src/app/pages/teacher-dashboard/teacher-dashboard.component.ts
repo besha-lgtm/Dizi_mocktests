@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-teacher-dashboard',
@@ -16,14 +17,15 @@ export class TeacherDashboardComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
 
     this.route.params.subscribe(params => {
 
-      this.subject = params['subject'];
+      this.subject = params['subject'] || this.authService.getSubject() || '';
 
     });
 

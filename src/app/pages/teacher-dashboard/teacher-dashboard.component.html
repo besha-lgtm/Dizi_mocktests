@@ -72,6 +72,7 @@
             <div class="teacher-btn-group">
 
                 <button
+                    *ngIf="!subject || subject === 'Mathematics'"
                     class="teacher-btn-primary"
                     routerLink="/mock-list/Mathematics">
 
@@ -80,6 +81,7 @@
                 </button>
 
                 <button
+                    *ngIf="!subject || subject === 'Physics'"
                     class="teacher-btn-primary"
                     routerLink="/mock-list/Physics">
 
@@ -88,6 +90,7 @@
                 </button>
 
                 <button
+                    *ngIf="!subject || subject === 'Chemistry'"
                     class="teacher-btn-primary"
                     routerLink="/mock-list/Chemistry">
 
